@@ -1,5 +1,4 @@
-// Example JSON config file
-
 {
-    "port": 8888
+    "port": 8888,
+    "host": "0.0.0.0"
 }
