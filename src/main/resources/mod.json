@@ -10,7 +10,7 @@
   //"main":"JavaSourcePingVerticle.java",
 
   // Compiled Groovy verticle - note that they must be prefixed with 'groovy:' to distinguish them from compiled Java verticles
-  "main":"groovy:com.samantha.vertx.TcpServerVerticle",
+  "main":"groovy:com.samantha.vertx.WebSocketServerVerticle",
 
   // Groovy *script* verticle
   //"main": "GroovyVerticle.groovy",
