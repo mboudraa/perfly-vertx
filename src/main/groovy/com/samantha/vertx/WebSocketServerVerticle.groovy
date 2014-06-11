@@ -16,17 +16,13 @@ class WebSocketServerVerticle extends Verticle {
     def createWebSocketServer(host, port, closure) {
         def httpServer = vertx.createHttpServer()
 
-        def sockJSServer = vertx.createSockJSServer(httpServer)
-        def config = ["prefix": "/ws"]
-
-        sockJSServer.installApp(config) { sock ->
-            sock.dataHandler { buffer ->
+        httpServer.websocketHandler { ws ->
+            println "a websocked has connected"
+            ws.dataHandler { buffer ->
                 def message = buffer.getString(0, buffer.length)
                 println message
             }
-        }
-
-        httpServer.listen(port, host, closure)
+        }.listen(port, host, closure)
     }
 
     def stop() {
