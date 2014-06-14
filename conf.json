@@ -1,4 +1,11 @@
 {
-    "port": 8888,
-    "host": "0.0.0.0"
+    "mobileServerConfig": {
+        "port": 8888,
+        "host": "0.0.0.0"
+    },
+
+    "webServerConfig": {
+        "web_root": "public",
+        "port": 8080
+    }
 }
