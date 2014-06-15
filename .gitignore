@@ -20,3 +20,10 @@ test-results
 test-tmp
 *.class
 mods
+
+node_modules
+public
+.tmp
+.sass-cache
+app/bower_components
+dist
