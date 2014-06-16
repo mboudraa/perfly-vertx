@@ -1,8 +1,15 @@
 #!/bin/sh
 
-if [ "$1" = "-d" ]; then
-	export GRADLE_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
-else
-	unset GRADLE_OPTS
-fi
-./gradlew runMod
+unset GRADLE_OPTS
+
+for i in $*; do
+    case $i in
+        -d) export GRADLE_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
+            ;;
+        -c) gradleCmd="clean" 
+            ;;
+    esac	
+done
+
+gradleCmd="$gradleCmd runMod"
+./gradlew $gradleCmd
