@@ -23,9 +23,8 @@ mods
 atlassian-ide-plugin.xml
 
 node_modules
-resources/public
 .tmp
 .sass-cache
 bower_components
 dist
-
+public
