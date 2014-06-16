@@ -1,0 +1,5 @@
+src/main/resources
+bin
+out/production/com.module.core
+out/test/com.module.core
+build/deps

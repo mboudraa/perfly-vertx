@@ -1,0 +1,104 @@
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mounirboudraa\/Xebia\/Projets\/Samantha\/samantha-vertx\/src\/main\/resources\/web\/app\/styles\/sass\/main\.scss}line{font-family:\000031}}
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+/* Space out content a bit */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mounirboudraa\/Xebia\/Projets\/Samantha\/samantha-vertx\/src\/main\/resources\/web\/app\/styles\/sass\/main\.scss}line{font-family:\000039}}
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mounirboudraa\/Xebia\/Projets\/Samantha\/samantha-vertx\/src\/main\/resources\/web\/app\/styles\/sass\/main\.scss}line{font-family:\0000317}}
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mounirboudraa\/Xebia\/Projets\/Samantha\/samantha-vertx\/src\/main\/resources\/web\/app\/styles\/sass\/main\.scss}line{font-family:\0000323}}
+.header {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+/* Make the masthead heading the same height as the navigation */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mounirboudraa\/Xebia\/Projets\/Samantha\/samantha-vertx\/src\/main\/resources\/web\/app\/styles\/sass\/main\.scss}line{font-family:\0000328}}
+.header h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+  padding-bottom: 19px;
+}
+
+/* Custom page footer */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mounirboudraa\/Xebia\/Projets\/Samantha\/samantha-vertx\/src\/main\/resources\/web\/app\/styles\/sass\/main\.scss}line{font-family:\0000336}}
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mounirboudraa\/Xebia\/Projets\/Samantha\/samantha-vertx\/src\/main\/resources\/web\/app\/styles\/sass\/main\.scss}line{font-family:\0000342}}
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mounirboudraa\/Xebia\/Projets\/Samantha\/samantha-vertx\/src\/main\/resources\/web\/app\/styles\/sass\/main\.scss}line{font-family:\0000347}}
+.jumbotron {
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mounirboudraa\/Xebia\/Projets\/Samantha\/samantha-vertx\/src\/main\/resources\/web\/app\/styles\/sass\/main\.scss}line{font-family:\0000352}}
+.jumbotron .btn {
+  font-size: 21px;
+  padding: 14px 24px;
+}
+
+/* Supporting marketing content */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mounirboudraa\/Xebia\/Projets\/Samantha\/samantha-vertx\/src\/main\/resources\/web\/app\/styles\/sass\/main\.scss}line{font-family:\0000358}}
+.marketing {
+  margin: 40px 0;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mounirboudraa\/Xebia\/Projets\/Samantha\/samantha-vertx\/src\/main\/resources\/web\/app\/styles\/sass\/main\.scss}line{font-family:\0000362}}
+.marketing p + h4 {
+  margin-top: 28px;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mounirboudraa\/Xebia\/Projets\/Samantha\/samantha-vertx\/src\/main\/resources\/web\/app\/styles\/sass\/main\.scss}line{font-family:\0000368}}
+  .container {
+    max-width: 730px;
+  }
+
+  /* Remove the padding we set earlier */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mounirboudraa\/Xebia\/Projets\/Samantha\/samantha-vertx\/src\/main\/resources\/web\/app\/styles\/sass\/main\.scss}line{font-family:\0000375}}
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Space out the masthead */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mounirboudraa\/Xebia\/Projets\/Samantha\/samantha-vertx\/src\/main\/resources\/web\/app\/styles\/sass\/main\.scss}line{font-family:\0000380}}
+  .header {
+    margin-bottom: 30px;
+  }
+
+  /* Remove the bottom border on the jumbotron for visual effect */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mounirboudraa\/Xebia\/Projets\/Samantha\/samantha-vertx\/src\/main\/resources\/web\/app\/styles\/sass\/main\.scss}line{font-family:\0000384}}
+  .jumbotron {
+    border-bottom: 0;
+  }
+}

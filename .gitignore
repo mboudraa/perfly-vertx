@@ -20,10 +20,12 @@ test-results
 test-tmp
 *.class
 mods
+atlassian-ide-plugin.xml
 
 node_modules
-public
+resources/public
 .tmp
 .sass-cache
-app/bower_components
+bower_components
 dist
+
