@@ -31,18 +31,13 @@ module.exports = function (grunt) {
                     '<%= yeoman.app %>/partials/**',
                     '<%= yeoman.app %>/images/**',
                     '<%= yeoman.app %>/*.html',
-                    '<%= yeoman.app %>/scripts/**',
-                    '<%= yeoman.app %>/styles/**/*.css'
+                    '<%= yeoman.app %>/scripts/**'
                 ],
                 tasks: ['predev']
             },
             compass: {
                 files: ['<%= yeoman.app %>/styles/**/*.{scss,sass}'],
                 tasks: ['compass:server', 'autoprefixer']
-            },
-            bower: {
-                files: ['<%= yeoman.app %>/../bower.json'],
-                tasks: ['bower-install']
             },
             gruntfile: {
                 files: ['Gruntfile.js'],
@@ -65,6 +60,14 @@ module.exports = function (grunt) {
                         ]
                     }
                 ]
+            },
+            tmp: {
+                files: [
+                    {
+                        dot: true,
+                        src: ['.tmp']
+                    }
+                ]
             }
         },
 
@@ -79,25 +82,17 @@ module.exports = function (grunt) {
                         expand: true,
                         cwd: '.tmp/styles/',
                         src: '**/*.css',
-                        dest: '<%= yeoman.app %>/styles/css'
+                        dest: '<%= yeoman.dist %>/styles'
                     }
                 ]
-            }
-        },
-
-        // Automatically inject Bower components into the app
-        'bower-install': {
-            app: {
-                html: '<%= yeoman.app %>/index.html',
-                ignorePath: '<%= yeoman.app %>/'
             }
         },
 
         // Compiles Sass to CSS and generates necessary files if requested
         compass: {
             options: {
-                sassDir: '<%= yeoman.app %>/styles/sass',
-                cssDir: '<%= yeoman.app %>/styles/css',
+                sassDir: '<%= yeoman.app %>/styles',
+                cssDir: '<%= yeoman.dist %>/styles',
                 generatedImagesDir: '.tmp/images/generated',
                 imagesDir: '<%= yeoman.app %>/images',
                 javascriptsDir: '<%= yeoman.app %>/scripts',
@@ -112,7 +107,13 @@ module.exports = function (grunt) {
             },
             dist: {
                 options: {
-                    generatedImagesDir: '<%= yeoman.dist %>/images/generated'
+                    generatedImagesDir: '<%= yeoman.dist %>/images/generated',
+                    outputStyle: 'compressed'
+                }
+            },
+            dev: {
+                options: {
+                    outputStyle: 'nested'
                 }
             },
             server: {
@@ -261,8 +262,8 @@ module.exports = function (grunt) {
             },
             styles: {
                 expand: true,
-                cwd: '<%= yeoman.app %>/styles/css',
-                dest: '<%= yeoman.app %>/styles/css',
+                cwd: '<%= yeoman.dist %>/styles',
+                dest: '<%= yeoman.dist %>/styles',
                 src: '**/*.css'
             },
             dev: {
@@ -274,10 +275,9 @@ module.exports = function (grunt) {
                             '<%= yeoman.app %>/partials/**',
                             '<%= yeoman.app %>/images/**',
                             '<%= yeoman.app %>/*.html',
-                            '<%= yeoman.app %>/scripts/**',
-                            '<%= yeoman.app %>/styles/**/*.css'
+                            '<%= yeoman.app %>/scripts/**'
                         ],
-                        dest:'<%= yeoman.dist %>'
+                        dest: '<%= yeoman.dist %>'
                     }
                 ]
             }
@@ -370,13 +370,15 @@ module.exports = function (grunt) {
         'cssmin',
         'uglify',
         'rev',
-        'usemin'
+        'usemin',
+        'clean:tmp'
     ]);
 
 
     grunt.registerTask('predev', function () {
         return grunt.task.run([
             'clean:dist',
+            'compass:dev',
             'copy:dev',
         ]);
     });
