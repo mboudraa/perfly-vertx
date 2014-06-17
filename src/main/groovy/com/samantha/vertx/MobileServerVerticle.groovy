@@ -1,4 +1,6 @@
 package com.samantha.vertx
+
+import org.vertx.groovy.core.http.WebSocket
 import org.vertx.groovy.platform.Verticle
 
 class MobileServerVerticle extends Verticle {
@@ -32,7 +34,7 @@ class MobileServerVerticle extends Verticle {
 
     def createWebSocketServer(config, closure) {
         def httpServer = vertx.createHttpServer()
-        httpServer.websocketHandler { ws ->
+        httpServer.websocketHandler {WebSocket ws ->
             ws.dataHandler { buffer ->
                 vertx.eventBus.send("android", buffer.getString(0, buffer.length))
             }

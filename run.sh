@@ -1,15 +1,36 @@
-#!/bin/sh
+#!/bin/bash
 
 unset GRADLE_OPTS
 
-for i in $*; do
-    case $i in
-        -d) export GRADLE_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
+function usage ()
+{
+    echo ""
+    echo "USAGE: "
+    echo "    run.sh [-d] [-c] [-h]"
+    echo ""
+    echo "OPTIONS:"
+    echo "    -d  enable debug mode"
+    echo "    -c  clean before run"
+    echo "    -h  help"
+    echo ""
+    echo ""
+    exit $E_OPTERROR    # Exit and explain usage, if no argument(s) given.
+}
+
+while getopts ":dc:h" Option
+do
+    case $Option in
+        d|-debug) export GRADLE_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
             ;;
-        -c) gradleCmd="clean" 
+        c|-clean) gradleCmd="clean"
             ;;
-    esac	
+        h) usage
+           exit 0
+           ;;
+    esac
 done
 
-gradleCmd="$gradleCmd runMod"
+shift $(($OPTIND - 1))
+
+gradleCmd="$gradleCmd runMod $confOpt"
 ./gradlew $gradleCmd
