@@ -20,9 +20,9 @@ function usage ()
 while getopts ":dc:h" Option
 do
     case $Option in
-        d|-debug) export GRADLE_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
+        d) export GRADLE_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
             ;;
-        c|-clean) gradleCmd="clean"
+        c) gradleCmd="clean"
             ;;
         h) usage
            exit 0

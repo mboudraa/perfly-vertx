@@ -1,6 +1,6 @@
 package com.samantha.vertx
 
-import org.vertx.groovy.core.buffer.Buffer
+import groovy.json.JsonOutput
 import org.vertx.groovy.core.eventbus.Message
 import org.vertx.groovy.core.http.HttpServer
 import org.vertx.groovy.core.http.HttpServerRequest
@@ -19,6 +19,7 @@ class WebServerVerticle extends Verticle {
 
     private HttpServer server
 
+
     @Override
     def start() {
 
@@ -26,11 +27,16 @@ class WebServerVerticle extends Verticle {
         server = createHttpServer(container.config) { asyncResult, host, port ->
             if (asyncResult.succeeded) {
                 println "Web Server started. Listening on ${host}:${port}"
-                vertx.eventBus.registerHandler("android", this.&handleMessage)
+
+                vertx.eventBus
+                        .registerHandler("vertx.app.post", this.&handleAppResponse)
+                        .registerHandler("vertx.apps.get", this.&handleListAppRequest)
             } else {
                 println "Starting Web Server failed -> ${asyncResult.cause}"
             }
         }
+
+
     }
 
     @Override
@@ -39,15 +45,21 @@ class WebServerVerticle extends Verticle {
         server?.close { asyncResult ->
             if (asyncResult.succeeded) {
                 println "Web Server closed"
-                vertx.eventBus.unregisterHandler("android", this.&handleMessage)
+                vertx.eventBus
+                        .unregisterHandler("vertx.app.post", this.&handleAppResponse)
+                        .unregisterHandler("vertx.apps.get", this.&handleListAppRequest)
             } else {
                 println "Closing Web Server failed -> ${asyncResult.cause}"
             }
         }
     }
 
-    def handleMessage(Message message) {
-        vertx.eventBus.send("android.monitoring", message.body())
+    def handleAppResponse(Message message) {
+        vertx.eventBus.send("browser.app.post", JsonOutput.toJson(message.body()))
+    }
+
+    def handleListAppRequest() {
+        vertx.eventBus.send("android.apps.get", null)
     }
 
     def createHttpServer(config, Closure closure) {
@@ -82,17 +94,11 @@ class WebServerVerticle extends Verticle {
 
         matcher.get("/") { HttpServerRequest req ->
             req.response.sendFile("${webRoot}/${config.get("index_page", DEFAULT_INDEX_PAGE)}")
+            handleListAppRequest()
         }
 
-        matcher.getWithRegEx("^\\/(bower_components|libs|images|partials|scripts|styles)\\/.*") { req ->
+        matcher.getWithRegEx("^\\/(bower_components|libs|images|partials|scripts|styles)\\/.*") { HttpServerRequest req ->
             req.response.sendFile("${webRoot}/${req.path.substring(1)}")
-        }
-
-        matcher.post("/api/app") { HttpServerRequest req ->
-            req.response.setStatusCode(200).end()
-            req.bodyHandler { Buffer buffer ->
-                vertx.eventBus.send("android.application", buffer.getString(0, buffer.length))
-            }
         }
 
         matcher.noMatch { req ->
