@@ -17,7 +17,7 @@ function usage ()
     exit $E_OPTERROR    # Exit and explain usage, if no argument(s) given.
 }
 
-while getopts ":dc:h" Option
+while getopts ":dch" Option
 do
     case $Option in
         d) export GRADLE_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
