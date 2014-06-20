@@ -60,6 +60,9 @@ dependencies {
     // If you're creating Groovy compiled verticles you may need the following dependencies
     provided "org.codehaus.groovy:groovy-all:$groovyVersion"
     provided "io.vertx:lang-groovy:$groovyLangModVersion@jar"
+
+    compile 'com.fasterxml.jackson.core:jackson-core:2.4.0'
+
 }
 
 
