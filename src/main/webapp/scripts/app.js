@@ -5,7 +5,8 @@ angular.module('samanthaApp', [
     'ngResource',
     'ngSanitize',
     'ngRoute',
-    'knalli.angular-vertxbus'
+    'knalli.angular-vertxbus',
+    'truncate'
 ])
     .config(function ($routeProvider, $locationProvider, vertxEventBusProvider) {
         $routeProvider

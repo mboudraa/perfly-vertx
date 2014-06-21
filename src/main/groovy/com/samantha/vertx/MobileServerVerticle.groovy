@@ -6,10 +6,16 @@ import org.vertx.groovy.core.eventbus.Message
 import org.vertx.groovy.core.net.NetSocket
 import org.vertx.groovy.platform.Verticle
 
+import static com.fasterxml.jackson.core.JsonParser.Feature
+
 class MobileServerVerticle extends Verticle {
 
     private static final String EOC = "\\|\\|EOC\\|\\|"
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    static {
+        OBJECT_MAPPER.configure(Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, false)
+        OBJECT_MAPPER.configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
+    }
 
     def server
     NetSocket socket
@@ -31,7 +37,7 @@ class MobileServerVerticle extends Verticle {
     }
 
     def getApps(Message busMessage) {
-        socket?.write(JsonOutput.toJson([address: "android.apps.get"]))
+        socket?.write(OBJECT_MAPPER.writeValueAsString([address: "android.apps.get"]))
     }
 
     @Override
@@ -58,17 +64,17 @@ class MobileServerVerticle extends Verticle {
             socket.dataHandler { Buffer buffer ->
 
                 body << buffer
-                String[] messages = body.getString(0, body.length).split(EOC)
+                String[] jsonMessages = body.getString(0, body.length).split(EOC)
 
-                messages.eachWithIndex { message, i ->
+                jsonMessages.eachWithIndex { messageJson, i ->
                     try {
-                        def object = OBJECT_MAPPER.readValue(message, Map.class)
-                        vertx.eventBus.send(object.address, OBJECT_MAPPER.writeValueAsString(object.body.object))
+                        def message = OBJECT_MAPPER.readValue(messageJson, Map.class)
+                        vertx.eventBus.send(message.address, OBJECT_MAPPER.writeValueAsString(message.body.object))
                         body = new Buffer(0)
                     } catch (Exception e) {
 
-                        if (i > 0 && i == messages.length - 1) {
-                            body << message.bytes
+                        if (i > 0 && i == jsonMessages.length - 1) {
+                            body << messageJson.bytes
                         }
                     }
                 }

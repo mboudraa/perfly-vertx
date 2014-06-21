@@ -5,7 +5,7 @@ angular.module('samanthaApp')
 
         $scope.applications = [];
 
-        vertxEventBusService.on('android.application', function (message) {
-            $scope.applications.push(JSON.parse(message));
+        vertxEventBusService.on('browser.app.post', function (message) {
+            $scope.applications.push(JSON.parse(JSON.parse(message)));
         });
     }]);

@@ -1,7 +1,8 @@
 <h1>Samantha</h1>
-<div ng-repeat="application in applications">
-    <article class="application">
-        <img ng-src="data:image/jpeg;base64,{{application.logo}}" alt="logo {{application.label}}" style="width: 64px; height: 64px"/>
-        <span>{{application.label}}</span>
+<section class="application-section">
+    <article class="application-article" ng-repeat="application in applications">
+        <img class="application-logo" ng-src="data:image/jpeg;base64,{{application.logo}}"
+             alt="logo {{application.label}}"/>
+        <span class="application-label">{{application.label | characters:12: true}}</span>
     </article>
-</div>
+</section>

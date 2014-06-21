@@ -10,7 +10,8 @@
     "angular-sanitize": ">=1.2.*",
     "angular-route": ">=1.2.*",
     "angular-vertxbus": "~0.6.0",
-    "sockjs": "~0.3.4"
+    "sockjs": "~0.3.4",
+    "angular-truncate": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
