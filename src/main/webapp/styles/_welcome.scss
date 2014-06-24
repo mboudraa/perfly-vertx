@@ -1,0 +1,30 @@
+.application-section {
+  width: 100%;
+  display: inline-block;
+  text-align: 100%;
+
+  .application-article {
+    display: inline-block;
+    text-align: center;
+    width: 5.625em;
+    height: 5.625em;
+    margin: 5px;
+    padding: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    .application-logo {
+      width: 4em;
+      height: 4em;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 5px;
+    }
+
+    .application-label {
+      font-size: 1em;
+      white-space: nowrap;
+    }
+  }
+}

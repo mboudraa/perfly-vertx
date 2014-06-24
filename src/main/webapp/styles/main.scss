@@ -1,29 +1,3 @@
+@import "compass";
 
-.application-section {
-  width: 100%;
-  display: inline-block;
-  text-align: 100%;
-
-  .application-article {
-    display: inline-block;
-    text-align: center;
-    width: 6.625em;
-    height: 5.625em;
-    margin: 0.934em 0.312em;
-    padding: 0.934em 0.312em;
-
-    .application-logo {
-      width: 4em;
-      height: 4em;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .application-label {
-      font-size: 1em;
-//      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
-}
+@import "welcome";

@@ -1,8 +1,8 @@
 <h1>Samantha</h1>
 <section class="application-section">
-    <article class="application-article" ng-repeat="application in applications">
+    <article class="application-article" ng-repeat="application in applications" ng-dblclick="startApplication(application)">
         <img class="application-logo" ng-src="data:image/jpeg;base64,{{application.logo}}"
              alt="logo {{application.label}}"/>
-        <span class="application-label">{{application.label | characters:12: true}}</span>
+        <span class="application-label">{{application.label}}</span>
     </article>
 </section>

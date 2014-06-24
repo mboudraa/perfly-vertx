@@ -1,7 +1,5 @@
 package com.samantha.vertx
 
-import groovy.json.JsonOutput
-import org.vertx.groovy.core.eventbus.Message
 import org.vertx.groovy.core.http.HttpServer
 import org.vertx.groovy.core.http.HttpServerRequest
 import org.vertx.groovy.core.http.RouteMatcher
@@ -29,8 +27,8 @@ class WebServerVerticle extends Verticle {
                 println "Web Server started. Listening on ${host}:${port}"
 
                 vertx.eventBus
-                        .registerHandler("vertx.app.post", this.&handleAppResponse)
-                        .registerHandler("vertx.apps.get", this.&handleListAppRequest)
+//                        .registerHandler("vertx.app.post", this.&handleAppResponse)
+//                        .registerHandler("vertx.apps.get", this.&handleListAppRequest)
             } else {
                 println "Starting Web Server failed -> ${asyncResult.cause}"
             }
@@ -45,21 +43,10 @@ class WebServerVerticle extends Verticle {
         server?.close { asyncResult ->
             if (asyncResult.succeeded) {
                 println "Web Server closed"
-                vertx.eventBus
-                        .unregisterHandler("vertx.app.post", this.&handleAppResponse)
-                        .unregisterHandler("vertx.apps.get", this.&handleListAppRequest)
             } else {
                 println "Closing Web Server failed -> ${asyncResult.cause}"
             }
         }
-    }
-
-    def handleAppResponse(Message message) {
-        vertx.eventBus.send("browser.app.post", JsonOutput.toJson(message.body()))
-    }
-
-    def handleListAppRequest() {
-        vertx.eventBus.send("android.apps.get", null)
     }
 
     def createHttpServer(config, Closure closure) {
@@ -94,7 +81,7 @@ class WebServerVerticle extends Verticle {
 
         matcher.get("/") { HttpServerRequest req ->
             req.response.sendFile("${webRoot}/${config.get("index_page", DEFAULT_INDEX_PAGE)}")
-            handleListAppRequest()
+//            handleListAppRequest()
         }
 
         matcher.getWithRegEx("^\\/(bower_components|libs|images|partials|scripts|styles)\\/.*") { HttpServerRequest req ->

@@ -6,9 +6,10 @@ angular.module('samanthaApp', [
     'ngSanitize',
     'ngRoute',
     'knalli.angular-vertxbus',
-    'truncate'
+    'truncate',
+    'LocalStorageModule'
 ])
-    .config(function ($routeProvider, $locationProvider, vertxEventBusProvider) {
+    .config(function ($routeProvider, $locationProvider, vertxEventBusProvider, localStorageServiceProvider) {
         $routeProvider
             .when('/', {
                 templateUrl: 'partials/main.html',
@@ -19,10 +20,10 @@ angular.module('samanthaApp', [
             });
 
         vertxEventBusProvider
-            .enable()
             .useReconnect()
-            .useUrlServer('http://localhost:8080')
-            .useUrlPath("/eventbus")
+            .useUrlServer('http://localhost:8080');
 
+
+        localStorageServiceProvider.setPrefix("samantha");
         $locationProvider.html5Mode(true);
     });

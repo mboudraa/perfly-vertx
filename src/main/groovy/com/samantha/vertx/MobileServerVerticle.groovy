@@ -33,11 +33,17 @@ class MobileServerVerticle extends Verticle {
             }
         }
 
-        vertx.eventBus.registerHandler("android.apps.get", this.&getApps)
+        vertx.eventBus
+                .registerHandler("vertx.apps.get", this.&handleListAppRequest)
+                .registerHandler("vertx.app.start", this.&startApplication)
     }
 
-    def getApps(Message busMessage) {
+    def handleListAppRequest(Message message) {
         socket?.write(OBJECT_MAPPER.writeValueAsString([address: "android.apps.get"]))
+    }
+
+    def startApplication(Message message) {
+        socket?.write(OBJECT_MAPPER.writeValueAsString([address: "android.monitoring.start", body: message.body()]))
     }
 
     @Override
@@ -69,7 +75,7 @@ class MobileServerVerticle extends Verticle {
                 jsonMessages.eachWithIndex { messageJson, i ->
                     try {
                         def message = OBJECT_MAPPER.readValue(messageJson, Map.class)
-                        vertx.eventBus.send(message.address, OBJECT_MAPPER.writeValueAsString(message.body.object))
+                        vertx.eventBus.publish(message.address, message.body)
                         body = new Buffer(0)
                     } catch (Exception e) {
 
@@ -80,10 +86,23 @@ class MobileServerVerticle extends Verticle {
                 }
             }
 
+            socket.endHandler {
+                //TODO publish client disconnected
+            }
+
         }
         .listen(config.port, config.host) { asyncResult ->
             closure.call(asyncResult, config.host, config.port)
         }
+
+
+
+        vertx.createNetServer().connectHandler { sock ->
+
+            sock.dataHandler { buffer ->
+                sock << buffer
+            }
+        }.listen(config.port + 1, config.host)
     }
 
 
