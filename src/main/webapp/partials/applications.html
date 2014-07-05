@@ -9,6 +9,7 @@
     <section class="applications-section content">
         <article class="application-article" ng-repeat="application in applications"
                  ng-dblclick="startApplication(application)">
+            <paper-ripple id="ripple"></paper-ripple>
             <img class="application-logo" ng-src="data:image/jpeg;base64,{{application.logo}}"
                  alt="logo {{application.label}}"/>
             <span class="application-label">{{application.label}}</span>

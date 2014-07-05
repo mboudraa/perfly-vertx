@@ -35,9 +35,9 @@ module.exports = function (grunt) {
                 ],
                 tasks: ['predev']
             },
-            compass: {
+            scripts: {
                 files: ['<%= yeoman.app %>/styles/**/*.{scss,sass}'],
-                tasks: ['compass:server', 'autoprefixer']
+                tasks: ['sass:server', 'autoprefixer']
             },
             gruntfile: {
                 files: ['Gruntfile.js'],
@@ -89,31 +89,34 @@ module.exports = function (grunt) {
         },
 
         // Compiles Sass to CSS and generates necessary files if requested
-        compass: {
-            options: {
-                sassDir: '<%= yeoman.app %>/styles',
-                cssDir: '<%= yeoman.dist %>/styles',
-                generatedImagesDir: '.tmp/images/generated',
-                imagesDir: '<%= yeoman.app %>/images',
-                javascriptsDir: '<%= yeoman.app %>/scripts',
-                fontsDir: '<%= yeoman.app %>/styles/fonts',
-                importPath: '<%= yeoman.app %>/bower_components',
-                httpImagesPath: '/images',
-                httpGeneratedImagesPath: '/images/generated',
-                httpFontsPath: '/styles/fonts',
-                relativeAssets: false,
-                assetCacheBuster: false,
-                raw: 'Sass::Script::Number.precision = 10\n'
-            },
+        sass: {
             dist: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.app %>/styles',
+                        src: ['*.scss'],
+                        dest: '<%= yeoman.dist %>/styles',
+                        ext: '.css'
+                    }
+                ],
                 options: {
-                    generatedImagesDir: '<%= yeoman.dist %>/images/generated',
-                    outputStyle: 'compressed'
+                    style: 'compressed'
                 }
+
             },
             dev: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.app %>/styles',
+                        src: ['*.scss'],
+                        dest: '<%= yeoman.dist %>/styles',
+                        ext: '.css'
+                    }
+                ],
                 options: {
-                    outputStyle: 'nested'
+                    style: 'nested'
                 }
             },
             server: {
@@ -288,7 +291,7 @@ module.exports = function (grunt) {
         // Run some tasks in parallel to speed up the build process
         concurrent: {
             dist: [
-                'compass:dist',
+                'sass:dist',
                 'imagemin',
                 'svgmin',
                 'htmlmin'
@@ -379,7 +382,7 @@ module.exports = function (grunt) {
     grunt.registerTask('predev', function () {
         return grunt.task.run([
             'clean:dist',
-            'compass:dev',
+            'sass:dev',
             'copy:dev',
         ]);
     });
