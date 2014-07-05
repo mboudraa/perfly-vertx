@@ -48,7 +48,7 @@ module.exports = function (grunt) {
         // Empties folders to start fresh
         clean: {
             dist: {
-                options: { force: true },
+                options: {force: true},
                 files: [
                     {
                         dot: true,
@@ -271,6 +271,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         src: [
+                            '<%= yeoman.app %>/libs/**/*.{css,js,html,png,jpg,jpeg,gif,webp,svg}',
                             '<%= yeoman.app %>/bower_components/**/*.{css,js}',
                             '<%= yeoman.app %>/partials/**',
                             '<%= yeoman.app %>/images/**',

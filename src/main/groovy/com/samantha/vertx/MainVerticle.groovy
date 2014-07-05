@@ -6,7 +6,7 @@ class MainVerticle extends Verticle {
 
     def start() {
         container.with {
-            deployVerticle("groovy:${WebServerVerticle.class.name}", config.webServerConfig)
+            deployVerticle("groovy:${WebServerVerticle.class.name}", config.webServerConfig, 2)
             deployVerticle("groovy:${MobileServerVerticle.class.name}", config.mobileServerConfig)
         }
     }

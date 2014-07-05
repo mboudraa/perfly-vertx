@@ -1,4 +1,53 @@
-.application-section {
+html, body, .container, [id="scroll-header"] {
+  height: 100%
+}
+
+body {
+  font-family: "RobotoDraft", "Helvetica Neue", "sans-serif";
+}
+
+[id="toolbar"] {
+  background: #6a205f;
+  fill: #f1f1f1;
+  color: #f1f1f1;
+}
+
+.devices-section {
+  width: 100%;
+  display: inline-block;
+  text-align: 100%;
+
+  .device-article {
+    display: inline-block;
+    margin: 5px;
+    padding: 5px;
+    width: 25em;
+    height: 15em;
+    background: #9acd00;
+    overflow: hidden;
+
+    &.connected {
+      cursor: pointer;
+    }
+
+    &.disconnected {
+      opacity: .5;
+
+    }
+
+    .title {
+      font-size: 2em;
+      font-weight: 500;
+    }
+
+    .detail {
+      list-style: none;
+
+    }
+  }
+}
+
+.applications-section {
   width: 100%;
   display: inline-block;
   text-align: 100%;
@@ -12,6 +61,7 @@
     padding: 5px;
     text-overflow: ellipsis;
     overflow: hidden;
+    cursor: pointer;
 
     .application-logo {
       width: 4em;
@@ -23,7 +73,7 @@
     }
 
     .application-label {
-      font-size: 1em;
+      font-size: 0.875em;
       white-space: nowrap;
     }
   }

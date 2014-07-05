@@ -7,13 +7,18 @@ angular.module('samanthaApp', [
     'ngRoute',
     'knalli.angular-vertxbus',
     'truncate',
-    'LocalStorageModule'
+    'LocalStorageModule',
+    'monospaced.qrcode'
 ])
     .config(function ($routeProvider, $locationProvider, vertxEventBusProvider, localStorageServiceProvider) {
         $routeProvider
             .when('/', {
-                templateUrl: 'partials/main.html',
-                controller: 'MainCtrl'
+                templateUrl: 'partials/devices.html',
+                controller: 'DevicesCtrl'
+            })
+            .when('/device/:id/apps', {
+                templateUrl: 'partials/applications.html',
+                controller: 'ApplicationsCtrl'
             })
             .otherwise({
                 redirectTo: '/'

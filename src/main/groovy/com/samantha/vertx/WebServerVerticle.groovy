@@ -85,6 +85,7 @@ class WebServerVerticle extends Verticle {
         }
 
         matcher.getWithRegEx("^\\/(bower_components|libs|images|partials|scripts|styles)\\/.*") { HttpServerRequest req ->
+            println "${req.path.substring(1)}"
             req.response.sendFile("${webRoot}/${req.path.substring(1)}")
         }
 

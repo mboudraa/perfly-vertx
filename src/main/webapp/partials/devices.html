@@ -1,0 +1,25 @@
+<div ng-include="'partials/toolbar.html'"></div>
+
+
+<section class="devices-section">
+
+    <article class="tile device-article" ng-repeat="device in devices"
+             ng-click="showApps(device)" ng-class="{ true: 'connected', false:'disconnected'}[device.connected]">
+
+        <div>
+            <div class="title">{{device.brand}} {{device.model}}</div>
+            <img class="device-logo" src="../images/device.svg" width="auto" height="48"/>
+
+            <div>
+                <ul class="detail">
+                    <li>IMEI {{device.imei}}</li>
+                    <li>{{device.version}}</li>
+                    <li>API {{device.api}}</li>
+                    <li>Resolution {{device.resolution}}</li>
+                    <li>156 Applications</li>
+                </ul>
+            </div>
+        </div>
+    </article>
+
+</section>
