@@ -16,7 +16,7 @@ angular.module('samanthaApp', [
                 templateUrl: 'partials/devices.html',
                 controller: 'DevicesCtrl'
             })
-            .when('/device/:id/apps', {
+            .when('/device/:deviceId/apps', {
                 templateUrl: 'partials/applications.html',
                 controller: 'ApplicationsCtrl'
             })

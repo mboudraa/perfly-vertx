@@ -25,10 +25,6 @@ class WebServerVerticle extends Verticle {
         server = createHttpServer(container.config) { asyncResult, host, port ->
             if (asyncResult.succeeded) {
                 println "Web Server started. Listening on ${host}:${port}"
-
-                vertx.eventBus
-//                        .registerHandler("vertx.app.post", this.&handleAppResponse)
-//                        .registerHandler("vertx.apps.get", this.&handleListAppRequest)
             } else {
                 println "Starting Web Server failed -> ${asyncResult.cause}"
             }
@@ -81,11 +77,9 @@ class WebServerVerticle extends Verticle {
 
         matcher.get("/") { HttpServerRequest req ->
             req.response.sendFile("${webRoot}/${config.get("index_page", DEFAULT_INDEX_PAGE)}")
-//            handleListAppRequest()
         }
 
         matcher.getWithRegEx("^\\/(bower_components|libs|images|partials|scripts|styles)\\/.*") { HttpServerRequest req ->
-            println "${req.path.substring(1)}"
             req.response.sendFile("${webRoot}/${req.path.substring(1)}")
         }
 

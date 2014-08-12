@@ -17,8 +17,11 @@ class MobileServerVerticle extends Verticle {
         OBJECT_MAPPER.configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
     }
 
+    def connectionMap = [:]
+    def deviceMap = [:]
+    def sockets = []
+
     def server
-    NetSocket socket
 
 
     @Override
@@ -36,20 +39,32 @@ class MobileServerVerticle extends Verticle {
         vertx.eventBus
                 .registerHandler("vertx.apps.get", this.&handleListAppRequest)
                 .registerHandler("vertx.app.start", this.&startApplication)
+                .registerHandler("vertx.devices.get", this.&getDevices)
     }
 
     def handleListAppRequest(Message message) {
+        println "listing applications"
+        def socket = deviceMap.get(message.body().deviceId)
         socket?.write(OBJECT_MAPPER.writeValueAsString([address: "android.apps.get"]))
     }
 
     def startApplication(Message message) {
+        println "starting  application $message.body()"
+        def socket = deviceMap.get(message.body().deviceId)
         socket?.write(OBJECT_MAPPER.writeValueAsString([address: "android.monitoring.start", body: message.body()]))
+    }
+
+    def getDevices(Message message) {
+        println "list devices"
+        message.reply(new ArrayList(connectionMap.values()))
     }
 
     @Override
     def stop() {
         println "Closing Mobile Server..."
-        socket?.close()
+        sockets.each { socket ->
+            socket?.close()
+        }
         server?.close { asyncResult ->
             if (asyncResult.succeeded) {
                 println "Mobile Server closed"
@@ -63,8 +78,7 @@ class MobileServerVerticle extends Verticle {
     def createSocketServer(config, closure) {
 
         vertx.createNetServer().connectHandler { NetSocket socket ->
-
-            this.socket = socket
+            sockets.add(socket)
             Buffer body = new Buffer(0)
 
             socket.dataHandler { Buffer buffer ->
@@ -75,6 +89,11 @@ class MobileServerVerticle extends Verticle {
                 jsonMessages.eachWithIndex { messageJson, i ->
                     try {
                         def message = OBJECT_MAPPER.readValue(messageJson, Map.class)
+                        if (message.address == "device.connect") {
+                            connectionMap.put(socket, message.body)
+                            deviceMap.put(message.body.imei, socket)
+                            message.body.connected = true
+                        }
                         vertx.eventBus.publish(message.address, message.body)
                         body = new Buffer(0)
                     } catch (Exception e) {
@@ -87,7 +106,15 @@ class MobileServerVerticle extends Verticle {
             }
 
             socket.endHandler {
-                //TODO publish client disconnected
+                def device = connectionMap.get(socket)
+                device.connected = false
+
+                vertx.eventBus.publish("device.disconnect", device)
+                sockets.remove(socket)
+                connectionMap.remove(socket)
+                deviceMap.remove(device.imei)
+
+                println "client disconnected"
             }
 
         }

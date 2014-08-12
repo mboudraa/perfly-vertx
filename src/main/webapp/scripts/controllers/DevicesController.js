@@ -4,65 +4,55 @@ angular.module('samanthaApp')
     .controller('DevicesCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$location',
         function ($scope, $rootScope, vertxEventBusService, $location) {
 
-            $scope.devices = [
-                {
-                    imei: 123344,
-                    brand: "Google",
-                    model: "Nexus 5",
-                    resolution: "1920x1080",
-                    api: "20",
-                    version: "Android L",
-                    connected: false
-                },
-                {
-                    imei: 123345,
-                    brand: "HTC",
-                    model: "One",
-                    resolution: "1920x1080",
-                    api: "19",
-                    version: "Android 4.4",
-                    connected: true
-                },
-                {
-                    imei: 123346,
-                    brand: "Samsung",
-                    model: "Galaxy S3",
-                    resolution: "1920x1080",
-                    api: "17",
-                    version: "Android 4.2.2",
-                    connected: false
-                },
-                {
-                    imei: 123347,
-                    brand: "Google",
-                    model: "Nexus 4",
-                    resolution: "1920x1080",
-                    api: "19",
-                    version: "Android 4.4",
-                    connected: false
-                },
-                {
-                    imei: 123348,
-                    brand: "Motorola",
-                    model: "Moto X",
-                    resolution: "1920x1080",
-                    api: "19",
-                    version: "Android 4.4",
-                    connected: false
-                },
-                {
-                    imei: 123349,
-                    brand: "Samsung",
-                    model: "Galaxy S4",
-                    resolution: "1920x1080",
-                    api: "19",
-                    version: "Android 4.2.2",
-                    connected: false
-                }
-            ]
+            var imeis = [];
+            $scope.devices = [];
 
-            $scope.showApps = function(device){
-                $location.path( "device/"+device.imei+"/apps" );
+            $scope.showApps = function (device) {
+                $location.path("device/" + device.imei + "/apps");
             }
 
-        }]);
+            vertxEventBusService.on('device.connect', function (device) {
+                addDevice(device);
+            });
+
+            vertxEventBusService.on('device.disconnect', function (device) {
+                removeDevice(device);
+            });
+
+
+            $scope.$on('vertx-eventbus.system.connected', function () {
+                vertxEventBusService.send('vertx.devices.get', null, true).then(function (reply) {
+                    _(reply).each(function(device){
+                        addDevice(device);
+                    });
+                });
+            });
+
+
+
+            function addDevice(device) {
+                if(!device){
+                    return;
+                }
+
+                var index = imeis.indexOf(device.imei);
+                if (index != -1) {
+                    $scope.devices.splice(index, 1, device);
+                } else {
+                    imeis.push(device.imei)
+                    $scope.devices.push(device);
+                }
+            }
+            function removeDevice(device){
+                if(!device){
+                    return;
+                }
+
+                var index = imeis.indexOf(device.imei);
+                if (index != -1) {
+                    $scope.devices.splice(index, 1, device);
+                }
+            }
+
+        }])
+;

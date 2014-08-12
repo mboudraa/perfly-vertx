@@ -1,27 +1,18 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ApplicationsCtrl', ['$scope', '$rootScope', 'vertxEventBusService', 'localStorageService', '$location',
-        function ($scope, $rootScope, vertxEventBusService, localStorageService, $location) {
+    .controller('ApplicationsCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$routeParams',
+        function ($scope, $rootScope, vertxEventBusService, $routeParams) {
 
             $scope.applications = [];
-            $scope.qrCodeData = $location.host();
+            var appList = [];
 
-            var appList = localStorageService.get("appList");
+            var deviceId = $routeParams['deviceId'];
 
             vertxEventBusService.on('vertx.app.post', function (application) {
                 $scope.applications.push(application);
-
-                appList = localStorageService.get("appList");
-
-                if (!appList) {
-                    appList = [];
-                }
-
                 appList.push(application);
-                localStorageService.set("appList", appList);
             });
-
 
             vertxEventBusService.on('android.monitoring.progress', function (sysdump) {
                 console.log(sysdump);
@@ -29,17 +20,11 @@ angular.module('samanthaApp')
 
 
             $scope.startApplication = function (application) {
-                vertxEventBusService.send("vertx");
-                vertxEventBusService.send("vertx.app.start", {packageName: application.packageName})
+                vertxEventBusService.send("vertx.app.start", {deviceId: deviceId, packageName: application.packageName})
             }
 
             function retrieveApplications() {
-                if (localStorageService.isSupported && appList) {
-                    $scope.applications = appList;
-                } else {
-                    localStorageService.remove(appList);
-                    vertxEventBusService.send("vertx.apps.get", {message: ""});
-                }
+                vertxEventBusService.send("vertx.apps.get", {deviceId: deviceId});
             }
 
 

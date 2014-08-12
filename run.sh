@@ -6,7 +6,7 @@ function usage ()
 {
     echo ""
     echo "USAGE: "
-    echo "    run.sh [-d] [-c] [-h]"
+    echo "    run.sh [-c] [-d] [-h]"
     echo ""
     echo "OPTIONS:"
     echo "    -d  enable debug mode"
@@ -17,7 +17,7 @@ function usage ()
     exit $E_OPTERROR    # Exit and explain usage, if no argument(s) given.
 }
 
-while getopts ":dch" Option
+while getopts ":cdh" Option
 do
     case $Option in
         d) export GRADLE_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
