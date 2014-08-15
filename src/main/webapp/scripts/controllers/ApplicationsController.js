@@ -4,6 +4,7 @@ angular.module('samanthaApp')
     .controller('ApplicationsCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$routeParams',
         function ($scope, $rootScope, vertxEventBusService, $routeParams) {
 
+            $scope.switchChart = 'memory';
             $scope.ctrl = {
                 tabSelected: 0,
                 monitoredApplication: undefined,
