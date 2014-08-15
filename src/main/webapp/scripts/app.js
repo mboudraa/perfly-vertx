@@ -30,5 +30,5 @@ angular.module('samanthaApp', [
 
 
         localStorageServiceProvider.setPrefix("samantha");
-        $locationProvider.html5Mode(true);
+        //$locationProvider.html5Mode(true);
     });

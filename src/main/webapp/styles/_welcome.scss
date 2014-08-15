@@ -10,12 +10,32 @@ body {
   background: #6a205f;
   fill: #f1f1f1;
   color: #f1f1f1;
+
+
+
+}
+#search-icon {
+  @include transform(scale(1.5));
+}
+#search-input {
+  font-size: 0.8em;
+  color: white;
+  &.collapsable {
+    @include transition(width 400ms ease-out);
+  }
+  &.opened,
+  &.closed:focus {
+    width: 300px;
+  }
+  &.closed {
+    width: 0;
+  }
 }
 
 .devices-section {
   width: 100%;
   display: inline-block;
-  text-align: 100%;
+  text-align: center;
 
   .device-article {
     display: inline-block;
@@ -63,17 +83,21 @@ body {
     display: inline-block;
     text-align: center;
     width: 5.625em;
-    height: 5.625em;
+    height: 6em;
     margin: 5px;
     padding: 5px;
     text-overflow: ellipsis;
     overflow: hidden;
     cursor: pointer;
 
+    &:hover {
+      background-color: rgba(106, 32, 95, 0.05);
+    }
+
     .application-logo {
       width: 4em;
       height: 4em;
-      display: block;
+      display: inline-block;
       margin-left: auto;
       margin-right: auto;
       margin-bottom: 5px;

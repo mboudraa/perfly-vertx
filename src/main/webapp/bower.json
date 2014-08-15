@@ -14,7 +14,6 @@
         "angular-truncate": "*",
         "angular-local-storage": "~0.0.5",
         "angular-qrcode": "~3.1.0",
-        "normalize-css": "~3.0.1",
         "lodash": "~2.4.*"
     },
     "devDependencies": {

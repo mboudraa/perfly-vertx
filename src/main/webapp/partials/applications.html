@@ -1,19 +1,29 @@
-<!--<div ng-include="'partials/toolbar.html'"></div>-->
+<core-toolbar id="toolbar">
+    <h1 flex>Samantha</h1>
+    <paper-icon-button id="search-icon" icon="search" role="button" ng-click="openSearch = !openSearch;"></paper-icon-button>
+    <paper-input id="search-input" label="Search an app" ng-model="newCenter"
+              class="collapsable" ng-class="{true:'opened', false:'closed'}[openSearch]"></paper-input>
+</core-toolbar>
 
-<core-scroll-header-panel id="scroll-header" condenses keepCondensedHeader>
-    <core-toolbar id="toolbar" class="tall">
-        <h1 flex>Samantha</h1>
-        <paper-icon-button icon="search" role="button"></paper-icon-button>
-    </core-toolbar>
+<section class="applications-section content">
+    <article class="application-article" ng-repeat="application in applications"
+             ng-dblclick="startApplication(application)" ng-click="updateCurrentApplication(application)">
+        <paper-ripple id="ripple"></paper-ripple>
+        <img class="application-logo" ng-src="data:image/jpeg;base64,{{application.logo}}"
+             alt="logo {{application.label}}"/>
+        <span class="application-label">{{application.label}}</span>
+    </article>
+</section>
+<div id="footer" ng-class="{false: 'show', true:'hide'}[currentApplication === undefined]">
+    <img ng-if="currentApplication" class="footer-logo" ng-src="data:image/jpeg;base64,{{currentApplication.logo}}"
+         alt="logo {{currentApplication.label}}"/>
+    <ul>
+        <li>version : {{currentApplication.version}}</li>
+        <li>label : {{currentApplication.label}}</li>
+        <li>package : {{currentApplication.packageName}}</li>
+        <li>debuggable : {{currentApplication.debuggable}}</li>
+    </ul>
+    <paper-fab ng-click="startApplication(currentApplication)" class="fab fab-play" icon="arrow-forward">
 
-    <section class="applications-section content">
-        <article class="application-article" ng-repeat="application in applications"
-                 ng-dblclick="startApplication(application)">
-            <paper-ripple id="ripple"></paper-ripple>
-            <img class="application-logo" ng-src="data:image/jpeg;base64,{{application.logo}}"
-                 alt="logo {{application.label}}"/>
-            <span class="application-label">{{application.label}}</span>
-        </article>
-    </section>
-
-</core-scroll-header-panel>
+    </paper-fab>
+</div>

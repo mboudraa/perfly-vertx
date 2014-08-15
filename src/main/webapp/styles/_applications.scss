@@ -1,0 +1,41 @@
+[id='footer'] {
+
+  $footer-height: 140px;
+
+  height: $footer-height;
+  background-color: #6a205f;
+  width: 100%;
+  color: white;
+  &.show {
+    display: block;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+  }
+  &.hide {
+    display: none;
+  }
+  ul {
+    font-size: 1.2em;
+    margin-top: 10px;
+    display: inline-block;
+    list-style-type: none;
+    float: left;
+    li {
+      margin-bottom: 0.3em;
+    }
+  }
+  .footer-logo {
+    width: 4em;
+    height: 4em;
+    display: inline-block;
+    float: left;
+    margin: 15px;
+  }
+  .fab-play {
+    position: absolute;
+    right: 20px;
+
+    bottom: $footer-height - 28;
+  }
+}

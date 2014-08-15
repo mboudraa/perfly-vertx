@@ -5,29 +5,36 @@ angular.module('samanthaApp')
         function ($scope, $rootScope, vertxEventBusService, $routeParams) {
 
             $scope.applications = [];
-            var appList = [];
-
+            $scope.currentApplication;
+            $scope.search = '';
+            $scope.openSearch = false;
+            $scope.updateCurrentApplication = function(application) {
+                $scope.currentApplication = application;
+            }
             var deviceId = $routeParams['deviceId'];
 
             vertxEventBusService.on('vertx.app.post', function (application) {
                 $scope.applications.push(application);
-                appList.push(application);
             });
 
             vertxEventBusService.on('android.monitoring.progress', function (sysdump) {
                 console.log(sysdump);
             });
 
-
             $scope.startApplication = function (application) {
                 vertxEventBusService.send("vertx.app.start", {deviceId: deviceId, packageName: application.packageName})
             }
 
-            function retrieveApplications() {
-                vertxEventBusService.send("vertx.apps.get", {deviceId: deviceId});
+            $scope.$on('vertx-eventbus.system.connected', function () {
+                $scope.retrieveApplications();
+            });
+
+            $scope.retrieveApplications = function(forceRefresh) {
+                forceRefresh = forceRefresh ? forceRefresh : false;
+                vertxEventBusService.send("vertx.apps.get", {deviceId: deviceId, forceRefresh: forceRefresh});
             }
 
-
-            retrieveApplications();
-
+            if (vertxEventBusService.readyState() === 1) {
+                $scope.retrieveApplications();
+            }
         }]);
