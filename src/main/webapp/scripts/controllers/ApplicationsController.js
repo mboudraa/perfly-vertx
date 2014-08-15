@@ -25,6 +25,8 @@ angular.module('samanthaApp')
             $scope.fabAction = function () {
                 if ($scope.ctrl.tabSelected == 1) {
                     // Stop
+
+
                 } else {
                     $scope.startApplication($scope.ctrl.currentApplication)
                 }

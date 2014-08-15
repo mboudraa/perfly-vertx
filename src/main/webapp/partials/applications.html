@@ -23,29 +23,27 @@
 </core-toolbar>
 
 <section id="applications-list" ng-show="!ctrl.tabSelected || ctrl.tabSelected == 0">
-    <section class="applications-section content">
-        <article class="application-article" ng-repeat="application in applications | filter:searchComparator"
-                 ng-dblclick="startApplication(application)" ng-click="updateCurrentApplication(application)">
-            <paper-ripple id="ripple"></paper-ripple>
-            <img class="application-logo" ng-src="data:image/jpeg;base64,{{application.logo}}"
-                 alt="logo {{application.label}}"/>
-            <span class="application-label">{{application.label}}</span>
-        </article>
-    </section>
-    <div id="footer" ng-class="{false: 'show', true:'hide'}[ctrl.currentApplication === undefined]">
-        <img ng-if="ctrl.currentApplication" class="footer-logo" ng-src="data:image/jpeg;base64,{{ctrl.currentApplication.logo}}"
-             alt="logo {{ctrl.currentApplication.label}}"/>
-        <ul>
-            <li>version : {{ctrl.currentApplication.version}}</li>
-            <li>label : {{ctrl.currentApplication.label}}</li>
-            <li>package : {{ctrl.currentApplication.packageName}}</li>
-            <li>debuggable : {{ctrl.currentApplication.debuggable}}</li>
-        </ul>
-    </div>
+    <div ng-include="'partials/_listing.html'"></div>
 </section>
 
 <section id="applications-monitoring" ng-show="ctrl.tabSelected == 1">
-    <article ng-controller="ChartMemoryCtrl">
-        <highchart id="chart-memory" config="chartMemoryConfig"></highchart>
-    </article>
+    <div class="configuration-area">
+        <div class="configuration-box switch-chart">
+            <paper-radio-group selected="memory">
+                <paper-radio-button name="memory" label="Memory" class="radio-block"></paper-radio-button>
+                <paper-radio-button name="cpu" label="CPU" class="radio-block"></paper-radio-button>
+            </paper-radio-group>
+        </div>
+    </div>
+    <div class="chart-area">
+        <div>
+            <article ng-controller="ChartMemoryCtrl">
+                <highchart id="chart-memory" config="chartMemoryConfig"></highchart>
+            </article>
+        </div>
+        <div>
+            Other chart
+        </div>
+
+    </div>
 </section>

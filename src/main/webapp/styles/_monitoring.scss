@@ -1,0 +1,10 @@
+.configuration-area {
+  @include span-columns(6 on 24);
+}
+
+.chart-area {
+  @include span-columns(18 on 24);
+}
+.radio-block {
+  display: block;
+}

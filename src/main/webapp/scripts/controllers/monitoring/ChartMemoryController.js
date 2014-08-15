@@ -52,7 +52,7 @@ angular.module('samanthaApp')
                     },
                     navigator: {
                         enabled: true,
-                        adaptToUpdatedData: true
+                        adaptToUpdatedData: false
                     }
                 },
 
