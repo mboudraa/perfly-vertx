@@ -29,19 +29,19 @@
 <section id="applications-monitoring" ng-show="ctrl.tabSelected == 1">
     <div class="configuration-area">
         <div class="configuration-box switch-chart">
-            <paper-radio-group selected="memory">
+            <paper-radio-group ng-model="switch" selected="memory">
                 <paper-radio-button name="memory" label="Memory" class="radio-block"></paper-radio-button>
                 <paper-radio-button name="cpu" label="CPU" class="radio-block"></paper-radio-button>
             </paper-radio-group>
         </div>
     </div>
     <div class="chart-area">
-        <div>
+        <div ng-show="switch == 'memory'">
             <article ng-controller="ChartMemoryCtrl">
                 <highchart id="chart-memory" config="chartMemoryConfig"></highchart>
             </article>
         </div>
-        <div>
+        <div ng-show="switch == 'cpu'">
             Other chart
         </div>
 
