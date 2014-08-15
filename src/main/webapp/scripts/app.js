@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('samanthaApp', [
+    'ng-polymer-elements',
     'ngCookies',
     'ngResource',
     'ngSanitize',
@@ -8,7 +9,8 @@ angular.module('samanthaApp', [
     'knalli.angular-vertxbus',
     'truncate',
     'LocalStorageModule',
-    'monospaced.qrcode'
+    'monospaced.qrcode',
+    'highcharts-ng'
 ])
     .config(function ($routeProvider, $locationProvider, vertxEventBusProvider, localStorageServiceProvider) {
         $routeProvider

@@ -1,6 +1,6 @@
 <!doctype html>
-<html>
-<head>
+<html >
+<head >
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <base href="/">
@@ -41,6 +41,8 @@
 
 <!-- build:js(.) scripts/vendor.js -->
 <!-- bower:js -->
+
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/es5-shim/es5-shim.js"></script>
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/json3/lib/json3.min.js"></script>
@@ -56,6 +58,8 @@
 <script src="bower_components/qrcode-generator/js/qrcode.js"></script>
 <script src="bower_components/angular-qrcode/qrcode.js"></script>
 <script src="bower_components/lodash/dist/lodash.compat.min.js"></script>
+<script src="bower_components/highstock-release/highstock.src.js"></script>
+<script src="bower_components/highcharts-ng/dist/highcharts-ng.min.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -63,6 +67,10 @@
 <script src="scripts/app.js"></script>
 <script src="scripts/controllers/ApplicationsController.js"></script>
 <script src="scripts/controllers/DevicesController.js"></script>
+<script src="scripts/controllers/monitoring/ChartMemoryController.js"></script>
 <!-- endbuild -->
+
+<script src="bower_components/ng-polymer-elements/ng-polymer-elements.js"></script>
+
 </body>
 </html>

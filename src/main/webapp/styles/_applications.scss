@@ -32,10 +32,24 @@
     float: left;
     margin: 15px;
   }
-  .fab-play {
-    position: absolute;
-    right: 20px;
+}
 
-    bottom: $footer-height - 28;
+.fab-play {
+  position: absolute;
+  right: 20px;
+  top: 100px;
+  z-index: 2;
+}
+
+.tabs-container {
+  width: 100%;
+
+  .tab-icon {
+    width: 2.2em;
+    height: 2.2em;
+    vertical-align: middle;
+  }
+  .tab-label {
+    font-size: 1.2em;
   }
 }

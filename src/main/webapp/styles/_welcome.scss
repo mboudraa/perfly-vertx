@@ -25,10 +25,10 @@ body {
   }
   &.opened,
   &.closed:focus {
-    width: 300px;
+    font-size: 0.8em;
   }
   &.closed {
-    width: 0;
+    font-size: 0;
   }
 }
 
