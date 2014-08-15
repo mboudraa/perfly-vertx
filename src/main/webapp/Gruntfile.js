@@ -31,7 +31,8 @@ module.exports = function (grunt) {
                     '<%= yeoman.app %>/partials/**',
                     '<%= yeoman.app %>/images/**',
                     '<%= yeoman.app %>/*.html',
-                    '<%= yeoman.app %>/scripts/**'
+                    '<%= yeoman.app %>/scripts/**',
+                    '<%= yeoman.app %>/styles/**/*.css'
                 ],
                 tasks: ['predev']
             },
@@ -279,7 +280,9 @@ module.exports = function (grunt) {
                             '<%= yeoman.app %>/partials/**',
                             '<%= yeoman.app %>/images/**',
                             '<%= yeoman.app %>/*.html',
-                            '<%= yeoman.app %>/scripts/**'
+                            '<%= yeoman.app %>/scripts/**',
+                            '<%= yeoman.app %>/styles/**/*.css',
+                            '<%= yeoman.app %>/fonts/**'
                         ],
                         dest: '<%= yeoman.dist %>'
                     }
