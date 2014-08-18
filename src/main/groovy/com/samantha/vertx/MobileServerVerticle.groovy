@@ -1,5 +1,4 @@
 package com.samantha.vertx
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.vertx.groovy.core.buffer.Buffer
 import org.vertx.groovy.core.eventbus.Message
@@ -21,55 +20,67 @@ class MobileServerVerticle extends Verticle {
     def deviceMap = [:]
     def sockets = []
 
+    def logger
     def server
 
 
     @Override
     def start() {
+        logger = container.logger
 
-        println "Starting Mobile Server..."
+        logger.info "Starting Mobile Server..."
+
         server = createSocketServer(container.config) { asyncResult, host, port ->
             if (asyncResult.succeeded) {
-                println "Mobile Server started. Listening on ${host}:${port}"
+                logger.info "Mobile Server started. Listening on ${host}:${port}"
             } else {
-                println "Starting Mobile Server failed -> ${asyncResult.cause}"
+                logger.error "Starting Mobile Server failed -> ${asyncResult.cause}"
             }
         }
 
         vertx.eventBus
                 .registerHandler("vertx.apps.get", this.&handleListAppRequest)
-                .registerHandler("vertx.app.start", this.&startApplication)
+                .registerHandler("vertx.monitoring.start", this.&startMonitoring)
+                .registerHandler("vertx.monitoring.stop", this.&stopMonitoring)
                 .registerHandler("vertx.devices.get", this.&getDevices)
+
     }
 
     def handleListAppRequest(Message message) {
-        println "listing applications"
+        logger.debug "listing applications"
         def socket = deviceMap.get(message.body().deviceId)
         socket?.write(OBJECT_MAPPER.writeValueAsString([address: "android.apps.get"]))
     }
 
-    def startApplication(Message message) {
-        println "starting  application $message.body()"
+    def startMonitoring(Message message) {
+        logger.info "starting monitoring $message.body()"
         def socket = deviceMap.get(message.body().deviceId)
         socket?.write(OBJECT_MAPPER.writeValueAsString([address: "android.monitoring.start", body: message.body()]))
     }
 
+    def stopMonitoring(Message message) {
+        logger.info "stopping monitoring $message.body()"
+        def socket = deviceMap.get(message.body().deviceId)
+        socket?.write(OBJECT_MAPPER.writeValueAsString([address: "android.monitoring.stop"]))
+    }
+
     def getDevices(Message message) {
-        println "list devices"
-        message.reply(new ArrayList(connectionMap.values()))
+        def devices = new ArrayList(connectionMap.values())
+        logger.debug "list devices -> $devices"
+        message.reply(devices)
     }
 
     @Override
     def stop() {
-        println "Closing Mobile Server..."
+        logger.info "Closing Mobile Server..."
         sockets.each { socket ->
             socket?.close()
         }
         server?.close { asyncResult ->
             if (asyncResult.succeeded) {
-                println "Mobile Server closed"
+                logger.info "Mobile Server closed"
             } else {
-                println "Closing Mobile Server failed -> ${asyncResult.cause}"
+                logger.error "Closing Mobile Server failed -> ${asyncResult.cause}"
             }
         }
     }
@@ -114,7 +125,7 @@ class MobileServerVerticle extends Verticle {
                 connectionMap.remove(socket)
                 deviceMap.remove(device.imei)
 
-                println "client disconnected"
+                logger.debug "client disconnected"
             }
 
         }

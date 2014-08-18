@@ -8,7 +8,7 @@ angular.module('samanthaApp')
             $scope.devices = [];
 
             $scope.showApps = function (device) {
-                $location.path("device/" + device.imei + "/apps");
+                $location.path("device/" + device.deviceId + "/apps");
             }
 
             vertxEventBusService.on('device.connect', function (device) {
@@ -19,7 +19,6 @@ angular.module('samanthaApp')
                 removeDevice(device);
             });
 
-
             $scope.$on('vertx-eventbus.system.connected', function () {
                 vertxEventBusService.send('vertx.devices.get', null, true).then(function (reply) {
                     _(reply).each(function(device){
@@ -27,8 +26,6 @@ angular.module('samanthaApp')
                     });
                 });
             });
-
-
 
             function addDevice(device) {
                 if(!device){
@@ -43,6 +40,8 @@ angular.module('samanthaApp')
                     $scope.devices.push(device);
                 }
             }
+
+
             function removeDevice(device){
                 if(!device){
                     return;

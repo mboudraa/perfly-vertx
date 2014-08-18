@@ -63,6 +63,8 @@ dependencies {
 
     compile 'com.fasterxml.jackson.core:jackson-core:2.4.0'
 
+    compile files('libs/org.eclipse.paho.client.mqttv3-1.0.0.jar')
+
 }
 
 

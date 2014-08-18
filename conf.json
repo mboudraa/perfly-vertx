@@ -8,5 +8,10 @@
         "port": 8080,
         "host": "0.0.0.0",
         "web_root": "/Users/mounirboudraa/Xebia/Projets/Samantha/samantha-vertx/src/main/resources/public"
+    },
+
+    "mqttConfig": {
+        "hostname": "localhost",
+        "port": 1883
     }
 }

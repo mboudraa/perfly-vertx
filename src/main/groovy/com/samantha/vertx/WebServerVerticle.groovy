@@ -79,7 +79,7 @@ class WebServerVerticle extends Verticle {
             req.response.sendFile("${webRoot}/${config.get("index_page", DEFAULT_INDEX_PAGE)}")
         }
 
-        matcher.getWithRegEx("^\\/(bower_components|libs|images|partials|scripts|styles)\\/.*") { HttpServerRequest req ->
+        matcher.getWithRegEx("^\\/(polymer|images|partials|scripts|styles)\\/.*") { HttpServerRequest req ->
             req.response.sendFile("${webRoot}/${req.path.substring(1)}")
         }
 

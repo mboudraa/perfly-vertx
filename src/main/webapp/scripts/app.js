@@ -10,7 +10,8 @@ angular.module('samanthaApp', [
     'truncate',
     'LocalStorageModule',
     'monospaced.qrcode',
-    'highcharts-ng'
+    'highcharts-ng',
+    'ui.utils'
 ])
     .config(function ($routeProvider, $locationProvider, vertxEventBusProvider, localStorageServiceProvider) {
         $routeProvider

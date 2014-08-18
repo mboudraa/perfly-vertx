@@ -17,21 +17,38 @@
             </paper-tab>
         </paper-tabs>
     </div>
-    <paper-fab ng-click="fabAction()" ng-show="ctrl.currentApplication" class="fab fab-play" icon="{{ctrl.fabIcon}}">
+    <paper-fab ng-click="fabAction()" ng-show="ctrl.selectedApplication" class="fab fab-play" icon="{{ctrl.fabIcon}}">
     </paper-fab>
 
 </core-toolbar>
 
 <section id="applications-list" ng-show="!ctrl.tabSelected || ctrl.tabSelected == 0">
-    <div ng-include="'partials/_listing.html'"></div>
-</section>
+    <section class="applications-section content">
+        <article class="application-article" ng-repeat="application in applications | filter:searchComparator"
+                 ng-dblclick="startApplication(application)" ng-click="updateCurrentApplication(application)">
+            <paper-ripple id="ripple"></paper-ripple>
+            <img class="application-logo" ng-src="data:image/jpeg;base64,{{application.logo}}"
+                 alt="logo {{application.label}}"/>
+            <span class="application-label">{{application.label}}</span>
+        </article>
+    </section>
+    <div id="footer" ng-class="{false: 'show', true:'hide'}[ctrl.selectedApplication === undefined]">
+        <img ng-if="ctrl.selectedApplication" class="footer-logo" ng-src="data:image/jpeg;base64,{{ctrl.selectedApplication.logo}}"
+             alt="logo {{ctrl.selectedApplication.label}}"/>
+        <ul>
+            <li>version : {{ctrl.selectedApplication.version}}</li>
+            <li>label : {{ctrl.selectedApplication.label}}</li>
+            <li>package : {{ctrl.selectedApplication.packageName}}</li>
+            <li>debuggable : {{ctrl.selectedApplication.debuggable}}</li>
+        </ul>
+    </div></section>
 
 <section id="applications-monitoring" ng-show="ctrl.tabSelected == 1">
     <div class="configuration-area">
         <div class="configuration-box switch-chart">
-            <paper-radio-group ng-model="switchChart" selected="{{switchChart}}">
-                <paper-radio-button name="memory" label="Memory" class="radio-block"></paper-radio-button>
+            <paper-radio-group ng-model="switchChart" ng-init="switchChart='cpu'" selected="{{switchChart}}">
                 <paper-radio-button name="cpu" label="CPU" class="radio-block"></paper-radio-button>
+                <paper-radio-button name="memory" label="Memory" class="radio-block"></paper-radio-button>
             </paper-radio-group>
         </div>
     </div>
@@ -42,7 +59,9 @@
             </article>
         </div>
         <div ng-show="switchChart == 'cpu'">
-            Other chart
+            <article ng-controller="ChartCpuCtrl">
+                <highchart id="chart-cpu" config="chartCpuConfig"></highchart>
+            </article>
         </div>
 
     </div>

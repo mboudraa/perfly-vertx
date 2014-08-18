@@ -89,6 +89,66 @@ module.exports = function (grunt) {
             }
         },
 
+        concat: {
+            js: {
+                cwd: '<%= yeoman.app %>',
+                src: ["./scripts/**/*.js"],
+                dest: "<%= yeoman.dist %>/scripts/scripts.js"
+            },
+            libs: {
+                cwd: '<%= yeoman.app %>',
+                src: [
+                    "bower_components/jquery/dist/jquery.min.js",
+                    "bower_components/es5-shim/es5-shim.js",
+                    "bower_components/angular/angular.js",
+                    "bower_components/json3/lib/json3.min.js",
+                    "bower_components/angular-resource/angular-resource.js",
+                    "bower_components/angular-cookies/angular-cookies.js",
+                    "bower_components/angular-sanitize/angular-sanitize.js",
+                    "bower_components/angular-route/angular-route.js",
+                    "bower_components/angular-ui-utils/ui-utils.js",
+                    "bower_components/sockjs/sockjs.js",
+                    "bower_components/vertxbus.js/index.js",
+                    "bower_components/angular-vertxbus/dist/angular-vertxbus-0.6.0.js",
+                    "bower_components/angular-truncate/src/truncate.js",
+                    "bower_components/angular-local-storage/angular-local-storage.js",
+                    "bower_components/qrcode-generator/js/qrcode.js",
+                    "bower_components/angular-qrcode/qrcode.js",
+                    "bower_components/lodash/dist/lodash.compat.min.js",
+                    "bower_components/highstock-release/highstock.src.js",
+                    "bower_components/highcharts-ng/dist/highcharts-ng.min.js"
+                ],
+                dest: "<%= yeoman.dist %>/scripts/libs.js"
+
+            },
+            polymer: {
+                cwd: '<%= yeoman.app %>',
+                src: [
+                    "bower_components/ng-polymer-elements/ng-polymer-elements.js"
+                ],
+                dest: "<%= yeoman.dist %>/scripts/polymer.js"
+            }
+//            css: {
+//                src: [
+//                    "#{webDir}/libs/css/**/*.css"
+//                ],
+//                dest: "#{distDir}/libs/css/components.css"
+//            }
+        },
+
+        vulcanize: {
+            default: {
+                options: {
+                    strip: true
+                },
+                files: {
+                    '<%= yeoman.dist %>/polymer/polymer.html': [
+                        '<%= yeoman.dist %>/polymer/polymer.html'
+                    ]
+                }
+            }
+        },
+
         // Compiles Sass to CSS and generates necessary files if requested
         sass: {
             dist: {
@@ -127,118 +187,6 @@ module.exports = function (grunt) {
             }
         },
 
-        // Renames files for browser caching purposes
-        rev: {
-            dist: {
-                files: {
-                    src: [
-                        '<%= yeoman.dist %>/scripts/**/*.js',
-                        '<%= yeoman.dist %>/styles/**/*.css',
-                        '<%= yeoman.dist %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
-                        '<%= yeoman.dist %>/styles/fonts/*'
-                    ]
-                }
-            }
-        },
-
-        // Reads HTML for usemin blocks to enable smart builds that automatically
-        // concat, minify and revision files. Creates configurations in memory so
-        // additional tasks can operate on them
-        useminPrepare: {
-            html: ['<%= yeoman.app %>/index.html',
-                '<%= yeoman.app %>/index.jade'],
-            options: {
-                dest: '<%= yeoman.dist %>'
-            }
-        },
-
-        // Performs rewrites based on rev and the useminPrepare configuration
-        usemin: {
-            html: ['<%= yeoman.dist %>/**/*.html',
-                '<%= yeoman.dist %>/**/*.jade'],
-            css: ['<%= yeoman.dist %>/styles/**/*.css'],
-            options: {
-                assetsDirs: ['<%= yeoman.dist %>']
-            }
-        },
-
-        // The following *-min tasks produce minified files in the dist folder
-        imagemin: {
-            options: {
-                cache: false
-            },
-            dist: {
-                files: [
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.app %>/images',
-                        src: '**/*.{png,jpg,jpeg,gif}',
-                        dest: '<%= yeoman.dist %>/images'
-                    }
-                ]
-            }
-        },
-
-        svgmin: {
-            dist: {
-                files: [
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.app %>/images',
-                        src: '**/*.svg',
-                        dest: '<%= yeoman.dist %>/images'
-                    }
-                ]
-            }
-        },
-
-        htmlmin: {
-            dist: {
-                options: {
-                    //collapseWhitespace: true,
-                    //collapseBooleanAttributes: true,
-                    //removeCommentsFromCDATA: true,
-                    //removeOptionalTags: true
-                },
-                files: [
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.app %>/partials',
-                        src: ['partials/**/*.html'],
-                        dest: '<%= yeoman.dist %>/partials'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.app %>',
-                        src: ['*.html'],
-                        dest: '<%= yeoman.dist %>'
-                    }
-                ]
-            }
-        },
-
-        // Allow the use of non-minsafe AngularJS files. Automatically makes it
-        // minsafe compatible so Uglify does not destroy the ng references
-        ngmin: {
-            dist: {
-                files: [
-                    {
-                        expand: true,
-                        cwd: '.tmp/concat/scripts',
-                        src: '*.js',
-                        dest: '.tmp/concat/scripts'
-                    }
-                ]
-            }
-        },
-
-        // Replace Google CDN references
-        cdnify: {
-            dist: {
-                html: ['<%= yeoman.dist %>/public/*.html']
-            }
-        },
-
         // Copies remaining files to places other tasks can use
         copy: {
             dist: {
@@ -255,129 +203,72 @@ module.exports = function (grunt) {
                             '*.html',
                             'partials/**/*.html'
                         ]
-                    },
-                    {
-                        expand: true,
-                        cwd: '.tmp/images',
-                        dest: '<%= yeoman.dist %>/images',
-                        src: ['generated/*']
                     }
                 ]
-            },
-            styles: {
-                expand: true,
-                cwd: '<%= yeoman.dist %>/styles',
-                dest: '<%= yeoman.dist %>/styles',
-                src: '**/*.css'
             },
             dev: {
                 files: [
                     {
                         expand: true,
+                        cwd: '<%= yeoman.app %>',
                         src: [
-                            '<%= yeoman.app %>/libs/**/*.{css,js,html,png,jpg,jpeg,gif,webp,svg}',
-                            '<%= yeoman.app %>/bower_components/**/*.{css,js}',
-                            '<%= yeoman.app %>/partials/**',
-                            '<%= yeoman.app %>/images/**',
-                            '<%= yeoman.app %>/*.html',
-                            '<%= yeoman.app %>/scripts/**',
-                            '<%= yeoman.app %>/styles/**/*.css',
-                            '<%= yeoman.app %>/fonts/**'
+                            'partials/**',
+                            'images/**',
+                            '*.html',
+                            'polymer/**',
+                            'fonts/**'
                         ],
                         dest: '<%= yeoman.dist %>'
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.app %>/.tmp/concat',
+                        dest: '<%= yeoman.dist %>',
+                        src: [
+                            'scripts/**/*.js'
+                        ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.app %>/bower_components/platform',
+                        dest: '<%= yeoman.dist %>/polymer',
+                        src: [
+                            'platform.js'
+                        ]
                     }
+
                 ]
             }
 
         },
 
-        // Run some tasks in parallel to speed up the build process
-        concurrent: {
-            dist: [
-                'sass:dist',
-                'imagemin',
-                'svgmin',
-                'htmlmin'
-            ]
-        },
 
-        // By default, your `index.html`'s <!-- Usemin block --> will take care of
-        // minification. These next options are pre-configured if you do not wish
-        // to use the Usemin blocks.
-        // cssmin: {
-        //   dist: {
-        //     files: {
-        //       '<%= yeoman.dist %>/styles/main.css': [
-        //         '.tmp/styles/**/*.css',
-        //         '<%= yeoman.app %>/styles/**/*.css'
-        //       ]
-        //     }
-        //   }
-        // },
-        // uglify: {
-        //   dist: {
-        //     files: {
-        //       '<%= yeoman.dist %>/scripts/scripts.js': [
-        //         '<%= yeoman.dist %>/scripts/scripts.js'
-        //       ]
-        //     }
-        //   }
-        // },
-        // concat: {
-        //   dist: {}
-        // },
-
-
-    });
-
-    // Used for delaying livereload until after server has restarted
-    grunt.registerTask('wait', function () {
-        grunt.log.ok('Waiting for server reload...');
-
-        var done = this.async();
-
-        setTimeout(function () {
-            grunt.log.writeln('Done waiting!');
-            done();
-        }, 500);
-    });
-
-    grunt.registerTask('test', function (target) {
-        if (target === 'server') {
-            return grunt.task.run([
-                'env:test',
-                'mochaTest'
-            ]);
+        // Renames files for browser caching purposes
+        rev: {
+            dist: {
+                files: {
+                    src: [
+                        '<%= yeoman.dist %>/scripts/**/*.js',
+                        '<%= yeoman.dist %>/styles/**/*.css',
+                        '<%= yeoman.dist %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
+                        '<%= yeoman.dist %>/styles/fonts/*'
+                    ]
+                }
+            }
         }
 
-        else if (target === 'client') {
-            return grunt.task.run([
-                'clean:server',
-                'concurrent:test',
-                'autoprefixer',
-                'karma'
-            ]);
-        }
-
-        else grunt.task.run([
-                'test:server',
-                'test:client'
-            ]);
     });
+
 
     grunt.registerTask('build', [
         'clean:dist',
-        'useminPrepare',
-        'concurrent:dist',
         'autoprefixer',
         'concat',
-        'ngmin',
+        'sass:dist',
         'copy:dist',
-        'cdnify',
-        'cssmin',
-        'uglify',
         'rev',
-        'usemin',
         'clean:tmp'
     ]);
 
@@ -385,8 +276,11 @@ module.exports = function (grunt) {
     grunt.registerTask('predev', function () {
         return grunt.task.run([
             'clean:dist',
+            'concat',
             'sass:dev',
             'copy:dev',
+            'vulcanize'
+
         ]);
     });
 
@@ -396,5 +290,6 @@ module.exports = function (grunt) {
             'watch'
         ]);
     });
+
 
 };
