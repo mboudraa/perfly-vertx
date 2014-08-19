@@ -8,14 +8,13 @@
     <article class="tile device-article" ng-repeat="device in devices"
              ng-click="showApps(device)" ng-class="connected">
 
-        <div class="title">{{device.data.manufacturer}} {{device.data.model}}</div>
+        <div class="title">{{device.manufacturer}} {{device.model}}</div>
         <img class="device-logo" src="../images/device.svg" width="auto" height="48"/>
 
         <div>
             <ul class="detail">
-                <li>IMEI {{device.data.imei}}</li>
-                <li>Android {{device.data.versionName}}</li>
-                <li>{{device.data.dimension.x}}x{{device.data.dimension.y}}</li>
+                <li>Android {{device.versionName}}</li>
+                <li>{{device.dimension.x}}x{{device.dimension.y}}</li>
             </ul>
         </div>
 

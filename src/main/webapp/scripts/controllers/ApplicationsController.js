@@ -56,7 +56,10 @@ angular.module('samanthaApp')
 
             $scope.retrieveApplications = function (forceRefresh) {
                 forceRefresh = forceRefresh ? forceRefresh : false;
-                vertxEventBusService.publish("vertx.apps.get", {deviceId: deviceId, forceRefresh: forceRefresh});
+                vertxEventBusService.publish("vertx.apps.get", {
+                    deviceId: deviceId,
+                    forceRefresh: forceRefresh
+                });
             }
 
 
@@ -85,7 +88,7 @@ angular.module('samanthaApp')
             }, true);
 
 
-            vertxEventBusService.on(deviceId+'/vertx.app.post', function (data) {
+            vertxEventBusService.on(deviceId + '/vertx.app.post', function (data) {
                 $scope.applications.push(data.data);
             });
 

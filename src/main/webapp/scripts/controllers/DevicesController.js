@@ -4,11 +4,11 @@ angular.module('samanthaApp')
     .controller('DevicesCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$location',
         function ($scope, $rootScope, vertxEventBusService, $location) {
 
-            var imeis = [];
+            var ids = [];
             $scope.devices = [];
 
             $scope.showApps = function (device) {
-                $location.path("device/" + device.deviceId + "/apps");
+                $location.path(device.id + "/apps");
             }
 
             vertxEventBusService.on('device.connect', function (device) {
@@ -32,11 +32,11 @@ angular.module('samanthaApp')
                     return;
                 }
 
-                var index = imeis.indexOf(device.imei);
+                var index = ids.indexOf(device.id);
                 if (index != -1) {
                     $scope.devices.splice(index, 1, device);
                 } else {
-                    imeis.push(device.imei)
+                    ids.push(device.id)
                     $scope.devices.push(device);
                 }
             }
@@ -47,9 +47,9 @@ angular.module('samanthaApp')
                     return;
                 }
 
-                var index = imeis.indexOf(device.imei);
+                var index = ids.indexOf(device.id);
                 if (index != -1) {
-                    $scope.devices.splice(index, 1, device);
+                    $scope.devices.splice(index, 1);
                 }
             }
 

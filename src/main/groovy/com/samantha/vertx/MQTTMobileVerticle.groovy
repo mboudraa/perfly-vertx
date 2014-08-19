@@ -27,19 +27,20 @@ class MQTTMobileVerticle extends Verticle implements MqttCallback {
     MqttClient client
     MqttConnectOptions options
     def logger
-    boolean started;
 
     def start() {
         logger = container.logger
 
-        started = true
-        configure(container.config)
+        container.deployWorkerVerticle("groovy:${DeviceWorkerVerticle.class.name}")
+
+        configure container.config
+
 
         vertx.eventBus
                 .registerHandler("vertx.apps.get", this.&handleListAppRequest)
                 .registerHandler("vertx.monitoring.start", this.&startMonitoring)
                 .registerHandler("vertx.monitoring.stop", this.&stopMonitoring)
-//                .registerHandler("vertx.devices.get", this.&getDevices)
+
         logger.info('Start -> Done initialize MQTT handler')
     }
 
@@ -68,7 +69,7 @@ class MQTTMobileVerticle extends Verticle implements MqttCallback {
         def hostname = config.hostname
         def port = config.port ? config.port : DEFAULT_PORT
         def persistence = new MemoryPersistence()
-        def clientId = UUID.randomUUID().toString()
+        def clientId = UUID.randomUUID().toString().replace("-", "")
 
         client = new MqttClient("tcp://$hostname:$port", clientId, persistence)
 
@@ -108,9 +109,10 @@ class MQTTMobileVerticle extends Verticle implements MqttCallback {
         }
 
         def i = 0
-        while (started && !client.isConnected()) {
+        while (!client.isConnected()) {
             try {
                 client?.connect(options)
+                logger.info "connected to $client.serverURI"
                 sleep 1000
             } catch (Exception e) {
                 logger.error "${i} - cannot reconnect", e
@@ -126,6 +128,10 @@ class MQTTMobileVerticle extends Verticle implements MqttCallback {
         def address = topic.substring(SUBSCRIBE_PREFIX.length() + 1)
         if (address.contains("device.connect")) {
             address = "device.connect"
+        }
+
+        if (address.contains("device.disconnect")) {
+            address = "device.disconnect"
         }
         vertx.eventBus.publish(address, message)
     }
