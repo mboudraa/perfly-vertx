@@ -40,6 +40,7 @@ class MQTTMobileVerticle extends Verticle implements MqttCallback {
                 .registerHandler("vertx.apps.get", this.&handleListAppRequest)
                 .registerHandler("vertx.monitoring.start", this.&startMonitoring)
                 .registerHandler("vertx.monitoring.stop", this.&stopMonitoring)
+                .registerHandler("mqtt.ip", this.&getMessageBrokerIp)
 
         logger.info('Start -> Done initialize MQTT handler')
     }
@@ -49,6 +50,18 @@ class MQTTMobileVerticle extends Verticle implements MqttCallback {
         def payload = OBJECT_MAPPER.writeValueAsBytes([body: null])
         def topic = "${message.body().deviceId}/android.apps.get"
         client.publish(topic, payload, QOS_DELIVERY_ONLY_ONCE_WITH_CONFIRMATION, false)
+    }
+
+    def getMessageBrokerIp(Message message) {
+        def hostname = container.config.hostname
+        def InetAddress inetAddress
+        if (!hostname || hostname == "localhost" || hostname == "127.0.0.1") {
+            inetAddress = Inet4Address.localHost
+        } else {
+            inetAddress = Inet4Address.getByName(hostname)
+        }
+
+        message.reply inetAddress.hostAddress
     }
 
     def startMonitoring(Message message) {

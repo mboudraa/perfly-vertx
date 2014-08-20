@@ -1,9 +1,11 @@
 package com.samantha.vertx
 
+import org.vertx.groovy.core.eventbus.Message
 import org.vertx.groovy.core.http.HttpServer
 import org.vertx.groovy.core.http.HttpServerRequest
 import org.vertx.groovy.core.http.RouteMatcher
 import org.vertx.groovy.platform.Verticle
+import org.vertx.java.core.json.impl.Json
 
 class WebServerVerticle extends Verticle {
 
@@ -77,6 +79,12 @@ class WebServerVerticle extends Verticle {
 
         matcher.get("/") { HttpServerRequest req ->
             req.response.sendFile("${webRoot}/${config.get("index_page", DEFAULT_INDEX_PAGE)}")
+        }
+        matcher.get("/ip") { HttpServerRequest req ->
+            vertx.eventBus.send("mqtt.ip", null) { Message message ->
+                req.response.end(Json.encode(["ip": message.body()]))
+            }
+
         }
 
         matcher.getWithRegEx("^\\/(polymer|images|partials|scripts|styles)\\/.*") { HttpServerRequest req ->

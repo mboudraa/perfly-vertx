@@ -5,6 +5,11 @@
 
 <section class="devices-section">
 
+    <article ng-show="devices.lenght == 0">
+        <div class="no-device-container">
+
+        </div>
+    </article>
     <article class="tile device-article" ng-repeat="device in devices"
              ng-click="showApps(device)" ng-class="connected">
 

@@ -1,12 +1,11 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ApplicationsCtrl', ['$scope', 'vertxEventBusService', '$routeParams',
-        function ($scope, vertxEventBusService, $routeParams) {
+    .controller('ApplicationsCtrl', ['$scope', 'vertxEventBusService', '$routeParams', '$location', '$timeout',
+        function ($scope, vertxEventBusService, $routeParams, $location, $timeout) {
 
             var PLAY_ICON = "av:play-arrow";
             var STOP_ICON = "av:stop";
-
 
             $scope.ctrl = {
                 tabSelected: 0,
@@ -20,6 +19,7 @@ angular.module('samanthaApp')
             $scope.openSearch = false;
 
             var deviceId = $routeParams['deviceId'];
+
 
 
             $scope.updateCurrentApplication = function (application) {
@@ -100,6 +100,8 @@ angular.module('samanthaApp')
             if (vertxEventBusService.readyState() === 1) {
                 $scope.retrieveApplications();
             }
+
+
 
 
         }]);

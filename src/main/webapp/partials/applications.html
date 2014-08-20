@@ -66,3 +66,8 @@
 
     </div>
 </section>
+<div ng-controller="DialogCtrl">
+    <polymer-dialog id="'modal-disconnected'" backdrop="'true'" layered="'true'" autoCloseDisabled="'true'" opened="opened" heading="'Device disconnected'" transition="'paper-dialog-transition-center'">
+        Please connect your device to the server or you will be relocated to the device select screen in {{ countdown }} seconds.
+    </polymer-dialog>
+</div>
