@@ -15,9 +15,9 @@ angular.module('samanthaApp')
                 });
             }
 
-            vertxEventBusService.on(deviceId + '/vertx.monitoring.start', function (response) {
-                if (packageName != response.data.packageName) {
-                    packageName = response.data.packageName;
+            vertxEventBusService.on('vertx.monitoring.start', function (response) {
+                if (response.deviceId == deviceId && packageName != response.packageName) {
+                    packageName = response.packageName;
                     resetSeries();
                 }
             });

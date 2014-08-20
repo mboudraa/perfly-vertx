@@ -20,12 +20,16 @@ angular.module('samanthaApp')
             });
 
             $scope.$on('vertx-eventbus.system.connected', function () {
+                $scope.retrieveDevices();
+            });
+
+            $scope.retrieveDevices = function() {
                 vertxEventBusService.send('vertx.devices.get', null, true).then(function (reply) {
                     _(reply).each(function(device){
                         addDevice(device);
                     });
                 });
-            });
+            };
 
             function addDevice(device) {
                 if(!device){
@@ -53,5 +57,9 @@ angular.module('samanthaApp')
                 }
             }
 
-        }])
+            if (vertxEventBusService.readyState() === 1) {
+                $scope.retrieveDevices();
+            }
+
+        }]);
 ;
