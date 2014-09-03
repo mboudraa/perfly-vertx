@@ -37,8 +37,7 @@ h1 {
 }
 
 .devices-section {
-  width: 100%;
-  display: inline-block;
+  @include outer-container;
   text-align: center;
 
   .device-article {
@@ -75,6 +74,14 @@ h1 {
       list-style: none;
 
     }
+  }
+
+  .no-device-container {
+    @include span-columns(6);
+    @include shift(3);
+    margin-top: 20px;
+    color: #666;
+    font-size: 20px;
   }
 }
 

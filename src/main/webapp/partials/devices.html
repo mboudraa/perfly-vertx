@@ -1,10 +1,10 @@
 <core-toolbar id="toolbar">
     <h1 flex>Samantha</h1>
-    <paper-icon-button icon="search" role="button"></paper-icon-button>
+    <paper-icon-button icon="settings-remote" role="button" ng-click="settingsDialogOpened=true"></paper-icon-button>
 </core-toolbar>
 
 <section class="devices-section">
-    <article ng-show="!devices.lenght">
+    <article ng-show="!devices.length">
         <div class="no-device-container">
             <p>
                 No connected device found.
@@ -35,3 +35,16 @@
     </article>
 
 </section>
+
+<paper-dialog id='dialog-settings' ng-opened="settingsDialogOpened" backdrop="true" layered heading="Settings">
+    <p>
+        Please launch the client application on your device and connect to {{baseUrl}}
+    </p>
+    <p>
+        Or scan the following barcode:
+    </p>
+    <div class="barcode-container">
+        <qrcode data="{{baseUrl}}" size="180"></qrcode>
+    </div>
+    <paper-button label="Close" dismissive></paper-button>
+</paper-dialog>

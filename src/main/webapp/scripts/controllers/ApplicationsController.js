@@ -20,14 +20,11 @@ angular.module('samanthaApp')
 
             var deviceId = $routeParams['deviceId'];
 
-
-
             $scope.updateCurrentApplication = function (application) {
                 if (application.packageName == $scope.ctrl.selectedApplication) {
 
                 } else {
                     $scope.ctrl.selectedApplication = application;
-
                 }
             }
 
@@ -100,8 +97,5 @@ angular.module('samanthaApp')
             if (vertxEventBusService.readyState() === 1) {
                 $scope.retrieveApplications();
             }
-
-
-
-
+            
         }]);

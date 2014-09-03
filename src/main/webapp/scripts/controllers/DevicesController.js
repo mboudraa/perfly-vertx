@@ -5,6 +5,7 @@ angular.module('samanthaApp')
         function ($scope, $rootScope, vertxEventBusService, $location, $http) {
 
             var ids = [];
+            $scope.settingsDialogOpened = false;
             $scope.devices = [];
 
             $scope.showApps = function (device) {

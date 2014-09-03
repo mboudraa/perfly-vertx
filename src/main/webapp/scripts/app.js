@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('samanthaApp', [
+var samantha = angular.module('samanthaApp', [
     'ng-polymer-elements',
     'ngCookies',
     'ngResource',
@@ -30,7 +30,6 @@ angular.module('samanthaApp', [
         vertxEventBusProvider
             .useReconnect()
             .useUrlServer('http://localhost:8080');
-
 
         localStorageServiceProvider.setPrefix("samantha");
         //$locationProvider.html5Mode(true);

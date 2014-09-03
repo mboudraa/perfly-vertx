@@ -83,12 +83,13 @@ class WebServerVerticle extends Verticle {
         matcher.get("/") { HttpServerRequest req ->
             req.response.sendFile("${webRoot}/${config.get("index_page", DEFAULT_INDEX_PAGE)}")
         }
-        matcher.get("/ip") { HttpServerRequest req ->
+
+        matcher.get("/config") { HttpServerRequest req ->
             vertx.eventBus.send("mqtt.ip", null) { Message message ->
                 req.response.end(Json.encode(["ip": message.body()]))
             }
-
         }
+
 
         matcher.getWithRegEx("^\\/(polymer|images|partials|scripts|styles)\\/.*") { HttpServerRequest req ->
             req.response.sendFile("${webRoot}/${req.path.substring(1)}")
