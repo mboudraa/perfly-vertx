@@ -85,8 +85,17 @@ angular.module('samanthaApp')
             }, true);
 
 
-            vertxEventBusService.on(deviceId + '/vertx.app.post', function (data) {
-                $scope.applications.push(data.data);
+            vertxEventBusService.on(deviceId + '/android.apps.progress', function (response) {
+                $scope.applications.push(response.data.application);
+                console.log("receiving app -> " + response.data.progress);
+            });
+
+            vertxEventBusService.on(deviceId + '/android.apps.start', function (response) {
+                console.log("start receiving apps -> " + response.data.total);
+            });
+
+            vertxEventBusService.on(deviceId + '/android.apps.finish', function () {
+                console.log("finish receiving apps")
             });
 
             $scope.$on('vertx-eventbus.system.connected', function () {

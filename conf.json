@@ -7,7 +7,7 @@
     "webServerConfig": {
         "port": 8080,
         "host": "0.0.0.0",
-        "webRoot": "/Users/civetta/Works/Xebia/corporate/samantha/samantha-vertx/src/main/resources/public"
+        "webRoot": "src/main/resources/public"
     },
 
     "mqttConfig": {
