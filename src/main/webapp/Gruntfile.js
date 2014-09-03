@@ -228,15 +228,6 @@ module.exports = function (grunt) {
                         src: [
                             'scripts/**/*.js'
                         ]
-                    },
-                    {
-                        expand: true,
-                        dot: true,
-                        cwd: '<%= yeoman.app %>/bower_components/platform',
-                        dest: '<%= yeoman.dist %>/polymer',
-                        src: [
-                            'platform.js'
-                        ]
                     }
 
                 ]
