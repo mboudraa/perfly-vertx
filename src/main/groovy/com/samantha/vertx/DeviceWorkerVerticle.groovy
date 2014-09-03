@@ -17,6 +17,7 @@ class DeviceWorkerVerticle extends Verticle {
                 .registerHandler("device.connect", this.&onDeviceConnected)
                 .registerHandler("device.disconnect", this.&onDeviceDisconnected)
                 .registerHandler("vertx.devices.get", this.&getDevices)
+                .registerHandler("vertx.device.get", this.&getDevice)
     }
 
 
@@ -43,5 +44,10 @@ class DeviceWorkerVerticle extends Verticle {
 
         logger.debug "list devices -> $devices"
         message.reply(new ArrayList(devices))
+    }
+
+    def getDevice(Message message) {
+        def deviceId = message.body()
+        message.reply(devices.get(deviceId))
     }
 }

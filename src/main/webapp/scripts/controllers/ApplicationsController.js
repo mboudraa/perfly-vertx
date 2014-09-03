@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ApplicationsCtrl', ['$scope', 'vertxEventBusService', '$routeParams', '$location', '$timeout',
-        function ($scope, vertxEventBusService, $routeParams, $location, $timeout) {
+    .controller('ApplicationsCtrl', ['$scope', 'vertxEventBusService', '$routeParams', '$location', '$timeout', '$http',
+        function ($scope, vertxEventBusService, $routeParams, $location, $timeout, $http) {
 
             var PLAY_ICON = "av:play-arrow";
             var STOP_ICON = "av:stop";
@@ -84,6 +84,9 @@ angular.module('samanthaApp')
 
             }, true);
 
+            $http.get("/device/" + deviceId).success(function (response) {
+                console.log(response);
+            });
 
             vertxEventBusService.on(deviceId + '/android.apps.progress', function (response) {
                 $scope.applications.push(response.data.application);
