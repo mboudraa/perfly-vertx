@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ChartMemoryCtrl', ['$scope', 'vertxEventBusService','$routeParams',
-        function ($scope, vertxEventBusService,$routeParams) {
+    .controller('ChartMemoryCtrl', ['$scope', 'vertxEventBusService', '$routeParams',
+        function ($scope, vertxEventBusService, $routeParams) {
 
             var packageName;
             var series = [];
@@ -22,23 +22,21 @@ angular.module('samanthaApp')
                 }
             });
 
-            var time = -1;
-            vertxEventBusService.on(deviceId+'/android.monitoring.progress', function (response) {
+            vertxEventBusService.on(deviceId + '/android.monitoring.progress', function (response) {
                 var sysdump = response.data;
 
-                if (time == -1) {
-                    time = sysdump.time;
+                if (sysdump.memoryInfo) {
+                    _.each(series, function (serie, i) {
+                        var point = {
+                            x: sysdump.time,
+                            y: sysdump.memoryInfo[serie.name],
+                            marker: {
+                                enabled: false
+                            }
+                        };
+                        serie.addPoint(point, true)
+                    });
                 }
-                _.each(series, function (serie, i) {
-                    var point = {
-                        x: (sysdump.time - time) / 1000,
-                        y: sysdump.memoryInfo[serie.name],
-                        marker: {
-                            enabled: false
-                        }
-                    };
-                    serie.addPoint(point, true)
-                });
             });
 
             $scope.chartMemoryConfig = {
@@ -47,6 +45,7 @@ angular.module('samanthaApp')
 
                     chart: {
                         zoomType: 'x',
+                        animation: Highcharts.svg,
                         events: {
                             load: function () {
                                 series = this.series;
@@ -54,12 +53,19 @@ angular.module('samanthaApp')
                         },
                     },
 
-                    rangeSelector: {
-                        buttons: [{
-                            type: 'all',
-                            text: 'All'
-                        }],
-                        inputEnabled: false
+                    yAxis: [{
+                        labels: {
+                            align: 'left',
+                            x: 3
+                        },
+                        title: {
+                            text: 'Memory (KB)'
+                        },
+                    }],
+
+                    xAxis: {
+                        type: 'datetime',
+                        tickPixelInterval: 150
                     },
 
                     tooltip: {
@@ -85,20 +91,24 @@ angular.module('samanthaApp')
                     {
                         name: 'dalvikLimit',
                         data: [],
-                        color: '#FF0000'
+                        color: '#FF0000',
+                        pointInterval: 1000,
                     },
                     {
                         name: 'appTotal',
                         type: 'area',
-                        data: []
+                        data: [],
+                        pointInterval: 1000,
                     },
                     {
                         name: 'appNative',
-                        data: []
+                        data: [],
+                        pointInterval: 1000,
                     },
                     {
                         name: 'appDalvik',
-                        data: []
+                        data: [],
+                        pointInterval: 1000,
                     }
                 ],
 
@@ -108,7 +118,7 @@ angular.module('samanthaApp')
                 },
 
 
-                useHighStocks: true,
+                useHighStocks: false,
                 loading: false
 
             };
