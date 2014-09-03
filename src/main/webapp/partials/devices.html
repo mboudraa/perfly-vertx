@@ -4,15 +4,24 @@
 </core-toolbar>
 
 <section class="devices-section">
-
-    <article ng-show="devices.lenght == 0">
+    <article ng-show="!devices.lenght">
         <div class="no-device-container">
-
+            <p>
+                No connected device found.
+            </p>
+            <p>
+                Please launch the client application on your device and connect to {{baseUrl}}
+            </p>
+            <p>
+                Or scan the following barcode:
+            </p>
+            <div class="barcode-container">
+                <qrcode data="{{baseUrl}}" size="180"></qrcode>
+            </div>
         </div>
     </article>
     <article class="tile device-article" ng-repeat="device in devices"
              ng-click="showApps(device)" ng-class="connected">
-
         <div class="title">{{device.manufacturer}} {{device.model}}</div>
         <img class="device-logo" src="../images/device.svg" width="auto" height="48"/>
 

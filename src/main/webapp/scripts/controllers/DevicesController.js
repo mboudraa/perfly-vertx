@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('DevicesCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$location',
-        function ($scope, $rootScope, vertxEventBusService, $location) {
+    .controller('DevicesCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$location', '$http',
+        function ($scope, $rootScope, vertxEventBusService, $location, $http) {
 
             var ids = [];
             $scope.devices = [];
@@ -31,8 +31,14 @@ angular.module('samanthaApp')
                 });
             };
 
+            $scope.retrieveIp = function() {
+                $http.get('/ip').success(function(data) {
+                    $scope.baseUrl = data.ip;
+                });
+            }
+
             function addDevice(device) {
-                if(!device){
+                if (!device) {
                     return;
                 }
 
@@ -47,7 +53,7 @@ angular.module('samanthaApp')
 
 
             function removeDevice(device){
-                if(!device){
+                if (!device) {
                     return;
                 }
 
@@ -60,6 +66,8 @@ angular.module('samanthaApp')
             if (vertxEventBusService.readyState() === 1) {
                 $scope.retrieveDevices();
             }
+
+            $scope.retrieveIp();
 
         }]);
 ;
