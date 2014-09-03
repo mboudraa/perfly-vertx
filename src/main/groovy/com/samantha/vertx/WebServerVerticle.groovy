@@ -75,7 +75,10 @@ class WebServerVerticle extends Verticle {
 
     private def routeMatcher(config) {
         RouteMatcher matcher = new RouteMatcher()
-        def webRoot = config.get("web_root", DEFAULT_WEB_ROOT)
+        def webRoot = config.get("webRoot", DEFAULT_WEB_ROOT)
+        if (!webRoot.startsWith("/")) {
+            webRoot = System.getProperty("user.dir") + "/" + webRoot
+        }
 
         matcher.get("/") { HttpServerRequest req ->
             req.response.sendFile("${webRoot}/${config.get("index_page", DEFAULT_INDEX_PAGE)}")
