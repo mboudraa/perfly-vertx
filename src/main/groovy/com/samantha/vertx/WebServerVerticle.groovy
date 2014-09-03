@@ -90,6 +90,11 @@ class WebServerVerticle extends Verticle {
             }
         }
 
+        matcher.get("/device/:deviceId") { HttpServerRequest req ->
+            vertx.eventBus.send("vertx.device.get", req.params.get("deviceId")) { Message message ->
+                req.response.end(Json.encode(["device": message.body()]))
+            }
+        }
 
         matcher.getWithRegEx("^\\/(polymer|images|partials|scripts|styles)\\/.*") { HttpServerRequest req ->
             req.response.sendFile("${webRoot}/${req.path.substring(1)}")

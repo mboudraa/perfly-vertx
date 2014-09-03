@@ -22,23 +22,21 @@ angular.module('samanthaApp')
                 }
             });
 
-            var time = -1;
             vertxEventBusService.on(deviceId + '/android.monitoring.progress', function (response) {
                 var sysdump = response.data;
 
-                if (time == -1) {
-                    time = sysdump.time;
+                if (sysdump.cpuInfo) {
+                    _.each(series, function (serie, i) {
+                        var point = {
+                            x: sysdump.time,
+                            y: sysdump.cpuInfo[serie.name],
+                            marker: {
+                                enabled: false
+                            }
+                        };
+                        serie.addPoint(point, true)
+                    });
                 }
-                _.each(series, function (serie, i) {
-                    var point = {
-                        x: (sysdump.time - time) / 1000,
-                        y: sysdump.cpuInfo[serie.name],
-                        marker: {
-                            enabled: false
-                        }
-                    };
-                    serie.addPoint(point, true)
-                });
             });
 
             $scope.chartCpuConfig = {
@@ -53,20 +51,37 @@ angular.module('samanthaApp')
                             }
                         },
                     },
-
-                    rangeSelector: {
-                        buttons: [{
-                            type: 'all',
-                            text: 'All'
-                        }],
-                        inputEnabled: false
+                    xAxis: {
+                        type: 'datetime',
+                        maxZoom: 1000
                     },
+
+                    yAxis: [{
+                        labels: {
+                            align: 'left',
+                            x: 3
+                        },
+                        title: {
+                            text: 'CPU Usage (%)'
+                        },
+                    }],
 
                     tooltip: {
                         shared: true,
                         crosshairs: true,
                         pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y} %</b><br/>'
 
+                    },
+
+                    legend: {
+                        enabled: true,
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'top',
+                        y: 50,
+                        padding: 0,
+                        itemMarginTop: 5,
+                        itemMarginBottom: 5
                     }
                 },
 
@@ -74,15 +89,18 @@ angular.module('samanthaApp')
                     {
                         name: 'cpuTotal',
                         type: 'area',
-                        data: []
+                        data: [],
+                        pointInterval: 1000
                     },
                     {
                         name: 'cpuUser',
-                        data: []
+                        data: [],
+                        pointInterval: 1000
                     },
                     {
                         name: 'cpuKernel',
-                        data: []
+                        data: [],
+                        pointInterval: 1000
                     }
                 ],
 
@@ -91,7 +109,7 @@ angular.module('samanthaApp')
                 },
 
 
-                useHighStocks: true,
+                useHighStocks: false,
                 loading: false
 
             };
