@@ -22,26 +22,29 @@
 
 </core-toolbar>
 
-<section id="applications-list" ng-show="!ctrl.tabSelected || ctrl.tabSelected == 0">
-    <section class="applications-section content">
-        <article class="application-article" ng-repeat="application in applications | filter:searchComparator"
-                 ng-dblclick="startApplication(application)" ng-click="updateCurrentApplication(application)">
-            <paper-ripple id="ripple"></paper-ripple>
-            <img class="application-logo" ng-src="data:image/jpeg;base64,{{application.logo}}"
-                 alt="logo {{application.label}}"/>
-            <span class="application-label">{{application.label}}</span>
-        </article>
-    </section>
-    <div id="footer" ng-class="{false: 'show', true:'hide'}[ctrl.selectedApplication === undefined]">
-        <img ng-if="ctrl.selectedApplication" class="footer-logo" ng-src="data:image/jpeg;base64,{{ctrl.selectedApplication.logo}}"
-             alt="logo {{ctrl.selectedApplication.label}}"/>
-        <ul>
-            <li>version : {{ctrl.selectedApplication.version}}</li>
-            <li>label : {{ctrl.selectedApplication.label}}</li>
-            <li>package : {{ctrl.selectedApplication.packageName}}</li>
-            <li>debuggable : {{ctrl.selectedApplication.debuggable}}</li>
-        </ul>
-    </div></section>
+<section id="applications-list-container">
+    <div id="applications-list" ng-show="!ctrl.tabSelected || ctrl.tabSelected == 0">
+        <div class="applications-section content">
+            <article class="application-article" ng-repeat="application in applications | filter:searchComparator"
+                     ng-dblclick="startApplication(application)" ng-click="updateCurrentApplication(application)">
+                <paper-ripple id="ripple"></paper-ripple>
+                <img class="application-logo" ng-src="data:image/jpeg;base64,{{application.logo}}"
+                     alt="logo {{application.label}}"/>
+                <span class="application-label">{{application.label}}</span>
+            </article>
+        </div>
+        <div id="footer" ng-class="{false: 'show', true:'hide'}[ctrl.selectedApplication === undefined]">
+            <img ng-if="ctrl.selectedApplication" class="footer-logo" ng-src="data:image/jpeg;base64,{{ctrl.selectedApplication.logo}}"
+                 alt="logo {{ctrl.selectedApplication.label}}"/>
+            <ul>
+                <li>version : {{ctrl.selectedApplication.version}}</li>
+                <li>label : {{ctrl.selectedApplication.label}}</li>
+                <li>package : {{ctrl.selectedApplication.packageName}}</li>
+                <li>debuggable : {{ctrl.selectedApplication.debuggable}}</li>
+            </ul>
+        </div>
+    </div>
+</section>
 
 <section id="applications-monitoring" ng-show="ctrl.tabSelected == 1">
     <div class="configuration-area">

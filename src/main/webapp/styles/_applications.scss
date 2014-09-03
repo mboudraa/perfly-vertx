@@ -1,3 +1,11 @@
+#applications-list-container {
+  @include outer-container;  
+}
+
+#applications-list {
+  @include span-columns(12);
+}
+
 [id='footer'] {
 
   $footer-height: 140px;

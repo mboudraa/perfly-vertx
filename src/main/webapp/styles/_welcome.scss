@@ -40,7 +40,7 @@ h1 {
   @include outer-container;
   text-align: center;
 
-  .device-article {
+  .device-tile {
     display: inline-block;
     margin: 5px;
     padding: 5px;
@@ -48,8 +48,7 @@ h1 {
     height: 15em;
     background: #9acd00;
     overflow: hidden;
-
-
+    position: relative;
 
     &.connected {
       cursor: pointer;
@@ -57,12 +56,10 @@ h1 {
       &:hover {
         @include transform(translate3d(0, -2px, 0));
       }
-
     }
 
     &.disconnected {
       opacity: .5;
-
     }
 
     .title {
@@ -70,9 +67,16 @@ h1 {
       font-weight: 500;
     }
 
-    .detail {
-      list-style: none;
+    .version-name {
+      position: absolute;
+      bottom: 5px;
+      left: 5px;
+    }
 
+    .screen-size {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
     }
   }
 

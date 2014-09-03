@@ -20,16 +20,14 @@
             </div>
         </div>
     </article>
-    <article class="tile device-article" ng-repeat="device in devices"
+    <article class="tile device-tile" ng-repeat="device in devices"
              ng-click="showApps(device)" ng-class="connected">
         <div class="title">{{device.manufacturer}} {{device.model}}</div>
         <img class="device-logo" src="../images/device.svg" width="auto" height="48"/>
 
         <div>
-            <ul class="detail">
-                <li>Android {{device.versionName}}</li>
-                <li>{{device.dimension.x}}x{{device.dimension.y}}</li>
-            </ul>
+            <div class="version-name">Android {{device.versionName}}</div>
+            <div class="screen-size">{{device.dimension.x}}x{{device.dimension.y}}</div>
         </div>
 
     </article>
