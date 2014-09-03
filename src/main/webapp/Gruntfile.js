@@ -128,12 +128,6 @@ module.exports = function (grunt) {
                 ],
                 dest: "<%= yeoman.dist %>/scripts/polymer.js"
             }
-//            css: {
-//                src: [
-//                    "#{webDir}/libs/css/**/*.css"
-//                ],
-//                dest: "#{distDir}/libs/css/components.css"
-//            }
         },
 
         vulcanize: {
@@ -228,20 +222,9 @@ module.exports = function (grunt) {
                         src: [
                             'scripts/**/*.js'
                         ]
-                    },
-                    {
-                        expand: true,
-                        dot: true,
-                        cwd: '<%= yeoman.app %>/bower_components/platform',
-                        dest: '<%= yeoman.dist %>/polymer',
-                        src: [
-                            'platform.js'
-                        ]
                     }
-
                 ]
             }
-
         },
 
 
