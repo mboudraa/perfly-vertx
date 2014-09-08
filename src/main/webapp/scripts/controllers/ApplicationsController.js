@@ -93,14 +93,14 @@ angular.module('samanthaApp')
                 console.log("start receiving apps -> " + response.data.total);
                 $scope.applications.length = 0;
                 $scope.progressDialogOpened = true;
-                $("#applicationLoadingProgressBar").get(0).max = response.data.total;
+                //$("#applicationLoadingProgressBar").get(0).max = response.data.total;
             });
 
 
             vertxEventBusService.on(deviceId + '/android.apps.progress', function (response) {
                 $scope.applications.push(response.data.application);
                 console.log("receiving app -> " + response.data.progress);
-                $("#applicationLoadingProgressBar").get(0).value = response.data.progress;
+                //$("#applicationLoadingProgressBar").get(0).value = response.data.progress;
             });
 
             

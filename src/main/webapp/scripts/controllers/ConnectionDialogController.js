@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('DialogCtrl', ['$scope', 'vertxEventBusService', '$routeParams', '$location', '$timeout',
+    .controller('ConnectionDialogCtrl', ['$scope', 'vertxEventBusService', '$routeParams', '$location', '$timeout',
         function ($scope, vertxEventBusService, $routeParams, $location, $timeout) {
-            var counter = 15;
+            var counter = 60 * 5;
             $scope.countdown = counter;
             $scope.opened = false;
             var mytimeout;

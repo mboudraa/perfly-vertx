@@ -16,13 +16,13 @@ angular.module('samanthaApp')
             };
 
             vertxEventBusService.on('vertx.monitoring.start', function (response) {
-                if (response.deviceId == deviceId && packageName != response.packageName) {
+                if (response.deviceId == deviceId) {
                     packageName = response.packageName;
                     resetSeries();
                 }
             });
 
-            vertxEventBusService.on(deviceId + '/android.monitoring.progress', function (response) {
+            vertxEventBusService.on(deviceId + '/android.monitoring.progress/monitoring', function (response) {
                 var sysdump = response.data;
 
                 if (sysdump.memoryInfo) {

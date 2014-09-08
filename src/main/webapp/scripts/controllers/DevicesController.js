@@ -33,7 +33,7 @@ angular.module('samanthaApp')
             };
 
             $scope.retrieveIp = function() {
-                $http.get('/ip').success(function(data) {
+                $http.get('/config').success(function(data) {
                     $scope.baseUrl = data.ip;
                 });
             }
