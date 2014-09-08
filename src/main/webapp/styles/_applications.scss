@@ -61,3 +61,17 @@
     font-size: 1.2em;
   }
 }
+
+.reset-zoom {
+  position: absolute;
+  top: 110px;
+  right: 140px;
+  z-index: 10;
+  background: grey;
+  color: white;
+}
+
+.reset-zoom #ripple,
+.reset-zoom::shadow #ripple {
+  color: #2a56c6;
+}

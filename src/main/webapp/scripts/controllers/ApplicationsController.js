@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ApplicationsCtrl', ['$scope', 'vertxEventBusService', '$routeParams', '$location', '$timeout', '$http',
-        function ($scope, vertxEventBusService, $routeParams, $location, $timeout, $http) {
+    .controller('ApplicationsCtrl', ['$scope', 'vertxEventBusService', '$routeParams', '$location', '$timeout', '$http', 'ChartService',
+        function ($scope, vertxEventBusService, $routeParams, $location, $timeout, $http, ChartService) {
 
             var PLAY_ICON = "av:play-arrow";
             var STOP_ICON = "av:stop";
@@ -60,7 +60,6 @@ angular.module('samanthaApp')
                 });
             }
 
-
             $scope.searchComparator = function (app) {
                 if (!app) {
                     return false;
@@ -72,7 +71,6 @@ angular.module('samanthaApp')
                 return (app.label.toLowerCase().indexOf($scope.search.toLowerCase()) > -1)
                 || (app.packageName.toLowerCase().indexOf($scope.search.toLowerCase()) > -1);
             }
-
 
             $scope.$watch("ctrl", function (ctrl) {
 

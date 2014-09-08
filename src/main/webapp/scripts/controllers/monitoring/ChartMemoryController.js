@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ChartMemoryCtrl', ['$scope', 'vertxEventBusService', '$routeParams',
-        function ($scope, vertxEventBusService, $routeParams) {
+    .controller('ChartMemoryCtrl', ['$scope', 'vertxEventBusService', '$routeParams', 'ChartService',
+        function ($scope, vertxEventBusService, $routeParams, ChartService) {
 
             var packageName;
             var series = [];
@@ -25,7 +25,7 @@ angular.module('samanthaApp')
             vertxEventBusService.on(deviceId + '/android.monitoring.progress/monitoring', function (response) {
                 var sysdump = response.data;
 
-                if (sysdump.memoryInfo) {
+                if (!angular.isUndefined(sysdump.memoryInfo)) {
                     _.each(series, function (serie, i) {
                         var point = {
                             x: sysdump.time,
@@ -34,7 +34,7 @@ angular.module('samanthaApp')
                                 enabled: false
                             }
                         };
-                        serie.addPoint(point, true)
+                        serie.addPoint(point, false, false, false);
                     });
                 }
             });
@@ -49,6 +49,17 @@ angular.module('samanthaApp')
                         events: {
                             load: function () {
                                 series = this.series;
+                                ChartService.MemoryChartConfig = this;
+                            },
+
+                            selection: function(event) {
+                                ChartService.zoomAllChartsIn(event.xAxis[0].min, event.xAxis[0].max);
+                            }
+                        },
+
+                        resetZoomButton: {
+                            theme: {
+                                display: 'none'
                             }
                         },
                     },
@@ -63,9 +74,12 @@ angular.module('samanthaApp')
                         },
                     }],
 
+                    title: null,
+
                     xAxis: {
                         type: 'datetime',
-                        tickPixelInterval: 150
+                        tickPixelInterval: 150,
+                        options: {}
                     },
 
                     tooltip: {

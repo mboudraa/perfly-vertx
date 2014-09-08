@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ChartCpuCtrl', ['$scope', 'vertxEventBusService', '$routeParams', 'ChartService',
+    .controller('ChartSystemEventCtrl', ['$scope', 'vertxEventBusService', '$routeParams', 'ChartService',
         function ($scope, vertxEventBusService, $routeParams, ChartService) {
 
             var packageName;
             var series = [];
+            var axis = [];
 
             var deviceId = $routeParams['deviceId'];
 
@@ -13,7 +14,7 @@ angular.module('samanthaApp')
                 _.each(series, function (serie, i) {
                     serie.setData([], true);
                 });
-            }
+            };
 
             vertxEventBusService.on('vertx.monitoring.start', function (response) {
                 if (response.deviceId == deviceId) {
@@ -22,33 +23,54 @@ angular.module('samanthaApp')
                 }
             });
 
-            vertxEventBusService.on(deviceId + '/android.monitoring.progress/monitoring', function (response) {
+            vertxEventBusService.on(deviceId + '/android.monitoring.progress/orientation', function (response) {
                 var sysdump = response.data;
 
-                if (!angular.isUndefined(sysdump.cpuInfo)) {
-                    _.each(series, function (serie, i) {
-                        var point = {
-                            x: sysdump.time,
-                            y: sysdump.cpuInfo[serie.name],
-                            marker: {
-                                enabled: false
-                            }
-                        };
-                        serie.addPoint(point, false, false, false);
+                if (!angular.isUndefined(sysdump.orientation)) {
+                    var orientationName = sysdump.orientation == 2 ? "landscape" : "portrait";
+
+                    $scope.chartSystemEventConfig.options.xAxis.plotLines.push({
+                        value: sysdump.time,
+                        color: 'blue',
+                        width: 1,                     
+                        label: {
+                            text: 'Orientation: ' + orientationName,
+                            rotation: 90
+                        }
                     });
                 }
             });
 
-            $scope.chartCpuConfig = {
+
+            vertxEventBusService.on(deviceId + '/android.monitoring.progress/dalvik', function (response) {
+                var sysdump = response.data;
+                console.log(sysdump);
+
+                if (!angular.isUndefined(sysdump.dalvik)) {
+                    $scope.chartSystemEventConfig.options.xAxis.plotLines.push({
+                        value: sysdump.time,
+                        color: 'red',
+                        width: 1,
+                        dashStyle: 'longdashdot',
+                        label: {
+                            text: 'XXXX',
+                            rotation: 90
+                        }
+                    });
+                }
+            });
+
+            $scope.chartSystemEventConfig = {
 
                 options: {
 
                     chart: {
                         zoomType: 'x',
+                        animation: Highcharts.svg,
                         events: {
                             load: function () {
-                                series = this.series;
-                                ChartService.CpuChartConfig = this;
+                                series = this.series; 
+                                ChartService.SystemEventChartConfig = this;
                             },
 
                             selection: function(event) {
@@ -61,12 +83,13 @@ angular.module('samanthaApp')
                                 display: 'none'
                             }
                         },
-
                     },
 
                     xAxis: {
                         type: 'datetime',
-                        tickPixelInterval: 150
+                        tickPixelInterval: 150,
+                        plotLines: [],
+                        options: {}
                     },
 
                     yAxis: [{
@@ -75,7 +98,7 @@ angular.module('samanthaApp')
                             x: 3
                         },
                         title: {
-                            text: 'CPU Usage (%)'
+                            text: 'System events'
                         },
                     }],
 
@@ -84,7 +107,7 @@ angular.module('samanthaApp')
                     tooltip: {
                         shared: true,
                         crosshairs: true,
-                        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y} %</b><br/>'
+                        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y} KB</b><br/>'
 
                     },
 
@@ -102,22 +125,27 @@ angular.module('samanthaApp')
 
                 series: [
                     {
-                        name: 'cpuTotal',
-                        type: 'area',
-                        data: [],
-                        pointInterval: 1000
+                        name: 'Orientation',
+                        color: 'blue',
+                        pointInterval: 1000,
                     },
                     {
-                        name: 'cpuUser',
-                        data: [],
-                        pointInterval: 1000
+                        name: 'GC',
+                        color: 'red',
+                        pointInterval: 1000,
                     },
                     {
-                        name: 'cpuKernel',
+                        name: 'appNative',
                         data: [],
-                        pointInterval: 1000
+                        pointInterval: 1000,
+                    },
+                    {
+                        name: 'appDalvik',
+                        data: [],
+                        pointInterval: 1000,
                     }
                 ],
+
 
                 credits: {
                     enabled: false

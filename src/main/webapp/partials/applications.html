@@ -47,26 +47,46 @@
 </section>
 
 <section id="applications-monitoring" ng-show="ctrl.tabSelected == 1">
-    <div class="configuration-area">
-        <div class="configuration-box switch-chart">
-            <paper-radio-group ng-model="switchChart" ng-init="switchChart='cpu'" selected="{{switchChart}}">
-                <paper-radio-button name="cpu" label="CPU" class="radio-block"></paper-radio-button>
-                <paper-radio-button name="memory" label="Memory" class="radio-block"></paper-radio-button>
-            </paper-radio-group>
+    <div ng-controller="ChartCtrl">
+        <div class="configuration-area">
+    <!--         <div class="configuration-box switch-chart">
+                <paper-radio-group ng-model="switchChart" ng-init="switchChart='cpu'" selected="{{switchChart}}">
+                    <paper-radio-button name="cpu" label="CPU" class="radio-block"></paper-radio-button>
+                    <paper-radio-button name="memory" label="Memory" class="radio-block"></paper-radio-button>
+                    <paper-radio-button name="system-events" label="System Events" class="radio-block"></paper-radio-button>
+                </paper-radio-group>
+            </div> -->
+            <div class="action-box" style="width: 200px;">
+                <paper-button raisedButton class="reset-zoom" label="Reset zoom" ng-click="resetZoom()"></paper-button>
+            </div>
+            <div class="event-box" style="width: 200px;">
+                <ul>
+                    <li><span class="key">PID</span> <span class="value">{{applicationStatus.pid}}</span></li>
+                    <li><span class="key">State</span> <span class="value">{{applicationStatus.state}}</span></li>
+                </ul>
+            </div>
         </div>
-    </div>
-    <div class="chart-area">
-        <div ng-show="switchChart == 'memory'">
-            <article ng-controller="ChartMemoryCtrl">
-                <highchart id="chart-memory" config="chartMemoryConfig"></highchart>
+        <div class="chart-area" style="height: 600px;">
+            <article ng-controller="ChartMemoryCtrl" style="height: 33%">
+                <highchart id="chart-memory" config="chartMemoryConfig" style="height: 100%">></highchart>
             </article>
-        </div>
-        <div ng-show="switchChart == 'cpu'">
-            <article ng-controller="ChartCpuCtrl">
-                <highchart id="chart-cpu" config="chartCpuConfig"></highchart>
+            <article ng-controller="ChartCpuCtrl" style="height: 33%">
+                <highchart id="chart-cpu" config="chartCpuConfig" style="height: 100%"></highchart>
             </article>
-        </div>
+            <article ng-controller="ChartSystemEventCtrl" style="height: 33%">
+                <highchart id="chart-systemevent" config="chartSystemEventConfig" style="height: 100%"></highchart>
+            </article>        
+    <!--         <div ng-show="switchChart == 'memory'">
 
+            </div>
+            <div ng-show="switchChart == 'cpu'">
+
+            </div>
+            <div ng-show="switchChart == 'system-events'">
+
+            </div> -->
+
+        </div>
     </div>
 </section>
 
