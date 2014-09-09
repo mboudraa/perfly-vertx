@@ -42,6 +42,22 @@ angular.module('samanthaApp')
             });
 
 
+            vertxEventBusService.on(deviceId + '/android.monitoring.progress/status', function (response) {
+                var sysdump = response.data;
+                if (!angular.isUndefined(sysdump.applicationStatus)) {
+                    $scope.chartSystemEventConfig.options.xAxis.plotLines.push({
+                        value: sysdump.time,
+                        color: 'green',
+                        width: 1,                     
+                        label: {
+                            text: 'State: ' + sysdump.applicationStatus.state,
+                            rotation: 90
+                        }
+                    });
+                }                
+            });
+
+
             vertxEventBusService.on(deviceId + '/android.monitoring.progress/dalvik', function (response) {
                 var sysdump = response.data;
                 console.log(sysdump);
@@ -135,12 +151,8 @@ angular.module('samanthaApp')
                         pointInterval: 1000,
                     },
                     {
-                        name: 'appNative',
-                        data: [],
-                        pointInterval: 1000,
-                    },
-                    {
-                        name: 'appDalvik',
+                        name: 'State',
+                        color: 'green',
                         data: [],
                         pointInterval: 1000,
                     }
