@@ -66,15 +66,15 @@
                 </ul>
             </div>
         </div>
-        <div class="chart-area" style="height: 600px;">
-            <article ng-controller="ChartMemoryCtrl" style="height: 33%">
-                <highchart id="chart-memory" config="chartMemoryConfig" style="height: 100%">></highchart>
+        <div class="chart-area">
+            <article ng-controller="ChartMemoryCtrl">
+                <highchart id="chart-memory" config="chartMemoryConfig"></highchart>
             </article>
-            <article ng-controller="ChartCpuCtrl" style="height: 33%">
-                <highchart id="chart-cpu" config="chartCpuConfig" style="height: 100%"></highchart>
+            <article ng-controller="ChartCpuCtrl">
+                <highchart id="chart-cpu" config="chartCpuConfig"></highchart>
             </article>
-            <article ng-controller="ChartSystemEventCtrl" style="height: 33%">
-                <highchart id="chart-systemevent" config="chartSystemEventConfig" style="height: 100%"></highchart>
+            <article ng-controller="ChartSystemEventCtrl">
+                <highchart id="chart-systemevent" config="chartSystemEventConfig"></highchart>
             </article>        
     <!--         <div ng-show="switchChart == 'memory'">
 

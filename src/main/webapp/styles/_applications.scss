@@ -75,3 +75,21 @@
 .reset-zoom::shadow #ripple {
   color: #2a56c6;
 }
+
+#applications-monitoring {
+  .chart-area {
+    height: 600px;
+    article {
+      height: 33%;
+      #chart-memory {
+        height: 100%;
+      }
+      #chart-cpu {
+        height: 100%;
+      }
+      #chart-systemevent {
+        height: 100%;
+      }
+    }
+  } 
+}
