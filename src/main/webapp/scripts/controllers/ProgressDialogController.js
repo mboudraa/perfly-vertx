@@ -1,37 +1,40 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ProgressDialogCtrl', ['$scope', 'vertxEventBusService', '$routeParams', '$location', '$timeout',
-        function ($scope, vertxEventBusService, $routeParams, $location, $timeout) {
-            var counter = 15;
-            $scope.countdown = counter;
-            $scope.opened = false;
-            var mytimeout;
+    .controller('ProgressDialogCtrl', ['$scope', 'vertxEventBusService', '$routeParams',
+        function ($scope, vertxEventBusService, $routeParams) {
+
             var deviceId = $routeParams['deviceId'];
 
-            var startCountDown = function () {
-                $scope.countdown = counter;
-                mytimeout = $timeout(startCountDown, 1000);
-                counter--;
-                if (counter < 0) {
-                    $scope.opened = false;
-                    $timeout.cancel(mytimeout);
-                    $location.path('/');
-                }
+            $scope.ctrl = {
+                loading: false,
+                title: "Waiting for Device...",
+                total: 0,
+                progress: 0,
+                appName: '',
+                progressDialogOpened: true
+            };
 
-            }
+            vertxEventBusService.on(deviceId + '/android.apps.start', function (response) {
+                $scope.ctrl.total = response.data.total;
+                $scope.ctrl.title = "Getting List of Installed Apps...";
+                $scope.ctrl.loading = true;
+            });
 
-            vertxEventBusService.on('device.connect', function (device) {
-                if (deviceId == device.id) {
-                    $scope.opened = false;
-                    $timeout.cancel(mytimeout);
-                }
+
+            vertxEventBusService.on(deviceId + '/android.apps.progress', function (response) {
+                $scope.ctrl.progress = response.data.progress;
+                $scope.ctrl.appName = response.data.application.label
+            });
+
+            vertxEventBusService.on(deviceId + '/android.apps.finish', function () {
+                $scope.ctrl.progressDialogOpened = false;
             });
 
             vertxEventBusService.on('device.disconnect', function (device) {
                 if (deviceId == device.id) {
-                    $scope.opened = true;
-                    startCountDown();
+                    $scope.ctrl.progressDialogOpened = false;
                 }
             });
+
         }]);

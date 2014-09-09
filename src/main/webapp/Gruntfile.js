@@ -116,8 +116,10 @@ module.exports = function (grunt) {
                     "bower_components/angular-qrcode/qrcode.js",
                     "bower_components/lodash/dist/lodash.compat.min.js",
                     "bower_components/highstock-release/highstock.src.js",
-                    "bower_components/highcharts-ng/dist/highcharts-ng.min.js"
+                    "bower_components/highcharts-ng/dist/highcharts-ng.min.js",
+                    "bower_components/angular-timer/dist/angular-timer.min.js"
                 ],
+
                 dest: "<%= yeoman.dist %>/scripts/libs.js"
 
             },

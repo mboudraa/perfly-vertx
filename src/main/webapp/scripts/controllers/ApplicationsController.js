@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ApplicationsCtrl', ['$scope', 'vertxEventBusService', '$routeParams', '$location', '$timeout', '$http', 'ChartService',
-        function ($scope, vertxEventBusService, $routeParams, $location, $timeout, $http, ChartService) {
+    .controller('ApplicationsCtrl', ['$scope', 'vertxEventBusService', '$routeParams', '$location', '$timeout', '$http',
+        function ($scope, vertxEventBusService, $routeParams, $location, $timeout, $http) {
 
             var PLAY_ICON = "av:play-arrow";
             var STOP_ICON = "av:stop";
- 
+
             $scope.ctrl = {
                 tabSelected: 0,
                 monitoredApplication: undefined,
@@ -14,7 +14,6 @@ angular.module('samanthaApp')
                 selectedApplication: undefined,
                 fabIcon: PLAY_ICON
             };
-            $scope.progressDialogOpened = false;
             $scope.applications = [];
             $scope.search = '';
             $scope.openSearch = false;
@@ -22,9 +21,7 @@ angular.module('samanthaApp')
             var deviceId = $routeParams['deviceId'];
 
             $scope.updateCurrentApplication = function (application) {
-                if (application.packageName == $scope.ctrl.selectedApplication) {
-
-                } else {
+                if (application.packageName != $scope.ctrl.selectedApplication) {
                     $scope.ctrl.selectedApplication = application;
                 }
             }
@@ -84,29 +81,20 @@ angular.module('samanthaApp')
             }, true);
 
             $http.get("/device/" + deviceId).success(function (response) {
-                console.log(response);
+                if (angular.isUndefined(response.device) || response.device == null) {
+                    $location.path('/');
+                }
             });
 
             vertxEventBusService.on(deviceId + '/android.apps.start', function (response) {
-                console.log("start receiving apps -> " + response.data.total);
                 $scope.applications.length = 0;
-                $scope.progressDialogOpened = true;
-                //$("#applicationLoadingProgressBar").get(0).max = response.data.total;
             });
 
 
             vertxEventBusService.on(deviceId + '/android.apps.progress', function (response) {
                 $scope.applications.push(response.data.application);
-                console.log("receiving app -> " + response.data.progress);
-                //$("#applicationLoadingProgressBar").get(0).value = response.data.progress;
             });
 
-            
-
-            vertxEventBusService.on(deviceId + '/android.apps.finish', function () {
-                console.log("finish receiving apps");
-                $scope.progressDialogOpened = false;
-            });
 
             $scope.$on('vertx-eventbus.system.connected', function () {
                 $scope.retrieveApplications();
@@ -116,5 +104,5 @@ angular.module('samanthaApp')
             if (vertxEventBusService.readyState() === 1) {
                 $scope.retrieveApplications();
             }
-            
+
         }]);

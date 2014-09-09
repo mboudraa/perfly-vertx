@@ -11,7 +11,8 @@ var samantha = angular.module('samanthaApp', [
     'LocalStorageModule',
     'monospaced.qrcode',
     'highcharts-ng',
-    'ui.utils'
+    'ui.utils',
+    'timer'
 ])
     .config(function ($routeProvider, $locationProvider, vertxEventBusProvider, localStorageServiceProvider) {
         $routeProvider

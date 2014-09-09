@@ -13,6 +13,6 @@ angular.module('samanthaApp').directive('polymerDialog',[ function() {
             transition:'='
         },
         transclude: true,
-        templateUrl:"../../partials/dialog.html"
+        templateUrl:"../../partials/template/dialog.html"
     }
 }]);

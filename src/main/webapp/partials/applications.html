@@ -1,5 +1,6 @@
 <core-toolbar id="toolbar" class="medium-tall">
     <h1 flex>Samantha</h1>
+
     <div ng-show="ctrl.tabSelected == 0">
         <paper-icon-button id="search-icon" icon="search" role="button"
                            ng-click="openSearch = !openSearch;"></paper-icon-button>
@@ -34,7 +35,8 @@
             </article>
         </div>
         <div id="footer" ng-class="{false: 'show', true:'hide'}[ctrl.selectedApplication === undefined]">
-            <img ng-if="ctrl.selectedApplication" class="footer-logo" ng-src="data:image/jpeg;base64,{{ctrl.selectedApplication.logo}}"
+            <img ng-if="ctrl.selectedApplication" class="footer-logo"
+                 ng-src="data:image/jpeg;base64,{{ctrl.selectedApplication.logo}}"
                  alt="logo {{ctrl.selectedApplication.label}}"/>
             <ul>
                 <li>version : {{ctrl.selectedApplication.version}}</li>
@@ -44,6 +46,25 @@
             </ul>
         </div>
     </div>
+
+
+    <div ng-controller="ProgressDialogCtrl">
+        <polymer-dialog id="'dialog-progress'" opened="ctrl.progressDialogOpened" autoCloseDisabled="'true'"
+                        backdrop="'true'"
+                        layered="'true'" heading="ctrl.title">
+
+            <div ng-if="ctrl.loading">
+                <paper-progress value="{{ctrl.progress}}" max="{{ctrl.total}}" class="paper-progress">
+                </paper-progress>
+
+                <p>{{ctrl.progress}}/{{ctrl.total}}</p>
+
+                <p>{{ctrl.appName}}</p>
+            </div>
+
+        </polymer-dialog>
+    </div>
+
 </section>
 
 <section id="applications-monitoring" ng-show="ctrl.tabSelected == 1">
@@ -94,11 +115,15 @@
 </section>
 
 <div ng-controller="ConnectionDialogCtrl">
-    <polymer-dialog id="'modal-disconnected'" backdrop="'true'" layered="'true'" autoCloseDisabled="'true'" opened="opened" heading="'Device disconnected'" transition="'paper-dialog-transition-center'">
-        Please connect your device to the server or you will be relocated to the device select screen in {{ countdown }} seconds.
+    <polymer-dialog id="'modal-disconnected'" backdrop="'true'" layered="'true'" autoCloseDisabled="'true'"
+                    opened="opened" heading="'Device disconnected'" transition="'paper-dialog-transition-center'">
+        Please connect your device to the server or you will be relocated to the device select screen in
+        <timer autostart="false" countDown="countDown" max-time-unit="'minute'" interval="1000"
+               finish-callback="onTimerFinished()">
+            {{mminutes}}:{{sseconds}}
+        </timer>
+
     </polymer-dialog>
 </div>
 
-<paper-dialog id='dialog-progress' ng-opened="progressDialogOpened" autoCloseDisabled="true" backdrop="true" layered heading="Loading...">
-    <paper-progress id="applicationLoadingProgressBar"></paper-progress>
-</paper-dialog>
+

@@ -3,35 +3,31 @@
 angular.module('samanthaApp')
     .controller('ConnectionDialogCtrl', ['$scope', 'vertxEventBusService', '$routeParams', '$location', '$timeout',
         function ($scope, vertxEventBusService, $routeParams, $location, $timeout) {
-            var counter = 60 * 5;
-            $scope.countdown = counter;
+
+            var COUNTDOWN = 5 * 60;
+            $scope.countDown = COUNTDOWN;
             $scope.opened = false;
-            var mytimeout;
+            $scope.endTime;
             var deviceId = $routeParams['deviceId'];
 
-            var startCountDown = function () {
-                $scope.countdown = counter;
-                mytimeout = $timeout(startCountDown, 1000);
-                counter--;
-                if (counter < 0) {
-                    $scope.opened = false;
-                    $timeout.cancel(mytimeout);
-                    $location.path('/');
-                }
 
+            $scope.onTimerFinished = function () {
+                $scope.opened = false;
+                $location.path('/');
             }
 
             vertxEventBusService.on('device.connect', function (device) {
                 if (deviceId == device.id) {
                     $scope.opened = false;
-                    $timeout.cancel(mytimeout);
+                    $scope.$broadcast('timer-stop');
+                    $scope.$broadcast('timer-set-countdown', COUNTDOWN);
                 }
             });
 
             vertxEventBusService.on('device.disconnect', function (device) {
                 if (deviceId == device.id) {
                     $scope.opened = true;
-                    startCountDown();
+                    $scope.$broadcast('timer-start');
                 }
             });
         }]);
