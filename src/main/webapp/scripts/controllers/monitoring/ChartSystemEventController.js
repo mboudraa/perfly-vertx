@@ -62,14 +62,14 @@ angular.module('samanthaApp')
                 var sysdump = response.data;
                 console.log(sysdump);
 
-                if (!angular.isUndefined(sysdump.dalvik)) {
+                if (!angular.isUndefined(sysdump.type)) {
                     $scope.chartSystemEventConfig.options.xAxis.plotLines.push({
                         value: sysdump.time,
                         color: 'red',
                         width: 1,
                         dashStyle: 'longdashdot',
                         label: {
-                            text: 'XXXX',
+                            text: sysdump.type,
                             rotation: 90
                         }
                     });

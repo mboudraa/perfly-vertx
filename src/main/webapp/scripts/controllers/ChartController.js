@@ -22,13 +22,15 @@ angular.module('samanthaApp')
 
             vertxEventBusService.on('vertx.monitoring.start', function (response) {
                 if (response.deviceId === deviceId) {
-                    ChartService.startUpdatingCharts();    
+                    ChartService.startUpdatingCharts();
+                    ChartService.startUpdatingMasterChart();       
                 }                             
             });
 
             vertxEventBusService.on('vertx.monitoring.stop', function (response) {
                 if (response.deviceId === deviceId) {
-                    ChartService.stopUpdatingCharts();    
+                    ChartService.stopUpdatingCharts();   
+                    ChartService.stopUpdatingMasterChart();    
                 }                             
             });
             
