@@ -32,6 +32,7 @@ class MQTTMobileVerticle extends Verticle implements MqttCallback {
         logger = container.logger
 
         container.deployWorkerVerticle("groovy:${DeviceWorkerVerticle.class.name}")
+        container.deployWorkerVerticle("groovy:${ApplicationsWorkerVerticle.class.name}")
 
         configure container.config
 
@@ -147,6 +148,14 @@ class MQTTMobileVerticle extends Verticle implements MqttCallback {
             address = "device.disconnect"
         }
         vertx.eventBus.publish(address, message)
+
+        if (address.contains("android.apps.start")) {
+            vertx.eventBus.publish("android.app.cache.clear", message)
+        }
+
+        if (address.contains("android.apps.progress")) {
+            vertx.eventBus.publish("android.app.cache.add", message)
+        }
     }
 
     @Override

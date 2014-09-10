@@ -48,22 +48,20 @@
     </div>
 
 
-    <div ng-controller="ProgressDialogCtrl">
-        <polymer-dialog id="'dialog-progress'" opened="ctrl.progressDialogOpened" autoCloseDisabled="'true'"
+        <polymer-dialog id="'dialog-progress'" opened="progressDialog.opened" autoCloseDisabled="'true'"
                         backdrop="'true'"
-                        layered="'true'" heading="ctrl.title">
+                        layered="'true'" heading="progressDialog.title">
 
-            <div ng-if="ctrl.loading">
-                <paper-progress value="{{ctrl.progress}}" max="{{ctrl.total}}" class="paper-progress">
+            <div ng-if="progressDialog.loading">
+                <paper-progress value="{{progressDialog.progress}}" max="{{progressDialog.total}}" class="paper-progress">
                 </paper-progress>
 
-                <p>{{ctrl.progress}}/{{ctrl.total}}</p>
+                <p>{{progressDialog.progress}}/{{progressDialog.total}}</p>
 
-                <p>{{ctrl.appName}}</p>
+                <p>{{progressDialog.appName}}</p>
             </div>
 
         </polymer-dialog>
-    </div>
 
 </section>
 

@@ -6,34 +6,34 @@ angular.module('samanthaApp')
 
             var deviceId = $routeParams['deviceId'];
 
-            $scope.ctrl = {
+            $scope.progressDialog = {
                 loading: false,
                 title: "Waiting for Device...",
                 total: 0,
                 progress: 0,
                 appName: '',
-                progressDialogOpened: true
+                opened: true
             };
 
             vertxEventBusService.on(deviceId + '/android.apps.start', function (response) {
-                $scope.ctrl.total = response.data.total;
-                $scope.ctrl.title = "Getting List of Installed Apps...";
-                $scope.ctrl.loading = true;
+                $scope.progressDialog.total = response.data.total;
+                $scope.progressDialog.title = "Getting List of Installed Apps...";
+                $scope.progressDialog.loading = true;
             });
 
 
             vertxEventBusService.on(deviceId + '/android.apps.progress', function (response) {
-                $scope.ctrl.progress = response.data.progress;
-                $scope.ctrl.appName = response.data.application.label
+                $scope.progressDialog.progress = response.data.progress;
+                $scope.progressDialog.appName = response.data.application.label
             });
 
             vertxEventBusService.on(deviceId + '/android.apps.finish', function () {
-                $scope.ctrl.progressDialogOpened = false;
+                $scope.progressDialog.open = false;
             });
 
             vertxEventBusService.on('device.disconnect', function (device) {
                 if (deviceId == device.id) {
-                    $scope.ctrl.progressDialogOpened = false;
+                    $scope.progressDialog.open = false;
                 }
             });
 

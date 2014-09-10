@@ -1,5 +1,4 @@
 package com.samantha.vertx
-
 import org.vertx.groovy.core.eventbus.Message
 import org.vertx.groovy.core.http.HttpServer
 import org.vertx.groovy.core.http.HttpServerRequest
@@ -84,24 +83,57 @@ class WebServerVerticle extends Verticle {
             req.response.sendFile("${webRoot}/${config.get("index_page", DEFAULT_INDEX_PAGE)}")
         }
 
-        matcher.get("/config") { HttpServerRequest req ->
-            vertx.eventBus.send("mqtt.ip", null) { Message message ->
-                req.response.end(Json.encode(["ip": message.body()]))
-            }
-        }
-
-        matcher.get("/device/:deviceId") { HttpServerRequest req ->
-            vertx.eventBus.send("vertx.device.get", req.params.get("deviceId")) { Message message ->
-                req.response.end(Json.encode(["device": message.body()]))
-            }
-        }
-
         matcher.getWithRegEx("^\\/(polymer|images|partials|scripts|styles)\\/.*") { HttpServerRequest req ->
             req.response.sendFile("${webRoot}/${req.path.substring(1)}")
         }
 
         matcher.noMatch { req ->
             req.response.sendFile("${webRoot}/${config.get("error_page", DEFAULT_ERROR_PAGE)}")
+        }
+
+        matcher.get("/config") { HttpServerRequest req ->
+            vertx.eventBus.send("mqtt.ip", null) { Message message ->
+                req.response.end(Json.encode(["ip": message.body()]))
+            }
+        }
+
+        matcher.get("/devices") { HttpServerRequest req ->
+            vertx.eventBus.send("vertx.devices.get", null) { Message message ->
+                req.response.end(Json.encode(message.body()))
+            }
+        }
+
+        matcher.get("/devices/:deviceId") { HttpServerRequest req ->
+            vertx.eventBus.send("vertx.device.get", req.params.get("deviceId")) { Message message ->
+                req.response.end(Json.encode(["device": message.body()]))
+            }
+        }
+
+        matcher.get("/devices/:deviceId/apps") { HttpServerRequest req ->
+            def deviceId = req.params.get("deviceId")
+            vertx.eventBus.send("android.app.cache.list", [deviceId: deviceId]) { Message message ->
+                def response = message.body().applications
+                if (!response.isEmpty()) {
+                    req.response.end(Json.encode(response))
+                } else {
+                    req.response.with {
+                        statusCode = 404
+                        statusMessage = "No apps found in cache for this device"
+                        end()
+                    }
+                    vertx.eventBus.publish("vertx.apps.get", [
+                            deviceId    : deviceId,
+                            forceRefresh: false
+                    ]);
+
+                }
+            }
+        }
+
+        matcher.get("/devices/:deviceId/apps/:packageName") { HttpServerRequest req ->
+            vertx.eventBus.send("android.app.cache.get", [deviceId: req.params.get("deviceId"), packageName: req.params.get("packageName")]) { Message message ->
+                req.response.end(Json.encode(["application": message.body()]))
+            }
         }
     }
 

@@ -14,6 +14,17 @@ angular.module('samanthaApp')
                 selectedApplication: undefined,
                 fabIcon: PLAY_ICON
             };
+
+            $scope.progressDialog = {
+                loading: false,
+                title: "Waiting for Device...",
+                total: 0,
+                progress: 0,
+                appName: '',
+                opened: false
+            };
+
+
             $scope.applications = [];
             $scope.search = '';
             $scope.openSearch = false;
@@ -43,13 +54,14 @@ angular.module('samanthaApp')
                 $scope.ctrl.monitoredApplication = application;
                 $scope.ctrl.tabSelected = 1;
                 $scope.ctrl.monitoring = true;
+                $location.search("monitoring", application.packageName);
                 vertxEventBusService.publish("vertx.monitoring.start", {
                     deviceId: deviceId,
                     packageName: application.packageName
                 });
             }
 
-            $scope.retrieveApplications = function (forceRefresh) {
+            $scope.refreshApplications = function (forceRefresh) {
                 forceRefresh = forceRefresh ? forceRefresh : false;
                 vertxEventBusService.publish("vertx.apps.get", {
                     deviceId: deviceId,
@@ -80,29 +92,62 @@ angular.module('samanthaApp')
 
             }, true);
 
-            $http.get("/device/" + deviceId).success(function (response) {
-                if (angular.isUndefined(response.device) || response.device == null) {
-                    $location.path('/');
-                }
-            });
-
             vertxEventBusService.on(deviceId + '/android.apps.start', function (response) {
                 $scope.applications.length = 0;
+                $scope.progressDialog.total = response.data.total;
+                $scope.progressDialog.title = "Getting List of Installed Apps...";
+                $scope.progressDialog.loading = true;
             });
 
 
             vertxEventBusService.on(deviceId + '/android.apps.progress', function (response) {
                 $scope.applications.push(response.data.application);
+                if ($scope.progressDialog.opened === false) {
+                    $scope.progressDialog.total = response.data.total;
+                    $scope.progressDialog.title = "Getting List of Installed Apps...";
+                    $scope.progressDialog.loading = true;
+                    $scope.progressDialog.opened = true
+                }
+                $scope.progressDialog.progress = response.data.progress;
+                $scope.progressDialog.appName = response.data.application.label
             });
 
-
-            $scope.$on('vertx-eventbus.system.connected', function () {
-                $scope.retrieveApplications();
+            vertxEventBusService.on(deviceId + '/android.apps.finish', function () {
+                $scope.progressDialog.opened = false;
             });
 
+            vertxEventBusService.on('device.disconnect', function (device) {
+                if (deviceId == device.id) {
+                    $scope.progressDialog.opened = false;
+                }
+            });
 
-            if (vertxEventBusService.readyState() === 1) {
-                $scope.retrieveApplications();
+            var packageName = $routeParams["monitoring"];
+            if (!angular.isUndefined(packageName) && packageName != null) {
+                $http.get("/devices/" + deviceId + "/apps/" + packageName)
+                    .success(function (response) {
+                        var application = response.application;
+                        if (application != null) {
+                            $scope.ctrl.selectedApplication = application;
+                            $scope.startApplication(application);
+                        } else {
+                            $location.search("monitoring", null);
+                        }
+                    })
             }
+
+            $http.get("/devices/" + deviceId + "/apps")
+                .success(function (response) {
+                    $scope.applications = response;
+                })
+                .error(function () {
+                    $scope.progressDialog.opened = true;
+                });
+
+            $http.get("/devices/" + deviceId).success(function (response) {
+                if (angular.isUndefined(response.device) || response.device == null) {
+                    $location.path('/');
+                }
+            });
 
         }]);

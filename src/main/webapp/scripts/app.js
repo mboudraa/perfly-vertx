@@ -22,7 +22,8 @@ var samantha = angular.module('samanthaApp', [
             })
             .when('/:deviceId/apps', {
                 templateUrl: 'partials/applications.html',
-                controller: 'ApplicationsCtrl'
+                controller: 'ApplicationsCtrl',
+                reloadOnSearch: false
             })
             .otherwise({
                 redirectTo: '/'
