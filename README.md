@@ -20,7 +20,7 @@ In case you need to install Mosquitto, the recommended way is via Homebrew:
 		sudo npm install	
 		bower install	
 	
-2. When Bower requests angular and polymer versions, select answer #5 and #1 respectively.
+2. When Bower requests angular version, please select 1.3.0-rc.1.
 
 3. Execute ```grunt```:
 		

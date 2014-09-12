@@ -11,22 +11,23 @@ angular.module('samanthaApp').factory('ChartService', function () {
         startUpdatingCharts: function() {
             var self = this;
             this.UpdatingTimer = setInterval(function () {
-                var max = (new Date()).getTime();
-                var min = max - 60 * 1000;
-                min = self.StartingDate > min ? self.StartingDate : min;   
+                var now = (new Date()).getTime();
+                var max = Math.max(self.StartingDate + 60 * 1000, now);
+                var min = Math.max(self.StartingDate, now - 60 * 1000);
                 self.MemoryChartConfig.xAxis[0].setExtremes(min, max, true); 
                 self.CpuChartConfig.xAxis[0].setExtremes(min, max, true); 
-                self.SystemEventChartConfig.xAxis[0].setExtremes(min, max, true); 
-                self.MasterChartConfig.xAxis[0].setExtremes(self.StartingDate, max, true); 
-            }, 200);
+                self.SystemEventChartConfig.xAxis[0].setExtremes(min, max, true);
+            }, 500);
         },
 
         startUpdatingMasterChart: function() {
             var self = this;
             this.MasterTimer = setInterval(function () {
                 var max = (new Date()).getTime();
-                self.MasterChartConfig.xAxis[0].setExtremes(self.StartingDate, max, true); 
-            }, 600);
+                var min = Math.max(self.StartingDate, max - 60 * 1000);
+                self.MasterChartConfig.xAxis[0].setExtremes(min, max, true); 
+                this.MasterChartConfig.xAxis[0].isDirty = true;
+            }, 1000);
         },
 
         stopUpdatingCharts: function() {

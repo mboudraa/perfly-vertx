@@ -44,6 +44,7 @@ angular.module('samanthaApp')
                 options: {
 
                     chart: {
+                        backgroundColor: '#f0f3f6',
                         zoomType: 'x',
                         animation: Highcharts.svg,
                         events: {
