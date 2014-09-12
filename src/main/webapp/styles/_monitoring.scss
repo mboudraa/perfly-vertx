@@ -8,6 +8,18 @@
   	  padding: 15px 15px 0;
   	}
   }
+
+  .event-box {
+   	ul {
+   	  list-style: none;
+	  list-style-position: inside;
+	  padding-left: 15px;
+
+	  .key {
+	    font-weight: 500;
+	  }
+    }
+  }
 }
 
 .chart-area {

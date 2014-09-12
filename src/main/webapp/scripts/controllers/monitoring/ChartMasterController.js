@@ -43,7 +43,7 @@ angular.module('samanthaApp')
 
                     chart: {
                         backgroundColor: '#f0f3f6',
-                        marginRight: '112px',
+                        marginRight: 124,
                         zoomType: 'x',
                         events: {
                             load: function () {

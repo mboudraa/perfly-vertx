@@ -7,9 +7,15 @@ angular.module('samanthaApp')
             $scope.applicationStatus = {pid: '', state: ''};
             $scope.ChartSelection = {
                 memory: true, 
-                cpu: false,
-                systemEvent: false 
+                cpu: false
             };
+
+            $scope.$watch('ChartSelection', function(newValue, oldValue) {
+                if (!newValue.memory && !newValue.cpu) {
+                    newValue.memory = oldValue.cpu == true;
+                    newValue.cpu = oldValue.memory == true;
+                }
+            }, true);
 
             $scope.resetZoom = function() {
                 ChartService.zoomAllChartsOut();

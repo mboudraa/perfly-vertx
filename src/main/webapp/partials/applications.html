@@ -78,9 +78,6 @@
             </div>
 
             <div class="configuration-box switch-chart">
-                <div class="configuration-box-hint" ng-show="!ChartSelection.memory && !ChartSelection.cpu && !ChartSelection.systemEvent">
-                    Please select one or more choices
-                </div>
                 <div class="checkbox-container">
                     <material-checkbox checked ng-model="ChartSelection.memory">
                         Memory
@@ -88,10 +85,6 @@
 
                     <material-checkbox ng-model="ChartSelection.cpu">
                         CPU
-                    </material-checkbox>
-
-                    <material-checkbox ng-model="ChartSelection.systemEvent">
-                        System Events
                     </material-checkbox>
                 </div>
             </div>

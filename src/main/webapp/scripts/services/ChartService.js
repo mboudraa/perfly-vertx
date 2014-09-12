@@ -26,7 +26,6 @@ angular.module('samanthaApp').factory('ChartService', function () {
                 var max = (new Date()).getTime();
                 var min = Math.max(self.StartingDate, max - 60 * 1000);
                 self.MasterChartConfig.xAxis[0].setExtremes(min, max, true); 
-                this.MasterChartConfig.xAxis[0].isDirty = true;
             }, 1000);
         },
 
