@@ -1,5 +1,13 @@
 .configuration-area {
   @include span-columns(6 on 24);
+
+  .configuration-box {
+  	border-top: 1px #444 solid;
+  	
+  	.configuration-box-hint {
+  	  padding: 15px 15px 0;
+  	}
+  }
 }
 
 .chart-area {

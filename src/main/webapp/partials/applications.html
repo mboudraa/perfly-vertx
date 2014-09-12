@@ -78,17 +78,22 @@
             </div>
 
             <div class="configuration-box switch-chart">
-                <material-checkbox checked ng-model="ChartSelection.memory" aria-label="Checkbox 1">
-                    Memory
-                </material-checkbox>
+                <div class="configuration-box-hint" ng-show="!ChartSelection.memory && !ChartSelection.cpu && !ChartSelection.systemEvent">
+                    Please select one or more choices
+                </div>
+                <div class="checkbox-container">
+                    <material-checkbox checked ng-model="ChartSelection.memory">
+                        Memory
+                    </material-checkbox>
 
-                <material-checkbox ng-model="ChartSelection.cpu" aria-label="Checkbox 2" ng-true-value="'yup'" ng-false-value="'nope'">
-                    CPU
-                </material-checkbox>
+                    <material-checkbox ng-model="ChartSelection.cpu">
+                        CPU
+                    </material-checkbox>
 
-                <material-checkbox ng-model="ChartSelection.systemEvent" aria-label="Disabled checkbox">
-                    System Events
-                </material-checkbox>
+                    <material-checkbox ng-model="ChartSelection.systemEvent">
+                        System Events
+                    </material-checkbox>
+                </div>
             </div>
 
         </div>
@@ -102,7 +107,7 @@
             <article ng-show="ChartSelection.systemEvent" ng-controller="ChartSystemEventCtrl">
                 <highchart id="chart-systemevent" config="chartSystemEventConfig"></highchart>
             </article>  
-            <article ng-controller="ChartMasterCtrl" style="height:100px">
+            <article ng-show="ChartSelection.memory || ChartSelection.cpu || ChartSelection.systemEvent" ng-controller="ChartMasterCtrl" style="height:100px">
                 <highchart id="chart-master" config="chartMasterConfig" style="height:100px"></highchart>
             </article>      
         </div>

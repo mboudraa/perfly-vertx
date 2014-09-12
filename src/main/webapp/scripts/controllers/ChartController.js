@@ -5,7 +5,11 @@ angular.module('samanthaApp')
         function ($scope, vertxEventBusService, $routeParams, $location, $timeout, $http, ChartService) {
 
             $scope.applicationStatus = {pid: '', state: ''};
-            $scope.ChartSelection = {memory: true};
+            $scope.ChartSelection = {
+                memory: true, 
+                cpu: false,
+                systemEvent: false 
+            };
 
             $scope.resetZoom = function() {
                 ChartService.zoomAllChartsOut();
