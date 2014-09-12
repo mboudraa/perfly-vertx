@@ -1,0 +1,53 @@
+[id="toolbar"] {
+  background: #adcc3d;
+  fill: #f1f1f1;
+  color: #f1f1f1;
+}
+
+body {
+  background-color: #f0f3f6;
+}
+
+#search-icon {
+  @include transform(scale(1.5));
+}
+
+#search-input {
+  font-size: 0.8em;
+  color: white;
+  &.collapsable {
+    @include transition(width 400ms ease-out);
+  }
+  &.opened,
+  &.closed:focus {
+    font-size: 0.8em;
+  }
+  &.closed {
+    font-size: 0;
+  }
+}
+
+.dialog-title {
+  font-weight: 300;
+  padding: 10px 0.67em;
+  background-color: #677880;
+  margin: 0;
+  color: white;
+  font-size: 2em;
+}
+
+.timer {
+  display: block;
+  font-size: 2.5em;
+  text-align: center;
+}
+
+.barcode-container {
+  text-align: center;
+}
+
+.toolbar-action {
+  &:hover {
+    background-color: transparent;
+  }
+}

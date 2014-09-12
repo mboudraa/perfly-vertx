@@ -1,0 +1,10 @@
+<material-dialog>
+    <section class="dialog-title">Device Disconnected</section>
+    <section class="dialog-content">
+        <p>Please connect your device to the server or you will be relocated to the device select screen in</p>
+        <timer autostart="false" countdown="timer.countdown" max-time-unit="'minute'" interval="1000"
+               finish-callback="onTimerFinished()">
+            <span class="timer">{{mminutes}}:{{sseconds}}</span>
+        </timer>
+    </section>
+</material-dialog>

@@ -24,6 +24,8 @@ class MQTTMobileVerticle extends Verticle implements MqttCallback {
         OBJECT_MAPPER.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
     }
 
+    private def clientId = UUID.randomUUID().toString().replace("-", "")
+
     MqttClient client
     MqttConnectOptions options
     def logger
@@ -83,7 +85,7 @@ class MQTTMobileVerticle extends Verticle implements MqttCallback {
         def hostname = config.hostname
         def port = config.port ? config.port : DEFAULT_PORT
         def persistence = new MemoryPersistence()
-        def clientId = UUID.randomUUID().toString().replace("-", "")
+
 
         client = new MqttClient("tcp://$hostname:$port", clientId, persistence)
 
@@ -93,13 +95,7 @@ class MQTTMobileVerticle extends Verticle implements MqttCallback {
         options = new MqttConnectOptions()
         options.setKeepAliveInterval(KEEP_ALIVE_INTERVAL)
 
-        try {
-            client.connect(options)
-            logger.info "MQTT connected to $client.serverURI with clientId: $clientId options: $options"
-            client.subscribe("$SUBSCRIBE_PREFIX/#", QOS_DELIVERY_ONLY_ONCE_WITH_CONFIRMATION)
-        } catch (MqttException e) {
-            logger.error "Cannot connect to $client.serverURI with clientId: $clientId, options:$options", e
-        }
+        connectClient()
 
 
     }
@@ -124,13 +120,7 @@ class MQTTMobileVerticle extends Verticle implements MqttCallback {
 
         def i = 0
         while (!client.isConnected()) {
-            try {
-                client?.connect(options)
-                logger.info "connected to $client.serverURI"
-                sleep 1000
-            } catch (Exception e) {
-                logger.error "${i} - cannot reconnect", e
-            }
+            connectClient()
             i++
         }
     }
@@ -161,5 +151,15 @@ class MQTTMobileVerticle extends Verticle implements MqttCallback {
     @Override
     void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
 
+    }
+
+    private void connectClient() {
+        try {
+            client.connect(options)
+            logger.info "MQTT connected to $client.serverURI with clientId: $clientId options: $options"
+            client.subscribe("$SUBSCRIBE_PREFIX/#", QOS_DELIVERY_ONLY_ONCE_WITH_CONFIRMATION)
+        } catch (MqttException e) {
+            logger.error "Cannot connect to $client.serverURI with clientId: $clientId, options:$options", e
+        }
     }
 }

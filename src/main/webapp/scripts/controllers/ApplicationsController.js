@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ApplicationsCtrl', ['$scope', 'vertxEventBusService', '$routeParams', '$location', '$timeout', '$http',
-        function ($scope, vertxEventBusService, $routeParams, $location, $timeout, $http) {
+    .controller('ApplicationsCtrl', ['$scope', 'vertxEventBusService', '$routeParams', '$location', '$timeout', '$http', 'ChartService', '$materialDialog',
+        function ($scope, vertxEventBusService, $routeParams, $location, $timeout, $http, ChartService, $materialDialog) {
 
             var PLAY_ICON = "av:play-arrow";
             var STOP_ICON = "av:stop";
@@ -25,11 +25,58 @@ angular.module('samanthaApp')
             };
 
 
+
             $scope.applications = [];
             $scope.search = '';
             $scope.openSearch = false;
 
             var deviceId = $routeParams['deviceId'];
+
+            var COUNTDOWN = 5 * 60;
+            $scope.timer = {countdown: COUNTDOWN};
+
+
+            $scope.openConnectionDialog = function () {
+                $materialDialog({
+                    clickOutsideToClose: false,
+                    escapeToClose: false,
+                    locals: {
+                        deviceId: deviceId,
+                    },
+                    templateUrl: '../../partials/template/connectionDialog.html',
+                    controller: ['$scope', '$hideDialog', 'vertxEventBusService', 'deviceId',
+                        function ($scope, $hideDialog, vertxEventBusService, deviceId) {
+
+                            $scope.$broadcast('timer-start');
+
+                            $scope.close = function () {
+                                $hideDialog();
+                            };
+
+                            $scope.onTimerFinished = function () {
+                                $hideDialog();
+                                $location.path('/');
+                            }
+
+                            vertxEventBusService.on('device.connect', function (device) {
+                                if (deviceId == device.id) {
+                                    $hideDialog();
+                                    $scope.$broadcast('timer-stop');
+                                    $scope.$broadcast('timer-set-countdown', COUNTDOWN);
+                                }
+                            });
+
+
+                        }]
+                });
+            };
+
+            vertxEventBusService.on('device.disconnect', function (device) {
+                if (deviceId == device.id) {
+                    $scope.openConnectionDialog();
+                }
+            });
+
 
             $scope.updateCurrentApplication = function (application) {
                 if (application.packageName != $scope.ctrl.selectedApplication) {
@@ -124,12 +171,15 @@ angular.module('samanthaApp')
 
             var packageName = $routeParams["monitoring"];
             if (!angular.isUndefined(packageName) && packageName != null) {
+
                 $http.get("/devices/" + deviceId + "/apps/" + packageName)
                     .success(function (response) {
                         var application = response.application;
                         if (application != null) {
                             $scope.ctrl.selectedApplication = application;
+                            $scope.stopApplication();
                             $scope.startApplication(application);
+                            ChartService.zoomAllChartsOut();
                         } else {
                             $location.search("monitoring", null);
                         }

@@ -1,31 +1,27 @@
-<core-toolbar id="toolbar">
-    <h1 flex>Samantha</h1>
-    <paper-icon-button icon="settings-remote" role="button" ng-click="settingsDialogOpened=true"></paper-icon-button>
-</core-toolbar>
+<material-toolbar id="toolbar">
+    <div class="material-toolbar-tools">
+        <img src="../images/perfly.svg" width="122" height="51"></img>
+        <span flex></span>
+        <material-button class="toolbar-action" ng-click="openSettingsDialog($event)">
+            <i class="fa fa-ellipsis-h fa-2x fa-rotate-90"></i>
+        </material-button>
+    </div>
+</material-toolbar>
 
 <section class="devices-section">
-    <article ng-show="!devices.length">
-        <div class="no-device-container">
-            <p>
-                No connected device found.
-            </p>
-            <p>
-                Please launch the client application on your device and connect to {{baseUrl}}
-            </p>
-            <p>
-                Or scan the following barcode:
-            </p>
-            <div class="barcode-container">
-                <qrcode data="{{baseUrl}}" size="180"></qrcode>
-            </div>
-        </div>
-    </article>
     <article class="tile device-tile" ng-repeat="device in devices"
              ng-click="showApps(device)" ng-class="connected">
-        <div class="title">{{device.manufacturer}} {{device.model}}</div>
-        <img class="device-logo" src="../images/device.svg" width="auto" height="48"/>
 
-        <div>
+        <div class="device-tile-header">
+            <div class="fa-stack fa-lg fa-4x">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-mobile fa-stack-1x fa-inverse device-logo"></i>
+            </div>
+
+            <div class="title">{{device.manufacturer}} {{device.model}}</div>
+        </div>
+
+        <div class="device-tile-content">
             <div class="version-name">Android {{device.versionName}}</div>
             <div class="screen-size">{{device.dimension.x}}x{{device.dimension.y}}</div>
         </div>
@@ -33,16 +29,3 @@
     </article>
 
 </section>
-
-<paper-dialog id='dialog-settings' ng-opened="settingsDialogOpened" backdrop="true" layered heading="Settings">
-    <p>
-        Please launch the client application on your device and connect to {{baseUrl}}
-    </p>
-    <p>
-        Or scan the following barcode:
-    </p>
-    <div class="barcode-container">
-        <qrcode data="{{baseUrl}}" size="180"></qrcode>
-    </div>
-    <paper-button label="Close" dismissive></paper-button>
-</paper-dialog>

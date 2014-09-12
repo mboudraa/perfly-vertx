@@ -22,7 +22,8 @@ module.exports = function (grunt) {
         yeoman: {
             // configurable paths
             app: require('./bower.json').appPath || '.',
-            dist: './../resources/public'
+            dist: './../resources/public',
+            name: 'prefly'
         },
         watch: {
             webapp: {
@@ -117,7 +118,9 @@ module.exports = function (grunt) {
                     "bower_components/lodash/dist/lodash.compat.min.js",
                     "bower_components/highstock-release/highstock.src.js",
                     "bower_components/highcharts-ng/dist/highcharts-ng.min.js",
-                    "bower_components/angular-timer/dist/angular-timer.min.js"
+                    "bower_components/angular-timer/dist/angular-timer.min.js",
+                    "bower_components/angular-animate/angular-animate.min.js",
+                    "bower_components/angular-material/angular-material.min.js"
                 ],
 
                 dest: "<%= yeoman.dist %>/scripts/libs.js"
@@ -129,6 +132,17 @@ module.exports = function (grunt) {
                     "bower_components/ng-polymer-elements/ng-polymer-elements.js"
                 ],
                 dest: "<%= yeoman.dist %>/scripts/polymer.js"
+            },
+
+            css: {
+                cwd: '<%= yeoman.app %>',
+                src: [
+                    "bower_components/angular-material/angular-material.min.css",
+                    "<%= yeoman.app %>/.tmp/styles/*.css",
+                    "<%= yeoman.app %>/.tmp/styles/sass/*.css"
+                ],
+
+                dest: "<%= yeoman.dist %>/styles/<%= yeoman.name %>.css"
             }
         },
 
@@ -153,7 +167,7 @@ module.exports = function (grunt) {
                         expand: true,
                         cwd: '<%= yeoman.app %>/styles',
                         src: ['*.scss'],
-                        dest: '<%= yeoman.dist %>/styles',
+                        dest: '<%= yeoman.app %>/.tmp/styles/sass',
                         ext: '.css'
                     }
                 ],
@@ -168,7 +182,7 @@ module.exports = function (grunt) {
                         expand: true,
                         cwd: '<%= yeoman.app %>/styles',
                         src: ['*.scss'],
-                        dest: '<%= yeoman.dist %>/styles',
+                        dest: '<%= yeoman.app %>/.tmp/styles/sass',
                         ext: '.css'
                     }
                 ],
@@ -250,8 +264,8 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'clean:dist',
         'autoprefixer',
-        'concat',
         'sass:dist',
+        'concat',
         'copy:dist',
         'rev',
         'clean:tmp'
@@ -261,8 +275,8 @@ module.exports = function (grunt) {
     grunt.registerTask('predev', function () {
         return grunt.task.run([
             'clean:dist',
-            'concat',
             'sass:dev',
+            'concat',
             'copy:dev',
             'vulcanize'
 

@@ -1,4 +1,5 @@
 package com.samantha.vertx
+
 import org.vertx.groovy.core.eventbus.Message
 import org.vertx.groovy.core.http.HttpServer
 import org.vertx.groovy.core.http.HttpServerRequest
@@ -83,7 +84,7 @@ class WebServerVerticle extends Verticle {
             req.response.sendFile("${webRoot}/${config.get("index_page", DEFAULT_INDEX_PAGE)}")
         }
 
-        matcher.getWithRegEx("^\\/(polymer|images|partials|scripts|styles)\\/.*") { HttpServerRequest req ->
+        matcher.getWithRegEx("^\\/(polymer|images|partials|scripts|styles|fonts)\\/.*") { HttpServerRequest req ->
             req.response.sendFile("${webRoot}/${req.path.substring(1)}")
         }
 

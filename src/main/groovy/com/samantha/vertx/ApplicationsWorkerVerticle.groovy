@@ -9,6 +9,7 @@ class ApplicationsWorkerVerticle extends Verticle {
 
     def logger
     ConcurrentHashMap applications = new ConcurrentHashMap()
+    ConcurrentHashMap timers = new ConcurrentHashMap()
 
     def start() {
         logger = container.logger
@@ -16,8 +17,9 @@ class ApplicationsWorkerVerticle extends Verticle {
                 .registerHandler("android.app.cache.add", this.&onAddApplicationToCache)
                 .registerHandler("android.app.cache.clear", this.&onClearCache)
                 .registerHandler("android.app.cache.get", this.&onGetApplicationFromCache)
-                .registerHandler("device.disconnect", this.&onDeviceDisconnected)
                 .registerHandler("android.app.cache.list", this.&onListApplicationFromCache)
+                .registerHandler("device.disconnect", this.&onDeviceDisconnected)
+                .registerHandler("device.connect", this.&onDeviceConnected)
     }
 
 
@@ -51,8 +53,23 @@ class ApplicationsWorkerVerticle extends Verticle {
     }
 
     def onDeviceDisconnected(Message message) {
-        def device = message.body()
-        clearCacheForDevice(device.id)
+        def deviceId = message.body().id
+
+        long timerId = vertx.setTimer(5 * 60 * 1000) { timerId ->
+            def device = message.body()
+            clearCacheForDevice(deviceId)
+            timers.remove(deviceId)
+        }
+        timers.put(deviceId, timerId)
+    }
+
+    def onDeviceConnected(Message message) {
+        def deviceId = message.body().id
+        def timerId = timers.get(deviceId)
+        if (timerId) {
+            vertx.cancelTimer(timerId)
+            timers.remove(deviceId)
+        }
     }
 
 

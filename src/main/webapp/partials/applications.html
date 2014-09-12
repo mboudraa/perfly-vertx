@@ -1,6 +1,6 @@
 <core-toolbar id="toolbar" class="medium-tall">
-    <h1 flex>Samantha</h1>
-
+    <img src="../images/perfly.svg" width="122" height="52"></img>
+    <span flex></span>
     <div ng-show="ctrl.tabSelected == 0">
         <paper-icon-button id="search-icon" icon="search" role="button"
                            ng-click="openSearch = !openSearch;"></paper-icon-button>
@@ -46,7 +46,6 @@
             </ul>
         </div>
     </div>
-
 
         <polymer-dialog id="'dialog-progress'" opened="progressDialog.opened" autoCloseDisabled="'true'"
                         backdrop="'true'"
@@ -112,16 +111,5 @@
     </div>
 </section>
 
-<div ng-controller="ConnectionDialogCtrl">
-    <polymer-dialog id="'modal-disconnected'" backdrop="'true'" layered="'true'" autoCloseDisabled="'true'"
-                    opened="opened" heading="'Device disconnected'" transition="'paper-dialog-transition-center'">
-        Please connect your device to the server or you will be relocated to the device select screen in
-        <timer autostart="false" countDown="countDown" max-time-unit="'minute'" interval="1000"
-               finish-callback="onTimerFinished()">
-            {{mminutes}}:{{sseconds}}
-        </timer>
-
-    </polymer-dialog>
-</div>
 
 
