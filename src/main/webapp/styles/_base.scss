@@ -1,12 +1,12 @@
 html, body, .container, [id="scroll-header"] {
   margin: 0;
-  min-height: 100%;
 }
 
 body {
   font-family: "Roboto", "Helvetica Neue", "sans-serif";
   font-weight: 300;
   position: relative;
+  height: auto;
 }
 
 material-backdrop {
