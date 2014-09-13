@@ -36,11 +36,12 @@
 
 
 #applications-list-container {
-  @include outer-container;  
+  @include outer-container;
+  text-align: center;
 }
 
 #applications-list {
-  @include span-columns(12);
+  @include span-columns($grid-columns);
 }
 
 [id='footer'] {
