@@ -24,7 +24,7 @@ angular.module('samanthaApp').factory('ChartService', function () {
             var self = this;
             this.MasterTimer = setInterval(function () {
                 var max = (new Date()).getTime();
-                var min = Math.max(self.StartingDate, max - 60 * 1000);
+                var min = self.StartingDate;
                 self.MasterChartConfig.xAxis[0].setExtremes(min, max, true); 
             }, 1000);
         },
