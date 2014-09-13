@@ -14,9 +14,9 @@ angular.module('samanthaApp').factory('ChartService', function () {
                 var now = (new Date()).getTime();
                 var max = Math.max(self.StartingDate + 60 * 1000, now);
                 var min = Math.max(self.StartingDate, now - 60 * 1000);
-                self.MemoryChartConfig.xAxis[0].setExtremes(min, max, true); 
-                self.CpuChartConfig.xAxis[0].setExtremes(min, max, true); 
-                self.SystemEventChartConfig.xAxis[0].setExtremes(min, max, true);
+                self.MemoryChartConfig.xAxis[0].setExtremes(min, max, true, true); 
+                self.CpuChartConfig.xAxis[0].setExtremes(min, max, true, true); 
+                self.SystemEventChartConfig.xAxis[0].setExtremes(min, max, true, true);
             }, 500);
         },
 
@@ -25,7 +25,7 @@ angular.module('samanthaApp').factory('ChartService', function () {
             this.MasterTimer = setInterval(function () {
                 var max = (new Date()).getTime();
                 var min = self.StartingDate;
-                self.MasterChartConfig.xAxis[0].setExtremes(min, max, true); 
+                self.MasterChartConfig.xAxis[0].setExtremes(min, max, true, true); 
             }, 1000);
         },
 

@@ -110,23 +110,23 @@ angular.module('samanthaApp')
                         name: 'dalvikLimit',
                         data: [],
                         color: '#FF0000',
-                        pointInterval: 1000,
+                        pointInterval: 500,
                     },
                     {
                         name: 'appTotal',
                         type: 'area',
                         data: [],
-                        pointInterval: 1000,
+                        pointInterval: 500,
                     },
                     {
                         name: 'appNative',
                         data: [],
-                        pointInterval: 1000,
+                        pointInterval: 500,
                     },
                     {
                         name: 'appDalvik',
                         data: [],
-                        pointInterval: 1000,
+                        pointInterval: 500,
                     }
                 ],
 

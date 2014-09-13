@@ -142,9 +142,15 @@ angular.module('samanthaApp')
             }
 
             $scope.stopApplication = function () {
+
+                vertxEventBusService.publish("vertx.monitoring.stop", {
+                    deviceId: deviceId
+                });
+
                 $rootScope.$broadcast("samantha.monitoring.stop", {
                     deviceId: deviceId
                 });  
+
                 $scope.ctrl.monitoring = false;
             }
 
@@ -153,6 +159,11 @@ angular.module('samanthaApp')
                 $scope.ctrl.tabSelected = 1;
                 $scope.ctrl.monitoring = true;
                 $location.search("monitoring", application.packageName);
+
+                vertxEventBusService.publish("vertx.monitoring.start", {
+                    deviceId: deviceId,
+                    packageName: application.packageName
+                });
 
                 $rootScope.$broadcast("samantha.monitoring.start", {
                     deviceId: deviceId,

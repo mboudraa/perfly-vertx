@@ -108,17 +108,17 @@ angular.module('samanthaApp')
                         name: 'cpuTotal',
                         type: 'area',
                         data: [],
-                        pointInterval: 1000
+                        pointInterval: 500
                     },
                     {
                         name: 'cpuUser',
                         data: [],
-                        pointInterval: 1000
+                        pointInterval: 500
                     },
                     {
                         name: 'cpuKernel',
                         data: [],
-                        pointInterval: 1000
+                        pointInterval: 500
                     }
                 ],
 

@@ -6,6 +6,8 @@ angular.module('samanthaApp')
 
             var packageName;
             var series = [];
+            var unevenStepCpu = true;
+            var unevenStepMemory = true;
 
             var deviceId = $routeParams['deviceId'];
 
@@ -23,9 +25,16 @@ angular.module('samanthaApp')
             });
 
             vertxEventBusService.on(deviceId + '/android.monitoring.progress/monitoring', function (response) {
+                
                 var sysdump = response.data;
 
                 if (!angular.isUndefined(sysdump.cpuInfo)) {
+
+                    unevenStepCpu = !unevenStepCpu;
+                    if (unevenStepCpu) {
+                        return;    
+                    }
+              
                     var point = {
                         x: sysdump.time,
                         y: sysdump.cpuInfo.cpuTotal,
@@ -35,6 +44,23 @@ angular.module('samanthaApp')
                     };
                     series[0].addPoint(point, false, false, false);
                 }
+
+                if (!angular.isUndefined(sysdump.memoryInfo)) {
+                    
+                    unevenStepMemory = !unevenStepMemory;
+                    if (unevenStepMemory) {
+                        return;    
+                    }
+
+                    var point = {
+                        x: sysdump.time,
+                        y: sysdump.memoryInfo.appTotal,
+                        marker: {
+                            enabled: false
+                        }
+                    };
+                    series[1].addPoint(point, false, false, false);
+                }
             });
 
             $scope.chartMasterConfig = {
@@ -42,7 +68,6 @@ angular.module('samanthaApp')
                 options: {
 
                     chart: {
-                        marginRight: 124,
                         zoomType: 'x',
                         events: {
                             load: function () {
@@ -87,6 +112,16 @@ angular.module('samanthaApp')
                         title: {
                             text: 'Master'
                         },
+                    },
+                    {
+                        labels: {
+                            align: 'left',
+                            x: 3
+                        },
+                        title: {
+                            text: 'Memory'
+                        },
+                        opposite: true
                     }],
 
                     title: null,
@@ -96,7 +131,14 @@ angular.module('samanthaApp')
                     },
 
                     legend: {
-                        enabled: false
+                        enabled: true,
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'top',
+                        y: 0,
+                        padding: 0,
+                        itemMarginTop: 5,
+                        itemMarginBottom: 5
                     }
                 },
 
@@ -105,6 +147,12 @@ angular.module('samanthaApp')
                         name: 'cpuTotal',
                         data: [],
                         pointInterval: 1000
+                    },
+                    {
+                        name: 'memTotal',
+                        data: [],
+                        pointInterval: 1000,
+                        yAxis: 1
                     }
                 ],
 
