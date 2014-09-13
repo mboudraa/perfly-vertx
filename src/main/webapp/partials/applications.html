@@ -91,17 +91,17 @@
 
         </div>
         <div class="chart-area">
-            <article ng-show="ChartSelection.memory" ng-controller="ChartMemoryCtrl">
-                <highchart id="chart-memory" config="chartMemoryConfig"></highchart>
+            <article class="chart-wrapper" ng-show="ChartSelection.memory" ng-controller="ChartMemoryCtrl">
+                <highchart class="chart" id="chart-memory" config="chartMemoryConfig"></highchart>
             </article>
-            <article ng-show="ChartSelection.cpu" ng-controller="ChartCpuCtrl">
-                <highchart id="chart-cpu" config="chartCpuConfig"></highchart>
+            <article class="chart-wrapper" ng-show="ChartSelection.cpu" ng-controller="ChartCpuCtrl">
+                <highchart class="chart" id="chart-cpu" config="chartCpuConfig"></highchart>
             </article>
-            <article ng-show="ChartSelection.systemEvent" ng-controller="ChartSystemEventCtrl">
-                <highchart id="chart-systemevent" config="chartSystemEventConfig"></highchart>
+            <article class="chart-wrapper" ng-controller="ChartSystemEventCtrl">
+                <highchart class="chart" id="chart-systemevent" config="chartSystemEventConfig"></highchart>
             </article>  
-            <article ng-show="ChartSelection.memory || ChartSelection.cpu || ChartSelection.systemEvent" ng-controller="ChartMasterCtrl" style="height:100px">
-                <highchart id="chart-master" config="chartMasterConfig" style="height:100px"></highchart>
+            <article class="chart-wrapper" ng-controller="ChartMasterCtrl">
+                <highchart class="chart" id="chart-master" config="chartMasterConfig"></highchart>
             </article>      
         </div>
     </div>

@@ -23,7 +23,7 @@ module.exports = function (grunt) {
             // configurable paths
             app: require('./bower.json').appPath || '.',
             dist: './../resources/public',
-            name: 'prefly'
+            name: 'perfly'
         },
         watch: {
             webapp: {

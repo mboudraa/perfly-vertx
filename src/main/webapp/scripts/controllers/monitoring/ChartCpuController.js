@@ -85,8 +85,9 @@ angular.module('samanthaApp')
                     tooltip: {
                         shared: true,
                         crosshairs: true,
-                        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y} %</b><br/>'
-
+                        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y} %</b><br/>',
+                        shadow: false,
+                        hideDelay: 0
                     },
 
                     legend: {

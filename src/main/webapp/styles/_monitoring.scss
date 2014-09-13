@@ -24,7 +24,17 @@
 
 .chart-area {
   @include span-columns(18 on 24);
-}
-.radio-block {
-  display: block;
+
+  .chart-wrapper {
+  	margin-top: 20px;
+  	height: 200px;
+
+  	.chart {
+  	  height: 200px;
+  	}
+
+  	#chart-master {
+  	  height: 100px;
+  	}
+  }
 }
