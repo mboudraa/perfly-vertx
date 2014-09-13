@@ -213,7 +213,6 @@ angular.module('samanthaApp')
                             $scope.ctrl.selectedApplication = application;
                             $scope.stopApplication();
                             $scope.startApplication(application);
-                            ChartService.zoomAllChartsOut();
                         } else {
                             $location.search("monitoring", null);
                         }
