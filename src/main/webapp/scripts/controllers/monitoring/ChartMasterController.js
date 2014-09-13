@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ChartMasterCtrl', ['$scope', 'vertxEventBusService', '$routeParams', 'ChartService',
-        function ($scope, vertxEventBusService, $routeParams, ChartService) {
+    .controller('ChartMasterCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$routeParams', 'ChartService',
+        function ($scope, $rootScope, vertxEventBusService, $routeParams, ChartService) {
 
             var packageName;
             var series = [];

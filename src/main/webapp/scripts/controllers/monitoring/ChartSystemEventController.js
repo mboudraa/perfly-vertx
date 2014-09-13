@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ChartSystemEventCtrl', ['$scope', 'vertxEventBusService', '$routeParams', 'ChartService',
-        function ($scope, vertxEventBusService, $routeParams, ChartService) {
+    .controller('ChartSystemEventCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$routeParams', 'ChartService',
+        function ($scope, $rootScope, vertxEventBusService, $routeParams, ChartService) {
 
             var packageName;
             var series = [];
@@ -16,12 +16,14 @@ angular.module('samanthaApp')
                 });
             };
 
-            vertxEventBusService.on('vertx.monitoring.start', function (response) {
-                if (response.deviceId == deviceId) {
-                    packageName = response.packageName;
+            var onMonitoringStart = $rootScope.$on('samantha.monitoring.start', function(event, args) {
+                if (args.deviceId == deviceId) {
+                    packageName = args.packageName;
                     resetSeries();
                 }
             });
+
+            $scope.$on('$destroy', onMonitoringStart);
 
             vertxEventBusService.on(deviceId + '/android.monitoring.progress/orientation', function (response) {
                 var sysdump = response.data;

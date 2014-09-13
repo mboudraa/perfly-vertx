@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ChartCtrl', ['$scope', 'vertxEventBusService', '$routeParams', '$location', '$timeout', '$http', 'ChartService',
-        function ($scope, vertxEventBusService, $routeParams, $location, $timeout, $http, ChartService) {
+    .controller('ChartCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$routeParams', '$location', '$timeout', '$http', 'ChartService',
+        function ($scope, $rootScope, vertxEventBusService, $routeParams, $location, $timeout, $http, ChartService) {
 
             $scope.applicationStatus = {pid: '', state: ''};
             $scope.ChartSelection = {
@@ -14,8 +14,12 @@ angular.module('samanthaApp')
                 if (!newValue.memory && !newValue.cpu) {
                     newValue.memory = oldValue.cpu == true;
                     newValue.cpu = oldValue.memory == true;
-                }
+                }               
             }, true);
+
+            // $scope.$on('$viewContentLoaded', function(){
+            //     $(window).resize();
+            // });
 
             $scope.resetZoom = function() {
                 ChartService.zoomAllChartsOut();
@@ -31,18 +35,22 @@ angular.module('samanthaApp')
                 }                
             });
 
-            vertxEventBusService.on('vertx.monitoring.start', function (message) {
-                if (message.deviceId === deviceId) {
+            var onMonitoringStart = $rootScope.$on('samantha.monitoring.start', function(event, args) {
+                if (args.deviceId === deviceId) {
                     ChartService.startUpdatingCharts();
                     ChartService.startUpdatingMasterChart();       
-                }                             
+                }  
             });
 
-            vertxEventBusService.on('vertx.monitoring.stop', function (message) {
-                if (message.deviceId === deviceId) {
+            $scope.$on('$destroy', onMonitoringStart);
+
+            var onMonitoringStop = $rootScope.$on('samantha.monitoring.stop', function(event, args) {
+                if (args.deviceId === deviceId) {
                     ChartService.stopUpdatingCharts();   
                     ChartService.stopUpdatingMasterChart();    
-                }                             
+                }    
             });
+
+            $scope.$on('$destroy', onMonitoringStop);
             
         }]);

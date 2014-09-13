@@ -24,7 +24,7 @@ angular.module('samanthaApp')
                 showDialogIfNoDevice()
             });
 
-            $scope.$on('vertx-eventbus.system.connected', function () {
+            $scope.$on('vertx-eventbus.system.connected', function (event, args) {
                 $scope.retrieveDevices();
             });
 

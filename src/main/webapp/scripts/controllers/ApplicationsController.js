@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ApplicationsCtrl', ['$scope', 'vertxEventBusService', '$routeParams', '$location', '$timeout', '$http', 'ChartService', '$materialDialog',
-        function ($scope, vertxEventBusService, $routeParams, $location, $timeout, $http, ChartService, $materialDialog) {
+    .controller('ApplicationsCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$routeParams', '$location', '$timeout', '$http', 'ChartService', '$materialDialog',
+        function ($scope, $rootScope, vertxEventBusService, $routeParams, $location, $timeout, $http, ChartService, $materialDialog) {
 
             var PLAY_ICON = "av:play-arrow";
             var STOP_ICON = "av:stop";
@@ -142,7 +142,9 @@ angular.module('samanthaApp')
             }
 
             $scope.stopApplication = function () {
-                vertxEventBusService.publish("vertx.monitoring.stop", {deviceId: deviceId});
+                $rootScope.$broadcast("samantha.monitoring.stop", {
+                    deviceId: deviceId
+                });  
                 $scope.ctrl.monitoring = false;
             }
 
@@ -151,10 +153,11 @@ angular.module('samanthaApp')
                 $scope.ctrl.tabSelected = 1;
                 $scope.ctrl.monitoring = true;
                 $location.search("monitoring", application.packageName);
-                vertxEventBusService.publish("vertx.monitoring.start", {
+
+                $rootScope.$broadcast("samantha.monitoring.start", {
                     deviceId: deviceId,
                     packageName: application.packageName
-                });
+                });             
             }
 
             $scope.refreshApplications = function (forceRefresh) {
