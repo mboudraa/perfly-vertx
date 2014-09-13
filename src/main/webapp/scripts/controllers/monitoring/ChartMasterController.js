@@ -42,7 +42,6 @@ angular.module('samanthaApp')
                 options: {
 
                     chart: {
-                        backgroundColor: '#f0f3f6',
                         marginRight: 124,
                         zoomType: 'x',
                         events: {
