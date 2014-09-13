@@ -74,11 +74,11 @@ angular.module('samanthaApp')
                         function ($scope, $hideDialog, vertxEventBusService, deviceId) {
 
                             $scope.progressDialog = {
-                                loading: true,
+                                loading: false,
                                 title: "Waiting for Device...",
-                                total: 100,
-                                progress: 57,
-                                appName: 'TOTO'
+                                total: 0,
+                                progress: 0,
+                                appName: ''
                             };
 
                             vertxEventBusService.on(deviceId + '/android.apps.start', function (response) {

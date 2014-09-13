@@ -120,26 +120,17 @@ module.exports = function (grunt) {
                     "bower_components/highcharts-ng/dist/highcharts-ng.min.js",
                     "bower_components/angular-timer/dist/angular-timer.min.js",
                     "bower_components/angular-animate/angular-animate.min.js",
-                    "bower_components/angular-material/angular-material.min.js",
-                    "bower_components/ngprogress/build/ngProgress.min.js"
+                    "bower_components/angular-material/angular-material.min.js"
                 ],
 
                 dest: "<%= yeoman.dist %>/scripts/libs.js"
 
-            },
-            polymer: {
-                cwd: '<%= yeoman.app %>',
-                src: [
-                    "bower_components/ng-polymer-elements/ng-polymer-elements.js"
-                ],
-                dest: "<%= yeoman.dist %>/scripts/polymer.js"
             },
 
             css: {
                 cwd: '<%= yeoman.app %>',
                 src: [
                     "bower_components/angular-material/angular-material.min.css",
-                    "bower_components/ngprogress/ngProgress.css",
                     "<%= yeoman.app %>/.tmp/styles/*.css",
                     "<%= yeoman.app %>/.tmp/styles/sass/*.css"
                 ],
@@ -148,18 +139,6 @@ module.exports = function (grunt) {
             }
         },
 
-        vulcanize: {
-            default: {
-                options: {
-                    strip: true
-                },
-                files: {
-                    '<%= yeoman.dist %>/polymer/polymer.html': [
-                        '<%= yeoman.dist %>/polymer/polymer.html'
-                    ]
-                }
-            }
-        },
 
         // Compiles Sass to CSS and generates necessary files if requested
         sass: {
@@ -227,7 +206,6 @@ module.exports = function (grunt) {
                             'partials/**',
                             'images/**',
                             '*.html',
-                            'polymer/**',
                             'fonts/**'
                         ],
                         dest: '<%= yeoman.dist %>'
@@ -279,9 +257,7 @@ module.exports = function (grunt) {
             'clean:dist',
             'sass:dev',
             'concat',
-            'copy:dev',
-            'vulcanize'
-
+            'copy:dev'
         ]);
     });
 

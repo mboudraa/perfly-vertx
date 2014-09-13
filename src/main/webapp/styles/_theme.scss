@@ -62,7 +62,7 @@ body {
   }
 }
 
-.device-ban {
+.dialog-icon {
   font-size: 1.7em;
 }
 
@@ -86,6 +86,13 @@ material-ink-bar {
   background-color: white;
   border-radius: 5px;
   padding: 10px 0;
+}
+
+.progress {
+  background-color: #adcc3d;
+  height: 4px;
+  @include transition(width 200ms linear);
+
 }
 
 

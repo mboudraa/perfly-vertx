@@ -10,8 +10,6 @@ body {
   min-height: 100%;
 }
 
-//material-backdrop {
-//  height: 100%;
-//  width: 100%;
-//  position: fixed;
-//}
+.material-dialog-container {
+  position: fixed;
+}

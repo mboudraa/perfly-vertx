@@ -1,7 +1,6 @@
 'use strict';
 
 var samantha = angular.module('samanthaApp', [
-    'ng-polymer-elements',
     'ngCookies',
     'ngResource',
     'ngSanitize',
@@ -13,10 +12,9 @@ var samantha = angular.module('samanthaApp', [
     'highcharts-ng',
     'ui.utils',
     'timer',
-    'ngMaterial',
-    'ngProgress'
+    'ngMaterial'
 ])
-    .config(function ($routeProvider, $locationProvider, vertxEventBusProvider, localStorageServiceProvider) {
+    .config(function ($routeProvider, $locationProvider, vertxEventBusProvider) {
         $routeProvider
             .when('/', {
                 templateUrl: 'partials/devices.html',
@@ -35,6 +33,6 @@ var samantha = angular.module('samanthaApp', [
             .useReconnect()
             .useUrlServer('http://localhost:8080');
 
-        localStorageServiceProvider.setPrefix("samantha");
+        //localStorageServiceProvider.setPrefix("samantha");
         //$locationProvider.html5Mode(true);
     });
