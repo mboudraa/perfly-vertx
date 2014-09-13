@@ -13,7 +13,8 @@ var samantha = angular.module('samanthaApp', [
     'highcharts-ng',
     'ui.utils',
     'timer',
-    'ngMaterial'
+    'ngMaterial',
+    'ngProgress'
 ])
     .config(function ($routeProvider, $locationProvider, vertxEventBusProvider, localStorageServiceProvider) {
         $routeProvider

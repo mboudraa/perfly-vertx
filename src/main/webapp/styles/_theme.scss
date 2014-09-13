@@ -1,4 +1,4 @@
-[id="toolbar"] {
+#toolbar {
   background: #adcc3d;
   fill: #f1f1f1;
   color: #f1f1f1;
@@ -9,22 +9,30 @@ body {
   background-color: #f0f3f6;
 }
 
-#search-icon {
-  @include transform(scale(1.5));
+.search-icon {
+  color: white;
+  font-size: 1.5em;
+  cursor: pointer;
 }
 
-#search-input {
-  font-size: 0.8em;
+.search-input {
+
   color: white;
+
   &.collapsable {
-    @include transition(width 400ms ease-out);
+    @include transition(all 400ms ease-out);
   }
+
   &.opened,
   &.closed:focus {
-    font-size: 0.8em;
+    display: inline;
+    width: 15em;
+    border-color: white;
   }
   &.closed {
-    font-size: 0;
+    display: inline;
+    width: 0;
+    border-color: transparent;
   }
 }
 
@@ -48,7 +56,36 @@ body {
 }
 
 .toolbar-action {
+  color: white;
   &:hover {
     background-color: transparent;
   }
 }
+
+.device-ban {
+  font-size: 1.7em;
+}
+
+material-tab {
+  background-color: #adcc3d;
+  padding: 5px;
+
+  .material-ink-ripple {
+    color: #677880;
+  }
+}
+
+material-ink-bar {
+  background-color: #677880;
+  height: 3px;
+}
+
+.content-container {
+  position: relative;
+  margin: 20px 40px;
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px 0;
+}
+
+

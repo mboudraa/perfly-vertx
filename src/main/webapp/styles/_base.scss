@@ -7,10 +7,11 @@ body {
   font-weight: 300;
   position: relative;
   height: auto;
+  min-height: 100%;
 }
 
-material-backdrop {
-  height: 100%;
-  width: 100%;
-  position: fixed;
-}
+//material-backdrop {
+//  height: 100%;
+//  width: 100%;
+//  position: fixed;
+//}

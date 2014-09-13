@@ -1,0 +1,18 @@
+<material-dialog>
+    <section class="dialog-title">
+        <i class="fa fa-download fa-2x"></i>
+        {{progressDialog.title}}
+    </section>
+    <section class="dialog-content">
+        <div ng-if="progressDialog.loading">
+            <ngProgress></ngProgress>
+            <!--<paper-progress value="{{progressDialog.progress}}" max="{{progressDialog.total}}"-->
+                            <!--class="paper-progress">-->
+            <!--</paper-progress>-->
+
+            <p>{{progressDialog.progress}}/{{progressDialog.total}}</p>
+
+            <p>{{progressDialog.appName}}</p>
+        </div>
+    </section>
+</material-dialog>

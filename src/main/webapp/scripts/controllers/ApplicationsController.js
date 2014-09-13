@@ -15,23 +15,13 @@ angular.module('samanthaApp')
                 fabIcon: PLAY_ICON
             };
 
-            $scope.progressDialog = {
-                loading: false,
-                title: "Waiting for Device...",
-                total: 0,
-                progress: 0,
-                appName: '',
-                opened: false
-            };
-
-
 
             $scope.applications = [];
             $scope.search = '';
             $scope.openSearch = false;
 
             var deviceId = $routeParams['deviceId'];
-
+            var progressDialogOpened = false;
             var COUNTDOWN = 5 * 60;
             $scope.timer = {countdown: COUNTDOWN};
 
@@ -71,12 +61,71 @@ angular.module('samanthaApp')
                 });
             };
 
+            $scope.openProgressDialog = function () {
+                progressDialogOpened = true;
+                $materialDialog({
+                    clickOutsideToClose: false,
+                    escapeToClose: false,
+                    templateUrl: '../../partials/template/progressDialog.html',
+                    locals: {
+                        deviceId: deviceId
+                    },
+                    controller: ['$scope', '$hideDialog', 'vertxEventBusService', 'deviceId',
+                        function ($scope, $hideDialog, vertxEventBusService, deviceId) {
+
+                            $scope.progressDialog = {
+                                loading: true,
+                                title: "Waiting for Device...",
+                                total: 100,
+                                progress: 57,
+                                appName: 'TOTO'
+                            };
+
+                            vertxEventBusService.on(deviceId + '/android.apps.start', function (response) {
+                                $scope.progressDialog.total = response.data.total;
+                                $scope.progressDialog.title = "Getting List of Installed Apps...";
+                                $scope.progressDialog.loading = true;
+                            });
+
+
+                            vertxEventBusService.on(deviceId + '/android.apps.progress', function (response) {
+                                if ($scope.progressDialog.loading === false) {
+                                    $scope.progressDialog.total = response.data.total;
+                                    $scope.progressDialog.title = "Getting List of Installed Apps...";
+                                    $scope.progressDialog.loading = true;
+                                }
+                                $scope.progressDialog.progress = response.data.progress;
+                                $scope.progressDialog.appName = response.data.application.label
+                            });
+
+                            vertxEventBusService.on(deviceId + '/android.apps.finish', function () {
+                                $hideDialog();
+                            });
+
+                            vertxEventBusService.on('device.disconnect', function (device) {
+                                $hideDialog();
+                            });
+
+                        }]
+                });
+            };
+
             vertxEventBusService.on('device.disconnect', function (device) {
                 if (deviceId == device.id) {
                     $scope.openConnectionDialog();
                 }
             });
 
+            vertxEventBusService.on(deviceId + '/android.apps.progress', function (response) {
+                $scope.applications.push(response.data.application);
+                if (!progressDialogOpened) {
+                    $scope.openProgressDialog();
+                }
+            });
+
+            vertxEventBusService.on(deviceId + '/android.apps.start', function (response) {
+                $scope.applications.length = 0;
+            });
 
             $scope.updateCurrentApplication = function (application) {
                 if (application.packageName != $scope.ctrl.selectedApplication) {
@@ -139,35 +188,6 @@ angular.module('samanthaApp')
 
             }, true);
 
-            vertxEventBusService.on(deviceId + '/android.apps.start', function (response) {
-                $scope.applications.length = 0;
-                $scope.progressDialog.total = response.data.total;
-                $scope.progressDialog.title = "Getting List of Installed Apps...";
-                $scope.progressDialog.loading = true;
-            });
-
-
-            vertxEventBusService.on(deviceId + '/android.apps.progress', function (response) {
-                $scope.applications.push(response.data.application);
-                if ($scope.progressDialog.opened === false) {
-                    $scope.progressDialog.total = response.data.total;
-                    $scope.progressDialog.title = "Getting List of Installed Apps...";
-                    $scope.progressDialog.loading = true;
-                    $scope.progressDialog.opened = true
-                }
-                $scope.progressDialog.progress = response.data.progress;
-                $scope.progressDialog.appName = response.data.application.label
-            });
-
-            vertxEventBusService.on(deviceId + '/android.apps.finish', function () {
-                $scope.progressDialog.opened = false;
-            });
-
-            vertxEventBusService.on('device.disconnect', function (device) {
-                if (deviceId == device.id) {
-                    $scope.progressDialog.opened = false;
-                }
-            });
 
             var packageName = $routeParams["monitoring"];
             if (!angular.isUndefined(packageName) && packageName != null) {
@@ -191,7 +211,7 @@ angular.module('samanthaApp')
                     $scope.applications = response;
                 })
                 .error(function () {
-                    $scope.progressDialog.opened = true;
+                    $scope.openProgressDialog();
                 });
 
             $http.get("/devices/" + deviceId).success(function (response) {
@@ -199,5 +219,7 @@ angular.module('samanthaApp')
                     $location.path('/');
                 }
             });
+
+            //$scope.openProgressDialog();
 
         }]);
