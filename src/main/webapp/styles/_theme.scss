@@ -1,18 +1,66 @@
-#toolbar {
+
+.toolbar {
   background: #adcc3d;
-  fill: #f1f1f1;
-  color: #f1f1f1;
+  position: fixed;
+  top: 0;
+  box-shadow: 0px 5px 30px 0px rgba(10, 10, 10, 0.2);
+}
+
+.search-container {
+  label {
+    display: inline;
+  }
+}
+
+material-toolbar-tools {
   height: 64px;
 }
 
-body {
-  background-color: #f0f3f6;
+.tabs-container {
+  width: 100%;
+  position: fixed;
+  top: 64px;
+  z-index: 1;
+
+  .tab-icon {
+    width: 2.2em;
+    height: 2.2em;
+    vertical-align: middle;
+  }
+  .tab-label {
+    font-size: 1.2em;
+  }
+}
+
+material-tab {
+  background-color: #adcc3d;
+  padding: 5px;
+
+  .material-ink-ripple {
+    color: #677880;
+  }
+}
+
+material-ink-bar {
+  background-color: #677880;
+  height: 3px;
+}
+
+.container {
+  margin-top: 84px;
+
+  &.undertabs {
+    margin-top: 135px;
+  }
+}
+
+.toolbar-icon {
+  color: white;
+  cursor: pointer;
 }
 
 .search-icon {
-  color: white;
   font-size: 1.5em;
-  cursor: pointer;
 }
 
 .search-input {
@@ -66,28 +114,6 @@ body {
   font-size: 1.7em;
 }
 
-material-tab {
-  background-color: #adcc3d;
-  padding: 5px;
-
-  .material-ink-ripple {
-    color: #677880;
-  }
-}
-
-material-ink-bar {
-  background-color: #677880;
-  height: 3px;
-}
-
-.content-container {
-  position: relative;
-  margin: 20px 40px;
-  background-color: white;
-  border-radius: 5px;
-  padding: 10px 0;
-}
-
 .progress {
   background-color: #adcc3d;
   height: 4px;
@@ -95,4 +121,35 @@ material-ink-bar {
 
 }
 
+.fab-icon-play {
+  position: relative;
+  left: 3px;
+}
 
+.fab-icon {
+  font-size: 1.7em;
+}
+
+.tile {
+  display: inline-block;
+  margin: 5px;
+  padding: 2px;
+  width: 20em;
+  height: 15em;
+  background: white;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 2px 2px 14px 0px rgba(22, 24, 29, 0.2);
+  .title {
+    font-size: 2em;
+  }
+
+  .tile-content {
+    background: #ffffff;
+  }
+}
+
+.inline {
+  display: inline;
+}

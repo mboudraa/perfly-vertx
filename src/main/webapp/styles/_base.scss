@@ -1,15 +1,27 @@
-html, body, .container, [id="scroll-header"] {
+html, body, .container {
   margin: 0;
+  background-color: #f0f3f6;
+
 }
 
 body {
   font-family: "Roboto", "Helvetica Neue", "sans-serif";
   font-weight: 300;
-  position: relative;
+  position: absolute;
   height: auto;
   min-height: 100%;
+  top: 0;
+  width: 100%;
 }
 
 .material-dialog-container {
   position: fixed;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.scrollable {
+  overflow: scroll;
 }

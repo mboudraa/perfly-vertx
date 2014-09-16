@@ -10,6 +10,19 @@ angular.module('samanthaApp')
                 cpu: false
             };
 
+            $scope.palette = {
+                options: [
+                    {
+                        target: 'monitoring-container',
+                        alpha: 0.05
+                    },
+                    {
+                        target: 'toolbar-monitoring',
+                        alpha: 1
+                    }
+                ]
+            }
+
             $scope.$watch('ChartSelection', function(newValue, oldValue) {
                 if (!newValue.memory && !newValue.cpu) {
                     newValue.memory = oldValue.cpu == true;

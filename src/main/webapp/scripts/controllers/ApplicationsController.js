@@ -1,30 +1,29 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ApplicationsCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$routeParams', '$location', '$timeout', '$http', 'ChartService', '$materialDialog',
-        function ($scope, $rootScope, vertxEventBusService, $routeParams, $location, $timeout, $http, ChartService, $materialDialog) {
-
-            var PLAY_ICON = "av:play-arrow";
-            var STOP_ICON = "av:stop";
+    .controller('ApplicationsCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$routeParams', '$location', '$http', 'ChartService', '$materialDialog', '$timeout',
+        function ($scope, $rootScope, vertxEventBusService, $routeParams, $location, $http, ChartService, $materialDialog, $timeout) {
 
             $scope.ctrl = {
                 tabSelected: 0,
                 monitoredApplication: undefined,
                 monitoring: false,
-                selectedApplication: undefined,
-                fabIcon: PLAY_ICON
+                monitoringOpened: false,
+                selectedApplicationIndex: -1,
             };
 
 
             $scope.applications = [];
             $scope.search = '';
-            $scope.openSearch = false;
 
             var deviceId = $routeParams['deviceId'];
             var progressDialogOpened = false;
             var COUNTDOWN = 5 * 60;
             $scope.timer = {countdown: COUNTDOWN};
 
+            $scope.getPaletteTarget = function (index) {
+                return [{target: 'tile-header-' + index, alpha: 0.05}];
+            }
 
             $scope.openConnectionDialog = function () {
                 $materialDialog({
@@ -127,20 +126,6 @@ angular.module('samanthaApp')
                 $scope.applications.length = 0;
             });
 
-            $scope.updateCurrentApplication = function (application) {
-                if (application.packageName != $scope.ctrl.selectedApplication) {
-                    $scope.ctrl.selectedApplication = application;
-                }
-            }
-
-            $scope.fabAction = function () {
-                if ($scope.ctrl.fabIcon == STOP_ICON) {
-                    $scope.stopApplication();
-                } else {
-                    $scope.startApplication($scope.ctrl.selectedApplication);
-                }
-            }
-
             $scope.stopApplication = function () {
 
                 vertxEventBusService.publish("vertx.monitoring.stop", {
@@ -149,16 +134,34 @@ angular.module('samanthaApp')
 
                 $rootScope.$broadcast("samantha.monitoring.stop", {
                     deviceId: deviceId
-                });  
+                });
 
                 $scope.ctrl.monitoring = false;
             }
 
+            $scope.endMonitoring = function(){
+                $scope.stopApplication()
+                $scope.ctrl.monitoringOpened = false;
+                $timeout(function(){
+                    $scope.ctrl.selectedApplicationIndex = -1;
+                    $scope.ctrl.monitoredApplication=undefined;
+                },400)
+            }
+
+            $scope.startMonitoring = function(application){
+                $scope.ctrl.monitoringOpened = false;
+                $timeout(function(){
+                    $scope.startApplication(application)
+                },500)
+            }
+
             $scope.startApplication = function (application) {
+                $scope.stopApplication();
+                $scope.ctrl.monitoringOpened = true;
                 $scope.ctrl.monitoredApplication = application;
                 $scope.ctrl.tabSelected = 1;
                 $scope.ctrl.monitoring = true;
-                $location.search("monitoring", application.packageName);
+                //$location.search("monitoring", application.packageName);
 
                 vertxEventBusService.publish("vertx.monitoring.start", {
                     deviceId: deviceId,
@@ -168,7 +171,8 @@ angular.module('samanthaApp')
                 $rootScope.$broadcast("samantha.monitoring.start", {
                     deviceId: deviceId,
                     packageName: application.packageName
-                });             
+                });
+
             }
 
             $scope.refreshApplications = function (forceRefresh) {
@@ -191,33 +195,6 @@ angular.module('samanthaApp')
                 || (app.packageName.toLowerCase().indexOf($scope.search.toLowerCase()) > -1);
             }
 
-            $scope.$watch("ctrl", function (ctrl) {
-
-                var icon = PLAY_ICON;
-                if (ctrl.monitoring && (ctrl.tabSelected == 1 || ctrl.tabSelected == 0 && ctrl.selectedApplication.packageName == ctrl.monitoredApplication.packageName)) {
-                    icon = STOP_ICON;
-                }
-
-                $scope.ctrl.fabIcon = icon;
-
-            }, true);
-
-
-            var packageName = $routeParams["monitoring"];
-            if (!angular.isUndefined(packageName) && packageName != null) {
-
-                $http.get("/devices/" + deviceId + "/apps/" + packageName)
-                    .success(function (response) {
-                        var application = response.application;
-                        if (application != null) {
-                            $scope.ctrl.selectedApplication = application;
-                            $scope.stopApplication();
-                            $scope.startApplication(application);
-                        } else {
-                            $location.search("monitoring", null);
-                        }
-                    })
-            }
 
             $http.get("/devices/" + deviceId + "/apps")
                 .success(function (response) {

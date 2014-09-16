@@ -1,4 +1,4 @@
-angular.module('samanthaApp').factory('ChartService', function () {
+angular.module('samanthaApp').factory('ChartService', ['$interval', function ($interval) {
     return {
         MemoryChartConfig: null,
         CpuChartConfig: null,
@@ -10,7 +10,7 @@ angular.module('samanthaApp').factory('ChartService', function () {
 
         startUpdatingCharts: function() {
             var self = this;
-            this.UpdatingTimer = setInterval(function () {
+            this.UpdatingTimer = $interval(function () {
                 var now = (new Date()).getTime();
                 var max = Math.max(self.StartingDate + 60 * 1000, now);
                 var min = Math.max(self.StartingDate, now - 60 * 1000);
@@ -22,7 +22,7 @@ angular.module('samanthaApp').factory('ChartService', function () {
 
         startUpdatingMasterChart: function() {
             var self = this;
-            this.MasterTimer = setInterval(function () {
+            this.MasterTimer = $interval(function () {
                 var max = (new Date()).getTime();
                 var min = self.StartingDate;
                 self.MasterChartConfig.xAxis[0].setExtremes(min, max, true, true); 
@@ -30,11 +30,11 @@ angular.module('samanthaApp').factory('ChartService', function () {
         },
 
         stopUpdatingCharts: function() {
-            clearInterval(this.UpdatingTimer); 
+            $interval.cancel(this.UpdatingTimer);
         },
 
         stopUpdatingMasterChart: function() {
-            clearInterval(this.MasterTimer); 
+            $interval.cancel(this.MasterTimer);
         },
 
         zoomAllChartsIn: function(min, max) {
@@ -51,4 +51,4 @@ angular.module('samanthaApp').factory('ChartService', function () {
             this.startUpdatingCharts();
         }
     }
-});
+}]);

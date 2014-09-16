@@ -120,7 +120,8 @@ module.exports = function (grunt) {
                     "bower_components/highcharts-ng/dist/highcharts-ng.min.js",
                     "bower_components/angular-timer/dist/angular-timer.min.js",
                     "bower_components/angular-animate/angular-animate.min.js",
-                    "bower_components/angular-material/angular-material.min.js"
+                    "bower_components/angular-material/angular-material.min.js",
+                    "bower_components/color-thief/dist/color-thief.min.js"
                 ],
 
                 dest: "<%= yeoman.dist %>/scripts/libs.js"

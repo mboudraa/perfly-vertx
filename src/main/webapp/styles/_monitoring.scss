@@ -3,26 +3,64 @@
   overflow: hidden;
 }
 
+.applications-monitoring-overlay {
+  position: fixed;
+  top: 0;
+  background: white;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  @include transition(all 300ms ease);
+  cursor: default;
+  clip: auto;
+  opacity: 0;
+  z-index: -1;
+
+  &.open {
+    opacity: 1;
+    z-index: 5;
+  }
+}
+
+.monitoring-container{
+  width: 100%;
+  height: 100%;
+  position:relative;
+  top:64px
+}
+
+.monitoring-container-inner {
+  padding-top: 20px;
+  width: 100%;
+  height: 100%;
+  @include outer-container;
+}
+
 .configuration-area {
   @include span-columns(6 on 24);
 
   .configuration-box {
-  	border-top: 1px #444 solid;
-  	
-  	.configuration-box-hint {
-  	  padding: 15px 15px 0;
-  	}
+    border-top: 1px #444 solid;
+
+    .configuration-box-hint {
+      padding: 15px 15px 0;
+    }
+  }
+
+  .application-tile {
+    display: inline;
+    text-align: center;
   }
 
   .event-box {
-   	ul {
-   	  list-style: none;
-	  list-style-position: inside;
-	  padding-left: 15px;
+    ul {
+      list-style: none;
+      list-style-position: inside;
+      padding-left: 15px;
 
-	  .key {
-	    font-weight: 500;
-	  }
+      .key {
+        font-weight: 500;
+      }
     }
   }
 }
@@ -31,16 +69,25 @@
   @include span-columns(18 on 24);
 
   .chart-wrapper {
-  	margin-top: 20px;
-  	height: 200px;
+    margin-top: 20px;
+    height: 200px;
 
-  	.chart {
-  	  height: 200px;
-  	}
+    .chart {
+      height: 200px;
+    }
 
-  	#chart-master {
-  	  height: 100px;
-  	}
+    #chart-master {
+      height: 100px;
+    }
   }
   padding-right: 15px;
+}
+
+.reset-zoom {
+  position: absolute;
+  top: 110px;
+  right: 140px;
+  z-index: 10;
+  background: grey;
+  color: white;
 }

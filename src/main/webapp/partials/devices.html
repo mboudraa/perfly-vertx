@@ -1,4 +1,4 @@
-<material-toolbar id="toolbar">
+<material-toolbar class="toolbar">
     <div class="material-toolbar-tools">
         <img src="../images/perfly.svg" width="122" height="51"></img>
         <span flex></span>
@@ -8,24 +8,26 @@
     </div>
 </material-toolbar>
 
-<section class="devices-section">
-    <article class="tile device-tile" ng-repeat="device in devices"
-             ng-click="showApps(device)" ng-class="connected">
+<div class="container">
+    <section class="devices-section">
+        <article class="tile device-tile" ng-repeat="device in devices"
+                 ng-click="showApps(device)">
 
-        <div class="device-tile-header">
-            <div class="fa-stack fa-lg fa-4x">
-                <i class="fa fa-circle fa-stack-2x"></i>
-                <i class="fa fa-mobile fa-stack-1x fa-inverse device-logo"></i>
+            <div class="device-tile-header">
+                <div class="fa-stack fa-lg fa-4x">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-mobile fa-stack-1x fa-inverse device-logo"></i>
+                </div>
+
+                <div class="title">{{device.manufacturer}} {{device.model}}</div>
             </div>
 
-            <div class="title">{{device.manufacturer}} {{device.model}}</div>
-        </div>
+            <div class="tile-content device-tile-content">
+                <div class="version-name">Android {{device.versionName}}</div>
+                <div class="screen-size">{{device.dimension.x}}x{{device.dimension.y}}</div>
+            </div>
 
-        <div class="device-tile-content">
-            <div class="version-name">Android {{device.versionName}}</div>
-            <div class="screen-size">{{device.dimension.x}}x{{device.dimension.y}}</div>
-        </div>
+        </article>
 
-    </article>
-
-</section>
+    </section>
+</div>

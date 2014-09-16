@@ -1,120 +1,89 @@
-.applications-section {
-  width: 100%;
-  display: inline-block;
-  text-align: 100%;
-
-  .application-article {
-    display: inline-block;
-    text-align: center;
-    width: 5.625em;
-    height: 6em;
-    margin: 5px;
-    padding: 5px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    cursor: pointer;
-
-    &:hover {
-      background-color: rgba(106, 32, 95, 0.05);
-    }
-
-    .application-logo {
-      width: 4em;
-      height: 4em;
-      display: inline-block;
-      margin-left: auto;
-      margin-right: auto;
-      margin-bottom: 5px;
-    }
-
-    .application-label {
-      font-size: 0.875em;
-      white-space: nowrap;
-    }
-  }
+.applications-container {
+  position: relative;
+  margin: 20px 40px;
+  border-radius: 5px;
+  padding: 10px 0;
 }
 
-
-#applications-list-container {
-  @include outer-container;
+.applications-grid {
+  list-style: none;
+  padding: 20px 0;
+  margin: 0 auto;
   text-align: center;
-}
-
-#applications-list {
-  @include span-columns($grid-columns);
-}
-
-[id='footer'] {
-
-  $footer-height: 140px;
-
-  height: $footer-height;
-  background-color: #6a205f;
   width: 100%;
-  color: white;
-  &.show {
-    display: block;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-  }
-  &.hide {
-    display: none;
-  }
-  ul {
-    font-size: 1.2em;
-    margin-top: 10px;
+
+  > li {
     display: inline-block;
-    list-style-type: none;
-    float: left;
-    li {
-      margin-bottom: 0.3em;
-    }
+    margin: 10px 5px 0 5px;
+    vertical-align: top;
   }
-  .footer-logo {
+}
+
+.application-article {
+  text-align: center;
+  width: 7em;
+  height: 7em;
+  padding: 5px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+
+  .application-logo {
     width: 4em;
     height: 4em;
-    display: inline-block;
-    float: left;
-    margin: 15px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5px;
+  }
+
+  .application-label {
+    font-size: 0.875em;
+    white-space: nowrap;
   }
 }
 
-.fab-play {
-  position: absolute;
-  right: 20px;
-  top: 100px;
-  z-index: 2;
-}
 
-.tabs-container {
-  width: 100%;
 
-  .tab-icon {
-    width: 2.2em;
-    height: 2.2em;
-    vertical-align: middle;
+.application-tile {
+  margin: 0;
+  padding: 0;
+  position: relative;
+
+  .title {
+    font-size: 2em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
-  .tab-label {
-    font-size: 1.2em;
+
+  .application-logo-container {
+    text-align: center;
   }
-}
 
-.paper-progress {
-  display: block;
-  width: 100%;
-}
+  .application-logo {
+    width: 1em;
+    height: 1em;
+    margin-bottom: 5px;
 
-.reset-zoom {
-  position: absolute;
-  top: 110px;
-  right: 140px;
-  z-index: 10;
-  background: grey;
-  color: white;
-}
+  }
 
-.reset-zoom #ripple,
-.reset-zoom::shadow #ripple {
-  color: #2a56c6;
+  application-label {
+    font-size: 0.875em;
+    white-space: nowrap;
+  }
+
+  .tile-content {
+    font-size: 0.9em;
+    text-align: left;
+    padding-left: 5px;
+    padding-top: 10px;
+
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+  }
 }

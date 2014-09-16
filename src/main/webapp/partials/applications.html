@@ -1,100 +1,154 @@
-<material-toolbar id="toolbar" class="medium-tall">
-    <div class="material-toolbar-tools">
-        <img src="../images/perfly.svg" width="122" height="52"></img>
-        <span flex></span>
+<section id="applications-list-container">
 
-        <div ng-show="ctrl.tabSelected == 0">
-            <i class="search-icon fa fa-search" role="button" ng-click="openSearch = !openSearch;"></i>
+    <material-toolbar id="toolbar" class="toolbar">
+        <div class="material-toolbar-tools">
+            <img src="../images/logo-perfly.svg" width="122" height="52"></img>
+            <span flex></span>
 
-            <material-input class="search-input collapsable" type="text" ng-model="search"
-                            ng-class="{true:'opened', false:'closed'}[openSearch]"></material-input>
+            <div class="search-container" ng-show="!ctrl.monitoredApplication" ng-model="openSearch"
+                 ng-init="openSearch=false">
+                <label for="search-input">
+                <span class="toolbar-icon search-icon fa fa-search" role="button"
+                      ng-click="openSearch = !openSearch;"></span>
+                </label>
+                <material-input id="search-input" class="search-input collapsable" type="text" ng-model="search"
+                                ng-class="{true:'opened', false:'closed'}[openSearch]"></material-input>
+            </div>
         </div>
-        <!--<paper-fab ng-click="fabAction()" ng-show="ctrl.selectedApplication" class="fab fab-play"-->
-        <!--icon="{{ctrl.fabIcon}}">-->
-        <!--</paper-fab>-->
+    </material-toolbar>
+
+    <div class="container">
+        <div class=" applications-container">
+            <ul id="applications-grid" class="applications-grid">
+                <li ng-repeat="application in applications | filter:searchComparator">
+
+                    <article id="tile-{{$index}}" class="tile application-tile"
+                             ng-click="ctrl.selectedApplicationIndex=$index;startApplication(application)">
+
+                        <div id="tile-header-{{$index}}" class="tile-header">
+                            <div class="application-logo-container fa-stack fa-lg fa-4x">
+                                <span class="fa fa-circle fa-stack-2x"></span>
+                                <img class="fa fa-stack application-logo"
+                                     ng-src="data:image/jpeg;base64,{{application.logo}}"
+                                     alt="logo {{application.label}}"
+                                     palette target="{{getPaletteTarget($index)}}"/>
+                            </div>
+                            <div class="title">{{application.label}}</div>
+                        </div>
+
+                        <div class="tile-content">
+                            <ul class="application-detail">
+                                <li>{{application.packageName}}</li>
+                                <li>version : {{application.version}}</li>
+                                <li>debuggable : {{application.debuggable}}</li>
+                            </ul>
+                        </div>
+
+                    </article>
+                </li>
+            </ul>
+        </div>
     </div>
-</material-toolbar>
-<div ng-if="ctrl.monitoredApplication">
-    <material-tabs class="tabs-container" selected="ctrl.tabSelected" center>
-        <material-tab>
-            <span class="tab-label">Applications</span>
-        </material-tab>
-        <material-tab>
-            <div class="tab-container">
-                <img class="tab-icon" ng-src="data:image/jpeg;base64,{{ctrl.monitoredApplication.logo}}">
-                <span class="tab-label"> {{ctrl.monitoredApplication.label}}</span>
-            </div>
-        </material-tab>
-    </material-tabs>
-</div>
-<section class="content-container">
-    <section id="applications-list-container">
-        <div id="applications-list" ng-show="!ctrl.tabSelected || ctrl.tabSelected == 0">
-            <div class="applications-section content">
-                <article class="application-article" ng-repeat="application in applications | filter:searchComparator"
-                         ng-dblclick="startApplication(application)" ng-click="updateCurrentApplication(application)">
-                    <paper-ripple id="ripple"></paper-ripple>
-                    <img class="application-logo" ng-src="data:image/jpeg;base64,{{application.logo}}"
-                         alt="logo {{application.label}}"/>
-                    <span class="application-label">{{application.label}}</span>
-                </article>
-            </div>
-            <div id="footer" ng-class="{false: 'show', true:'hide'}[ctrl.selectedApplication === undefined]">
-                <img ng-if="ctrl.selectedApplication" class="footer-logo"
-                     ng-src="data:image/jpeg;base64,{{ctrl.selectedApplication.logo}}"
-                     alt="logo {{ctrl.selectedApplication.label}}"/>
-                <ul>
-                    <li>version : {{ctrl.selectedApplication.version}}</li>
-                    <li>label : {{ctrl.selectedApplication.label}}</li>
-                    <li>package : {{ctrl.selectedApplication.packageName}}</li>
-                    <li>debuggable : {{ctrl.selectedApplication.debuggable}}</li>
-                </ul>
-            </div>
-        </div>
-
-    </section>
-    <section id="applications-monitoring" ng-show="ctrl.tabSelected == 1">
-        <div id="monitoring-tab-container" ng-controller="ChartCtrl">
-            <div class="configuration-area">
-                <div class="action-box" style="width: 200px;">
-                    <paper-button raisedButton class="reset-zoom" label="Reset zoom" ng-click="resetZoom()"></paper-button>
-                </div>
-                <div class="event-box" style="width: 200px;">
-                    <ul>
-                        <li><span class="key">PID</span> <span class="value">{{applicationStatus.pid}}</span></li>
-                        <li><span class="key">State</span> <span class="value">{{applicationStatus.state}}</span></li>
-                    </ul>
-                </div>
-
-                <div class="configuration-box switch-chart">
-                    <div class="checkbox-container">
-                        <material-checkbox checked ng-model="ChartSelection.memory">
-                            Memory
-                        </material-checkbox>
-
-                        <material-checkbox ng-model="ChartSelection.cpu">
-                            CPU
-                        </material-checkbox>
-                    </div>
-                </div>
-
-            </div>
-            <div class="chart-area">
-                <article class="chart-wrapper" ng-show="ChartSelection.memory" ng-controller="ChartMemoryCtrl">
-                    <highchart class="chart" id="chart-memory" config="chartMemoryConfig"></highchart>
-                </article>
-                <article class="chart-wrapper" ng-show="ChartSelection.cpu" ng-controller="ChartCpuCtrl">
-                    <highchart class="chart" id="chart-cpu" config="chartCpuConfig"></highchart>
-                </article>
-                <article class="chart-wrapper" ng-controller="ChartSystemEventCtrl">
-                    <highchart class="chart" id="chart-systemevent" config="chartSystemEventConfig"></highchart>
-                </article>
-                <article class="chart-wrapper" ng-controller="ChartMasterCtrl">
-                    <highchart class="chart" id="chart-master" config="chartMasterConfig"></highchart>
-                </article>
-            </div>
-        </div>
-    </section>
 </section>
 
+<div ng-controller="ChartCtrl">
 
+    <section class="applications-monitoring-overlay"
+             fly-clip target="tile-{{ctrl.selectedApplicationIndex}}"
+             open="ctrl.monitoringOpened == true"
+             on-open="body.setScrollable(false);" on-close="body.setScrollable(true);">
+
+        <material-toolbar id="toolbar-monitoring" class="toolbar" ng-if="ctrl.monitoredApplication">
+            <div class="material-toolbar-tools">
+            <span class="fa fa-arrow-left toolbar-icon"
+                  ng-click="endMonitoring()">
+            </span>
+                <img src="../images/logo-perfly.svg" width="122" height="52"></img>
+                <span flex></span>
+            </div>
+        </material-toolbar>
+
+        <section
+                ng-class="{scrollable:!body.scrollable}">
+
+            <div id="monitoring-container" class="monitoring-container"
+                 >
+
+                <div class="monitoring-container-inner" ng-if="ctrl.monitoredApplication">
+                    <material-button class="fab material-button-fab" ng-click="stopApplication()">
+                        <span class=" fab-icon fab-icon-stop fa fa-stop"></span>
+                    </material-button>
+
+                    <material-button class="fab material-button-fab"
+                                     ng-click="startMonitoring(ctrl.monitoredApplication)">
+                        <span class="fab-icon fab-icon-play fa fa-play"></span>
+                    </material-button>
+                    <div class="configuration-area">
+
+                        <article class="application-tile">
+
+                            <div class="tile-header">
+                                <div class="application-logo-container fa-stack fa-lg fa-4x">
+                                    <span class="fa fa-circle fa-stack-2x"></span>
+                                    <img class="fa fa-stack application-logo" palette target="{{palette.options}}"
+                                         ng-src="data:image/jpeg;base64,{{ctrl.monitoredApplication.logo}}"
+                                         alt="logo {{ctrl.monitoredApplication.label}}"/>
+                                </div>
+                                <div class="title">{{ctrl.monitoredApplication.label}}</div>
+                            </div>
+
+                        </article>
+
+                        <div class="action-box" style="width: 200px;">
+
+                        </div>
+                        <div class="event-box" style="width: 200px;">
+                            <ul>
+                                <li><span class="key">PID</span> <span
+                                        class="value">{{applicationStatus.pid}}</span>
+                                </li>
+                                <li><span class="key">State</span> <span
+                                        class="value">{{applicationStatus.state}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="configuration-box switch-chart">
+                            <div class="checkbox-container">
+                                <material-checkbox checked ng-model="ChartSelection.memory">
+                                    Memory
+                                </material-checkbox>
+
+                                <material-checkbox ng-model="ChartSelection.cpu">
+                                    CPU
+                                </material-checkbox>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="chart-area" ng-show="ctrl.monitoringOpened == true">
+                        <material-button class="material-button-raised reset-zoom"
+                                         ng-click="resetZoom()">Reset zoom
+                        </material-button>
+                        <article class="chart-wrapper" ng-show="ChartSelection.memory"
+                                 ng-controller="ChartMemoryCtrl">
+                            <highchart class="chart" id="chart-memory"
+                                       config="chartMemoryConfig"></highchart>
+                        </article>
+                        <article class="chart-wrapper" ng-show="ChartSelection.cpu"
+                                 ng-controller="ChartCpuCtrl">
+                            <highchart class="chart" id="chart-cpu" config="chartCpuConfig"></highchart>
+                        </article>
+                        <article class="chart-wrapper" ng-controller="ChartSystemEventCtrl">
+                            <highchart class="chart" id="chart-systemevent"
+                                       config="chartSystemEventConfig"></highchart>
+                        </article>
+                        <article class="chart-wrapper" ng-controller="ChartMasterCtrl">
+                            <highchart class="chart" id="chart-master"
+                                       config="chartMasterConfig"></highchart>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+</div>

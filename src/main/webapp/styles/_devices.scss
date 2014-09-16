@@ -1,34 +1,8 @@
 .devices-section {
   @include outer-container;
   text-align: center;
-  margin-top: 20px;
 
   .device-tile {
-    display: inline-block;
-    margin: 5px;
-    padding: 2px;
-    width: 25em;
-    height: 15em;
-    background: white;
-    overflow: hidden;
-    position: relative;
-    cursor: pointer;
-
-    &.connected {
-      cursor: pointer;
-
-      &:hover {
-        @include transform(translate3d(0, -2px, 0));
-      }
-    }
-
-    &.disconnected {
-      opacity: .5;
-    }
-
-    .title {
-      font-size: 2em;
-    }
 
     .version-name {
       position: absolute;
@@ -49,7 +23,6 @@
     }
 
     .device-tile-content {
-      background: #ffffff;
       color: #677880;
     }
   }
