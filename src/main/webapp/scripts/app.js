@@ -33,6 +33,12 @@ var samantha = angular.module('samanthaApp', [
             .useReconnect()
             .useUrlServer('http://localhost:8080');
 
+        Highcharts.setOptions({
+            global: {
+                useUTC: false
+            }
+        });
+
         //localStorageServiceProvider.setPrefix("samantha");
         //$locationProvider.html5Mode(true);
     });

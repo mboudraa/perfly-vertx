@@ -18,11 +18,11 @@
   }
 }
 
-.monitoring-container{
+.monitoring-container {
   width: 100%;
-  position:relative;
-  top:64px;
-  min-height:100%;
+  position: relative;
+  top: 64px;
+  min-height: 100%;
 }
 
 .monitoring-container-inner {
@@ -70,6 +70,10 @@
 
     .chart {
       height: 200px;
+
+      .tall {
+        height: 420px
+      }
     }
 
     #chart-master {
@@ -81,7 +85,7 @@
 
 .reset-zoom {
   position: absolute;
-  top: 110px;
+  top: 50px;
   right: 140px;
   z-index: 1;
   background: grey;

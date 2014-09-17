@@ -5,25 +5,21 @@ angular.module('samanthaApp')
         function ($scope, $rootScope, vertxEventBusService, $routeParams, ChartService) {
 
             var packageName;
-            var series = [];
             var axis = [];
-
             var deviceId = $routeParams['deviceId'];
 
             function resetSeries() {
-                _.each(series, function (serie, i) {
+                _.each( ChartService.SystemEventChartConfig.series, function (serie, i) {
                     serie.setData([], true);
                 });
             };
 
-            var onMonitoringStart = $rootScope.$on('samantha.monitoring.start', function(event, args) {
-                if (args.deviceId == deviceId) {
-                    packageName = args.packageName;
+            vertxEventBusService.on("vertx.monitoring.start", function (data) {
+                if (data.deviceId == deviceId) {
+                    packageName = data.packageName;
                     resetSeries();
                 }
             });
-
-            $scope.$on('$destroy', onMonitoringStart);
 
             vertxEventBusService.on(deviceId + '/android.monitoring.progress/orientation', function (response) {
                 var sysdump = response.data;
@@ -62,8 +58,6 @@ angular.module('samanthaApp')
 
             vertxEventBusService.on(deviceId + '/android.monitoring.progress/dalvik', function (response) {
                 var sysdump = response.data;
-                console.log(sysdump);
-
                 if (!angular.isUndefined(sysdump.type)) {
                     $scope.chartSystemEventConfig.options.xAxis.plotLines.push({
                         value: sysdump.time,
@@ -87,7 +81,6 @@ angular.module('samanthaApp')
                         animation: Highcharts.svg,
                         events: {
                             load: function () {
-                                series = this.series; 
                                 ChartService.SystemEventChartConfig = this;
                             },
 

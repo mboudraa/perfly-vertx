@@ -5,8 +5,8 @@ angular.module('samanthaApp')
         function ($scope, $rootScope, vertxEventBusService, $routeParams, ChartService) {
 
             var packageName;
-            var unevenStepCpu = true;
-            var unevenStepMemory = true;
+            var addCpuPoint = false;
+            var addMemoryPoint = false;
 
             var deviceId = $routeParams['deviceId'];
 
@@ -29,8 +29,8 @@ angular.module('samanthaApp')
 
                 if (!angular.isUndefined(sysdump.cpuInfo)) {
 
-                    unevenStepCpu = !unevenStepCpu;
-                    if (unevenStepCpu) {
+                    addCpuPoint = !addCpuPoint;
+                    if (!addCpuPoint) {
                         return;
                     }
 
@@ -46,8 +46,8 @@ angular.module('samanthaApp')
 
                 if (!angular.isUndefined(sysdump.memoryInfo)) {
 
-                    unevenStepMemory = !unevenStepMemory;
-                    if (unevenStepMemory) {
+                    addMemoryPoint = !addMemoryPoint;
+                    if (!addMemoryPoint) {
                         return;
                     }
 
@@ -108,7 +108,7 @@ angular.module('samanthaApp')
                             x: 3
                         },
                         title: {
-                            text: 'Master'
+                            text: 'CPU (%)'
                         },
                     },
                         {
@@ -117,7 +117,7 @@ angular.module('samanthaApp')
                                 x: 3
                             },
                             title: {
-                                text: 'Memory'
+                                text: 'Memory (KB)'
                             },
                             opposite: true
                         }],
