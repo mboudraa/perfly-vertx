@@ -14,7 +14,7 @@ angular.module('samanthaApp')
                 options: [
                     {
                         target: 'monitoring-container',
-                        alpha: 0.05
+                        alpha: 0.1
                     },
                     {
                         target: 'toolbar-monitoring',
@@ -48,22 +48,37 @@ angular.module('samanthaApp')
                 }                
             });
 
-            var onMonitoringStart = $rootScope.$on('samantha.monitoring.start', function(event, args) {
-                if (args.deviceId === deviceId) {
+
+            vertxEventBusService.on("vertx.monitoring.start", function(data){
+                if (data.deviceId === deviceId) {
                     ChartService.startUpdatingCharts();
-                    ChartService.startUpdatingMasterChart();       
-                }  
+                    ChartService.startUpdatingMasterChart();
+                }
             });
 
-            $scope.$on('$destroy', onMonitoringStart);
-
-            var onMonitoringStop = $rootScope.$on('samantha.monitoring.stop', function(event, args) {
-                if (args.deviceId === deviceId) {
-                    ChartService.stopUpdatingCharts();   
-                    ChartService.stopUpdatingMasterChart();    
-                }    
+            vertxEventBusService.on("vertx.monitoring.stop", function(data){
+                if (data.deviceId === deviceId) {
+                    ChartService.stopUpdatingCharts();
+                    ChartService.stopUpdatingMasterChart();
+                }
             });
 
-            $scope.$on('$destroy', onMonitoringStop);
+            //var onMonitoringStart = $rootScope.$on('samantha.monitoring.start', function(event, args) {
+            //    if (args.deviceId === deviceId) {
+            //        ChartService.startUpdatingCharts();
+            //        //ChartService.startUpdatingMasterChart();
+            //    }
+            //});
+            //
+            //$scope.$on('$destroy', onMonitoringStart);
+
+            //var onMonitoringStop = $rootScope.$on('samantha.monitoring.stop', function(event, args) {
+            //    if (args.deviceId === deviceId) {
+            //        ChartService.stopUpdatingCharts();
+            //        //ChartService.stopUpdatingMasterChart();
+            //    }
+            //});
+
+            //$scope.$on('$destroy', onMonitoringStop);
             
         }]);

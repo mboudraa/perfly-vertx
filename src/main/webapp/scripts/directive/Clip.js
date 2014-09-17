@@ -13,7 +13,7 @@ angular.module('samanthaApp').directive('flyClip', ['$window', '$timeout', funct
         link: function ($scope, $elem) {
             var clipPropFirst = 'auto';
             var clipPropLast = 'auto';
-
+            var window = angular.element($window);
 
             $scope.$watch('target', function (value) {
                 var target = angular.element.find('#' + value)[0];
@@ -23,7 +23,7 @@ angular.module('samanthaApp').directive('flyClip', ['$window', '$timeout', funct
                 var layoutProp = $scope.getItemLayoutProp(target, $scope.offset);
 
                 clipPropFirst = 'rect(' + layoutProp.top + 'px ' + ( layoutProp.left + layoutProp.width ) + 'px ' + ( layoutProp.top + layoutProp.height ) + 'px ' + layoutProp.left + 'px)';
-                clipPropLast = 'rect(0px ' + $window.innerWidth + 'px ' + $window.innerHeight + 'px 0px)';
+                clipPropLast = 'rect(0px ' + window.width() + 'px ' + window.height() + 'px 0px)';
             });
 
             $scope.$watch('open', function (value) {
@@ -40,7 +40,7 @@ angular.module('samanthaApp').directive('flyClip', ['$window', '$timeout', funct
                             'clip': clipPropLast,
                             'pointer-events': 'auto'
                         });
-                    }, 200);
+                    }, 150);
                 } else {
                     $elem.css({
                         'clip': clipPropFirst,
@@ -54,14 +54,15 @@ angular.module('samanthaApp').directive('flyClip', ['$window', '$timeout', funct
                         });
                         $elem.removeClass('open');
                         $scope.$eval($scope.onClose);
-                    }, 500);
+                    }, 450);
                 }
             });
 
             $scope.$watch(function () {
+
                 return {
-                    w: $window.innerWidth,
-                    h: $window.innerHeight
+                    w: window.width(),
+                    h: window.height()
                 };
             }, function (newValue) {
                 if ($scope.open === true) {

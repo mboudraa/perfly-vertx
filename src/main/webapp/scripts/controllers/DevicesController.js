@@ -29,7 +29,7 @@ angular.module('samanthaApp')
             });
 
             $scope.retrieveDevices = function () {
-                vertxEventBusService.send('vertx.devices.get', null, true).then(function (reply) {
+                vertxEventBusService.send('vertx.devices.get', null).then(function (reply) {
                     _(reply).each(function (device) {
                         addDevice(device);
                     });

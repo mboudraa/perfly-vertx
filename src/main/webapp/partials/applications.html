@@ -23,7 +23,7 @@
                 <li ng-repeat="application in applications | filter:searchComparator">
 
                     <article id="tile-{{$index}}" class="tile application-tile"
-                             ng-click="ctrl.selectedApplicationIndex=$index;startApplication(application)">
+                             ng-click="startMonitoring(application,$index)">
 
                         <div id="tile-header-{{$index}}" class="tile-header">
                             <div class="application-logo-container fa-stack fa-lg fa-4x">
@@ -53,7 +53,7 @@
 
 <div ng-controller="ChartCtrl">
 
-    <section class="applications-monitoring-overlay"
+    <section class="applications-monitoring-overlay" ng-class="{scrollable:!body.scrollable}"
              fly-clip target="tile-{{ctrl.selectedApplicationIndex}}"
              open="ctrl.monitoringOpened == true"
              on-open="body.setScrollable(false);" on-close="body.setScrollable(true);">
@@ -68,87 +68,83 @@
             </div>
         </material-toolbar>
 
-        <section
-                ng-class="{scrollable:!body.scrollable}">
 
-            <div id="monitoring-container" class="monitoring-container"
-                 >
+        <div id="monitoring-container" class="monitoring-container">
 
-                <div class="monitoring-container-inner" ng-if="ctrl.monitoredApplication">
-                    <material-button class="fab material-button-fab" ng-click="stopApplication()">
-                        <span class=" fab-icon fab-icon-stop fa fa-stop"></span>
-                    </material-button>
+            <div class="monitoring-container-inner" ng-if="ctrl.monitoredApplication">
 
-                    <material-button class="fab material-button-fab"
-                                     ng-click="startMonitoring(ctrl.monitoredApplication)">
-                        <span class="fab-icon fab-icon-play fa fa-play"></span>
-                    </material-button>
-                    <div class="configuration-area">
+                <div class="configuration-area">
 
-                        <article class="application-tile">
+                    <article class="application-tile">
 
-                            <div class="tile-header">
-                                <div class="application-logo-container fa-stack fa-lg fa-4x">
-                                    <span class="fa fa-circle fa-stack-2x"></span>
-                                    <img class="fa fa-stack application-logo" palette target="{{palette.options}}"
-                                         ng-src="data:image/jpeg;base64,{{ctrl.monitoredApplication.logo}}"
-                                         alt="logo {{ctrl.monitoredApplication.label}}"/>
-                                </div>
-                                <div class="title">{{ctrl.monitoredApplication.label}}</div>
+                        <div class="tile-header">
+                            <div class="application-logo-container fa-stack fa-lg fa-4x">
+                                <span class="fa fa-circle fa-stack-2x"></span>
+                                <img class="fa fa-stack application-logo" palette target="{{palette.options}}"
+                                     ng-src="data:image/jpeg;base64,{{ctrl.monitoredApplication.logo}}"
+                                     alt="logo {{ctrl.monitoredApplication.label}}"/>
                             </div>
-
-                        </article>
-
-                        <div class="action-box" style="width: 200px;">
-
-                        </div>
-                        <div class="event-box" style="width: 200px;">
-                            <ul>
-                                <li><span class="key">PID</span> <span
-                                        class="value">{{applicationStatus.pid}}</span>
-                                </li>
-                                <li><span class="key">State</span> <span
-                                        class="value">{{applicationStatus.state}}</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="configuration-box switch-chart">
-                            <div class="checkbox-container">
-                                <material-checkbox checked ng-model="ChartSelection.memory">
-                                    Memory
-                                </material-checkbox>
-
-                                <material-checkbox ng-model="ChartSelection.cpu">
-                                    CPU
-                                </material-checkbox>
-                            </div>
+                            <div class="title">{{ctrl.monitoredApplication.label}}</div>
                         </div>
 
-                    </div>
-                    <div class="chart-area" ng-show="ctrl.monitoringOpened == true">
-                        <material-button class="material-button-raised reset-zoom"
-                                         ng-click="resetZoom()">Reset zoom
+                    </article>
+
+                    <div class="action-box" style="width: 200px;">
+                        <material-button class="fab material-button-fab" ng-click="stopApplication()">
+                            <span class=" fab-icon fab-icon-stop fa fa-stop"></span>
                         </material-button>
-                        <article class="chart-wrapper" ng-show="ChartSelection.memory"
-                                 ng-controller="ChartMemoryCtrl">
-                            <highchart class="chart" id="chart-memory"
-                                       config="chartMemoryConfig"></highchart>
-                        </article>
-                        <article class="chart-wrapper" ng-show="ChartSelection.cpu"
-                                 ng-controller="ChartCpuCtrl">
-                            <highchart class="chart" id="chart-cpu" config="chartCpuConfig"></highchart>
-                        </article>
-                        <article class="chart-wrapper" ng-controller="ChartSystemEventCtrl">
-                            <highchart class="chart" id="chart-systemevent"
-                                       config="chartSystemEventConfig"></highchart>
-                        </article>
-                        <article class="chart-wrapper" ng-controller="ChartMasterCtrl">
-                            <highchart class="chart" id="chart-master"
-                                       config="chartMasterConfig"></highchart>
-                        </article>
+
+                        <material-button class="fab material-button-fab"
+                                         ng-click="startApplication(ctrl.monitoredApplication)">
+                            <span class="fab-icon fab-icon-play fa fa-play"></span>
+                        </material-button>
                     </div>
+                    <div class="event-box" style="width: 200px;">
+                        <ul>
+                            <li><span class="key">PID</span> <span
+                                    class="value">{{applicationStatus.pid}}</span>
+                            </li>
+                            <li><span class="key">State</span> <span
+                                    class="value">{{applicationStatus.state}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="configuration-box switch-chart">
+                        <div class="checkbox-container">
+                            <material-checkbox checked ng-model="ChartSelection.memory">
+                                Memory
+                            </material-checkbox>
+
+                            <material-checkbox ng-model="ChartSelection.cpu">
+                                CPU
+                            </material-checkbox>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="chart-area" ng-show="ctrl.monitoringOpened == true">
+                    <material-button class="material-button-raised reset-zoom"
+                                     ng-click="resetZoom()">Reset zoom
+                    </material-button>
+                    <article class="chart-wrapper" ng-show="ChartSelection.memory"
+                             ng-controller="ChartMemoryCtrl">
+                        <highchart class="chart" id="chart-memory"
+                                   config="chartMemoryConfig"></highchart>
+                    </article>
+                    <article class="chart-wrapper" ng-show="ChartSelection.cpu"
+                             ng-controller="ChartCpuCtrl">
+                        <highchart class="chart" id="chart-cpu" config="chartCpuConfig"></highchart>
+                    </article>
+                    <article class="chart-wrapper" ng-controller="ChartSystemEventCtrl">
+                        <highchart class="chart" id="chart-systemevent"
+                                   config="chartSystemEventConfig"></highchart>
+                    </article>
+                    <article class="chart-wrapper" ng-controller="ChartMasterCtrl">
+                        <highchart class="chart" id="chart-master"
+                                   config="chartMasterConfig"></highchart>
+                    </article>
                 </div>
             </div>
-        </section>
+        </div>
     </section>
 </div>

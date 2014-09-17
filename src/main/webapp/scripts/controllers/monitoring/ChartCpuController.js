@@ -5,30 +5,28 @@ angular.module('samanthaApp')
         function ($scope, $rootScope, vertxEventBusService, $routeParams, ChartService) {
 
             var packageName;
-            var series = [];
 
             var deviceId = $routeParams['deviceId'];
 
             function resetSeries() {
-                _.each(series, function (serie, i) {
+                _.each(ChartService.CpuChartConfig.series, function (serie, i) {
                     serie.setData([], true);
                 });
             }
 
-            var onMonitoringStart = $rootScope.$on('samantha.monitoring.start', function(event, args) {
-                if (args.deviceId == deviceId) {
-                    packageName = args.packageName;
+
+            vertxEventBusService.on("vertx.monitoring.start", function (data) {
+                if (data.deviceId == deviceId) {
+                    packageName = data.packageName;
                     resetSeries();
                 }
             });
-
-            $scope.$on('$destroy', onMonitoringStart);
 
             vertxEventBusService.on(deviceId + '/android.monitoring.progress/monitoring', function (response) {
                 var sysdump = response.data;
 
                 if (!angular.isUndefined(sysdump.cpuInfo)) {
-                    _.each(series, function (serie, i) {
+                    _.each(ChartService.CpuChartConfig.series, function (serie, i) {
                         var point = {
                             x: sysdump.time,
                             y: sysdump.cpuInfo[serie.name],
@@ -49,7 +47,6 @@ angular.module('samanthaApp')
                         zoomType: 'x',
                         events: {
                             load: function () {
-                                series = this.series;
                                 ChartService.CpuChartConfig = this;
                             },
 

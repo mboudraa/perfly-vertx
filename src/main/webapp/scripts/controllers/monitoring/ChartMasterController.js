@@ -5,14 +5,13 @@ angular.module('samanthaApp')
         function ($scope, $rootScope, vertxEventBusService, $routeParams, ChartService) {
 
             var packageName;
-            var series = [];
             var unevenStepCpu = true;
             var unevenStepMemory = true;
 
             var deviceId = $routeParams['deviceId'];
 
             function resetSeries() {
-                _.each(series, function (serie, i) {
+                _.each( ChartService.MasterChartConfig.series, function (serie, i) {
                     serie.setData([], true);
                 });
             }
@@ -25,16 +24,16 @@ angular.module('samanthaApp')
             });
 
             vertxEventBusService.on(deviceId + '/android.monitoring.progress/monitoring', function (response) {
-                
+
                 var sysdump = response.data;
 
                 if (!angular.isUndefined(sysdump.cpuInfo)) {
 
                     unevenStepCpu = !unevenStepCpu;
                     if (unevenStepCpu) {
-                        return;    
+                        return;
                     }
-              
+
                     var point = {
                         x: sysdump.time,
                         y: sysdump.cpuInfo.cpuTotal,
@@ -42,14 +41,14 @@ angular.module('samanthaApp')
                             enabled: false
                         }
                     };
-                    series[0].addPoint(point, false, false, false);
+                    ChartService.MasterChartConfig.series[0].addPoint(point, false, false, false);
                 }
 
                 if (!angular.isUndefined(sysdump.memoryInfo)) {
-                    
+
                     unevenStepMemory = !unevenStepMemory;
                     if (unevenStepMemory) {
-                        return;    
+                        return;
                     }
 
                     var point = {
@@ -59,7 +58,7 @@ angular.module('samanthaApp')
                             enabled: false
                         }
                     };
-                    series[1].addPoint(point, false, false, false);
+                    ChartService.MasterChartConfig.series[1].addPoint(point, false, false, false);
                 }
             });
 
@@ -71,11 +70,10 @@ angular.module('samanthaApp')
                         zoomType: 'x',
                         events: {
                             load: function () {
-                                series = this.series;
                                 ChartService.MasterChartConfig = this;
                             },
 
-                            selection: function(event) {
+                            selection: function (event) {
                                 ChartService.zoomAllChartsIn(event.xAxis[0].min, event.xAxis[0].max);
                                 return false;
                             }
@@ -113,16 +111,16 @@ angular.module('samanthaApp')
                             text: 'Master'
                         },
                     },
-                    {
-                        labels: {
-                            align: 'left',
-                            x: 3
-                        },
-                        title: {
-                            text: 'Memory'
-                        },
-                        opposite: true
-                    }],
+                        {
+                            labels: {
+                                align: 'left',
+                                x: 3
+                            },
+                            title: {
+                                text: 'Memory'
+                            },
+                            opposite: true
+                        }],
 
                     title: null,
 
