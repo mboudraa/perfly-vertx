@@ -125,35 +125,37 @@ angular.module('samanthaApp')
                 $scope.applications.length = 0;
             });
 
-            $scope.startMonitoring = function(application, index){
+            $scope.startMonitoring = function (application, index) {
                 $scope.ctrl.selectedApplicationIndex = index;
                 $scope.ctrl.monitoredApplication = application;
                 $scope.ctrl.monitoringOpened = true;
-                $timeout(function(){
+                $timeout(function () {
                     $scope.startApplication(application)
-                },400)
+                }, 400)
             }
 
-            $scope.endMonitoring = function(){
+            $scope.endMonitoring = function () {
                 $scope.stopApplication()
                 $scope.ctrl.monitoringOpened = false;
-                $timeout(function(){
+                $timeout(function () {
                     $scope.ctrl.selectedApplicationIndex = -1;
-                    $scope.ctrl.monitoredApplication=undefined;
-                },400)
+                    $scope.ctrl.monitoredApplication = undefined;
+                }, 400)
+            }
+
+            $scope.toggleMonitoring = function () {
+                if ($scope.ctrl.monitoring == true) {
+                    $scope.stopApplication();
+                } else {
+                    $scope.startApplication($scope.ctrl.monitoredApplication);
+                }
             }
 
             $scope.startApplication = function (application) {
-                $scope.stopApplication();
                 $scope.ctrl.monitoring = true;
                 //$location.search("monitoring", application.packageName);
 
                 vertxEventBusService.publish("vertx.monitoring.start", {
-                    deviceId: deviceId,
-                    packageName: application.packageName
-                });
-
-                $rootScope.$broadcast("samantha.monitoring.start", {
                     deviceId: deviceId,
                     packageName: application.packageName
                 });
@@ -163,10 +165,6 @@ angular.module('samanthaApp')
             $scope.stopApplication = function () {
 
                 vertxEventBusService.publish("vertx.monitoring.stop", {
-                    deviceId: deviceId
-                });
-
-                $rootScope.$broadcast("samantha.monitoring.stop", {
                     deviceId: deviceId
                 });
 

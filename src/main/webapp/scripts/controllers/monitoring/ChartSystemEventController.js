@@ -1,36 +1,23 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ChartSystemEventCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$routeParams', 'ChartService',
-        function ($scope, $rootScope, vertxEventBusService, $routeParams, ChartService) {
+    .controller('ChartSystemEventCtrl', ['$scope', 'vertxEventBusService', '$routeParams', 'ChartService',
+        function ($scope, vertxEventBusService, $routeParams, ChartService) {
 
-            var packageName;
             var axis = [];
             var deviceId = $routeParams['deviceId'];
+            var CHART_KEY = "events";
 
-            function resetSeries() {
-                _.each( ChartService.SystemEventChartConfig.series, function (serie, i) {
-                    serie.setData([], true);
-                });
-            };
-
-            vertxEventBusService.on("vertx.monitoring.start", function (data) {
-                if (data.deviceId == deviceId) {
-                    packageName = data.packageName;
-                    resetSeries();
-                }
-            });
 
             vertxEventBusService.on(deviceId + '/android.monitoring.progress/orientation', function (response) {
                 var sysdump = response.data;
 
                 if (!angular.isUndefined(sysdump.orientation)) {
                     var orientationName = sysdump.orientation == 2 ? "landscape" : "portrait";
-
-                    $scope.chartSystemEventConfig.options.xAxis.plotLines.push({
+                    ChartService.charts[CHART_KEY].xAxis[0].addPlotLine({
                         value: sysdump.time,
                         color: 'blue',
-                        width: 1,                     
+                        width: 1,
                         label: {
                             text: 'Orientation: ' + orientationName,
                             rotation: 90
@@ -43,23 +30,23 @@ angular.module('samanthaApp')
             vertxEventBusService.on(deviceId + '/android.monitoring.progress/status', function (response) {
                 var sysdump = response.data;
                 if (!angular.isUndefined(sysdump.applicationStatus)) {
-                    $scope.chartSystemEventConfig.options.xAxis.plotLines.push({
+                    ChartService.charts[CHART_KEY].xAxis[0].addPlotLine({
                         value: sysdump.time,
                         color: 'green',
-                        width: 1,                     
+                        width: 1,
                         label: {
                             text: 'State: ' + sysdump.applicationStatus.state,
                             rotation: 90
                         }
                     });
-                }                
+                }
             });
 
 
             vertxEventBusService.on(deviceId + '/android.monitoring.progress/dalvik', function (response) {
                 var sysdump = response.data;
                 if (!angular.isUndefined(sysdump.type)) {
-                    $scope.chartSystemEventConfig.options.xAxis.plotLines.push({
+                    ChartService.charts[CHART_KEY].xAxis[0].addPlotLine({
                         value: sysdump.time,
                         color: 'red',
                         width: 1,
@@ -81,11 +68,11 @@ angular.module('samanthaApp')
                         animation: Highcharts.svg,
                         events: {
                             load: function () {
-                                ChartService.SystemEventChartConfig = this;
+                                ChartService.addChart(CHART_KEY, this);
                             },
 
-                            selection: function(event) {
-                                ChartService.zoomAllChartsIn(event.xAxis[0].min, event.xAxis[0].max);
+                            selection: function (event) {
+                                ChartService.zoom(event.xAxis[0].min, event.xAxis[0].max);
                             }
                         },
 

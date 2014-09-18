@@ -1,34 +1,17 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ChartMemoryCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$routeParams', 'ChartService',
-        function ($scope, $rootScope, vertxEventBusService, $routeParams, ChartService) {
+    .controller('ChartMemoryCtrl', ['$scope', 'vertxEventBusService', '$routeParams', 'ChartService',
+        function ($scope, vertxEventBusService, $routeParams, ChartService) {
 
-            var packageName;
-
+            var CHART_KEY = "memory";
             var deviceId = $routeParams['deviceId'];
-
-            function resetSeries() {
-                _.each(ChartService.MemoryChartConfig.series, function (serie, i) {
-                    if (serie) {
-                        serie.setData([], true);
-                    }
-                });
-            };
-
-
-            vertxEventBusService.on("vertx.monitoring.start", function (data) {
-                if (data.deviceId == deviceId) {
-                    packageName = data.packageName;
-                    resetSeries();
-                }
-            });
 
 
             vertxEventBusService.on(deviceId + '/android.monitoring.progress/monitoring', function (response) {
                 var sysdump = response.data;
                 if (!angular.isUndefined(sysdump.memoryInfo)) {
-                    _.each(ChartService.MemoryChartConfig.series, function (serie) {
+                    _.each(ChartService.charts[CHART_KEY].series, function (serie) {
                         var point = {
                             x: sysdump.time,
                             y: sysdump.memoryInfo[serie.name],
@@ -50,11 +33,12 @@ angular.module('samanthaApp')
                         animation: Highcharts.svg,
                         events: {
                             load: function () {
-                                ChartService.MemoryChartConfig = this;
+                                //ChartService.setMemoryChartConfig(this);
+                                ChartService.addChart(CHART_KEY, this);
                             },
 
                             selection: function (event) {
-                                ChartService.zoomAllChartsIn(event.xAxis[0].min, event.xAxis[0].max);
+                                ChartService.zoom(event.xAxis[0].min, event.xAxis[0].max);
                             }
                         },
 

@@ -1,54 +1,113 @@
-angular.module('samanthaApp').factory('ChartService', ['$interval', function ($interval) {
-    return {
-        MemoryChartConfig: null,
-        CpuChartConfig: null,
-        SystemEventChartConfig: null,
-        MasterChartConfig: null,
-        UpdatingTimer: null,
-        MasterTimer: null,
-        StartingDate: (new Date()).getTime(),
+angular.module('samanthaApp').factory('ChartService', ['$interval', '$rootScope',
+    function ($interval, $rootScope) {
 
-        startUpdatingCharts: function() {
-            var self = this;
-            this.UpdatingTimer = $interval(function () {
-                var now = (new Date()).getTime();
-                var max = Math.max(self.StartingDate + 60 * 1000, now);
-                var min = Math.max(self.StartingDate, now - 60 * 1000);
-                self.MemoryChartConfig.xAxis[0].setExtremes(min, max, true, true);
-                self.CpuChartConfig.xAxis[0].setExtremes(min, max, true, true);
-                self.SystemEventChartConfig.xAxis[0].setExtremes(min, max, true, true);
-            }, 500);
-        },
+        var startingDate;
+        var charts = {};
+        var timeline = {}
+        var chartsTimer;
+        var timelineTimer;
 
-        startUpdatingMasterChart: function() {
-            var self = this;
-            this.MasterTimer = $interval(function () {
-                var max = (new Date()).getTime();
-                var min = self.StartingDate;
-                self.MasterChartConfig.xAxis[0].setExtremes(min, max, true, true); 
-            }, 1000);
-        },
-
-        stopUpdatingCharts: function() {
-            $interval.cancel(this.UpdatingTimer);
-        },
-
-        stopUpdatingMasterChart: function() {
-            $interval.cancel(this.MasterTimer);
-        },
-
-        zoomAllChartsIn: function(min, max) {
-            this.stopUpdatingCharts();
-            this.MemoryChartConfig.xAxis[0].isDirty = true;
-            this.MemoryChartConfig.xAxis[0].setExtremes(min, max, true);    
-            this.CpuChartConfig.xAxis[0].isDirty = true;
-            this.CpuChartConfig.xAxis[0].setExtremes(min, max, true);
-            this.SystemEventChartConfig.xAxis[0].isDirty = true;
-            this.SystemEventChartConfig.xAxis[0].setExtremes(min, max, true);                 
-        },
-
-        zoomAllChartsOut: function() {
-            this.startUpdatingCharts();
+        function startCharts() {
+            startingDate = getNow();
+            startZoomableCharts();
+            startTimelineChart();
         }
-    }
-}]);
+
+        function stopCharts() {
+            stopZoomableCharts();
+            stopTimelineChart();
+        }
+
+        function resetCharts() {
+            _(charts).forEach(function (chart) {
+                _(chart.series).forEach(function (serie) {
+                    serie.setData([], true);
+                });
+            });
+
+            _(timeline.series).forEach(function (serie) {
+                serie.setData([], true);
+            });
+
+        }
+
+        function addChart(key, chart) {
+            charts[key] = chart;
+        };
+
+        function getTimeline() {
+            return timeline;
+        }
+
+        function setTimeline(chart) {
+            timeline = chart;
+        };
+
+
+        function zoom(min, max) {
+            stopZoomableCharts();
+            _(charts).forEach(function (chart) {
+                chart.xAxis[0].isDirty = true;
+                chart.xAxis[0].setExtremes(min, max, true);
+            });
+            $rootScope.$broadcast('chart.status', {zoomed: true})
+        }
+
+        function resetZoom() {
+            $rootScope.$broadcast('chart.status', {zoomed: false})
+            startZoomableCharts();
+        }
+
+        function startZoomableCharts() {
+
+            chartsTimer = $interval(function () {
+                var now = getNow();
+                _(charts).forEach(function (chart) {
+                    var max = Math.max(startingDate + 60 * 1000, now);
+                    var min = Math.max(startingDate, now - 60 * 1000);
+
+                    chart.xAxis[0].setExtremes(min, max, true);
+                });
+
+            }, 500);
+        };
+
+
+        function startTimelineChart() {
+            if (!_.isEmpty(timeline)) {
+                timelineTimer = $interval(function () {
+                    var max = getNow();
+                    var min = startingDate;
+                    timeline.xAxis[0].setExtremes(min, max, true, true);
+
+                }, 1000);
+            }
+        };
+
+
+        function stopZoomableCharts() {
+            $interval.cancel(chartsTimer);
+        };
+
+        function stopTimelineChart() {
+            $interval.cancel(timelineTimer);
+        };
+
+
+        function getNow() {
+            return (new Date()).getTime();
+        };
+
+
+        return {
+            charts: charts,
+            getTimeline: getTimeline,
+            setTimeline: setTimeline,
+            addChart: addChart,
+            startCharts: startCharts,
+            stopCharts: stopCharts,
+            resetCharts: resetCharts,
+            zoom: zoom,
+            resetZoom: resetZoom
+        }
+    }]);

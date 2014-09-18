@@ -28,12 +28,13 @@
 .monitoring-container-inner {
   padding-top: 20px;
   width: 100%;
-  @include outer-container;
 }
 
 .configuration-area {
   position: fixed;
   top: 84px;
+  width: 240px;
+  padding: 0 20px;
 
   .configuration-box {
     border-top: 1px #444 solid;
@@ -46,6 +47,11 @@
   .application-tile {
     display: inline;
     text-align: center;
+
+    .title {
+      overflow: auto;
+      white-space: normal;
+    }
   }
 
   .event-box {
@@ -62,8 +68,8 @@
 }
 
 .chart-area {
-  @include span-columns(18 on 24);
-  @include shift(6);
+  margin-left: 240px;
+
   .chart-wrapper {
     margin-top: 20px;
     height: 200px;

@@ -1,27 +1,13 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ChartMasterCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$routeParams', 'ChartService',
-        function ($scope, $rootScope, vertxEventBusService, $routeParams, ChartService) {
+    .controller('ChartMasterCtrl', ['$scope', 'vertxEventBusService', '$routeParams', 'ChartService',
+        function ($scope, vertxEventBusService, $routeParams, ChartService) {
 
-            var packageName;
             var addCpuPoint = false;
             var addMemoryPoint = false;
 
             var deviceId = $routeParams['deviceId'];
-
-            function resetSeries() {
-                _.each( ChartService.MasterChartConfig.series, function (serie, i) {
-                    serie.setData([], true);
-                });
-            }
-
-            vertxEventBusService.on('vertx.monitoring.start', function (response) {
-                if (response.deviceId == deviceId) {
-                    packageName = response.packageName;
-                    resetSeries();
-                }
-            });
 
             vertxEventBusService.on(deviceId + '/android.monitoring.progress/monitoring', function (response) {
 
@@ -41,7 +27,7 @@ angular.module('samanthaApp')
                             enabled: false
                         }
                     };
-                    ChartService.MasterChartConfig.series[0].addPoint(point, false, false, false);
+                    ChartService.getTimeline().series[0].addPoint(point, false, false, false);
                 }
 
                 if (!angular.isUndefined(sysdump.memoryInfo)) {
@@ -58,7 +44,7 @@ angular.module('samanthaApp')
                             enabled: false
                         }
                     };
-                    ChartService.MasterChartConfig.series[1].addPoint(point, false, false, false);
+                    ChartService.getTimeline().series[1].addPoint(point, false, false, false);
                 }
             });
 
@@ -70,11 +56,11 @@ angular.module('samanthaApp')
                         zoomType: 'x',
                         events: {
                             load: function () {
-                                ChartService.MasterChartConfig = this;
+                                ChartService.setTimeline(this);
                             },
 
                             selection: function (event) {
-                                ChartService.zoomAllChartsIn(event.xAxis[0].min, event.xAxis[0].max);
+                                ChartService.zoom(event.xAxis[0].min, event.xAxis[0].max);
                                 return false;
                             }
                         },

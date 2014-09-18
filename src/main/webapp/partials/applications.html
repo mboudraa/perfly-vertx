@@ -89,17 +89,7 @@
 
                     </article>
 
-                    <div class="action-box" style="width: 200px;">
-                        <material-button class="fab material-button-fab" ng-click="stopApplication()">
-                            <span class=" fab-icon fab-icon-stop fa fa-stop"></span>
-                        </material-button>
-
-                        <material-button class="fab material-button-fab"
-                                         ng-click="startApplication(ctrl.monitoredApplication)">
-                            <span class="fab-icon fab-icon-play fa fa-play"></span>
-                        </material-button>
-                    </div>
-                    <div class="event-box" style="width: 200px;">
+                    <div class="event-box">
                         <ul>
                             <li><span class="key">PID</span> <span
                                     class="value">{{applicationStatus.pid}}</span>
@@ -109,6 +99,14 @@
                             </li>
                         </ul>
                     </div>
+
+                    <div class="action-box">
+                        <material-button class="fab material-button-fab" ng-click="toggleMonitoring()">
+                            <span class=" fab-icon fa"
+                                  ng-class="{true:'fab-icon-stop fa-stop', false:'fab-icon-play fa-play'}[ctrl.monitoring]"></span>
+                        </material-button>
+                    </div>
+
                     <div class="configuration-box switch-chart">
                         <div class="checkbox-container">
                             <material-checkbox checked ng-model="ChartSelection.memory">
@@ -123,7 +121,7 @@
 
                 </div>
                 <div class="chart-area" ng-show="ctrl.monitoringOpened == true">
-                    <material-button class="material-button-raised reset-zoom"
+                    <material-button class="material-button-raised reset-zoom" ng-show="chartStatus.zoomed"
                                      ng-click="resetZoom()">Reset zoom
                     </material-button>
                     <article class="chart-wrapper" ng-show="ChartSelection.memory"

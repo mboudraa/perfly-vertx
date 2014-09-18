@@ -1,32 +1,18 @@
 'use strict';
 
 angular.module('samanthaApp')
-    .controller('ChartCpuCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$routeParams', 'ChartService',
-        function ($scope, $rootScope, vertxEventBusService, $routeParams, ChartService) {
+    .controller('ChartCpuCtrl', ['$scope', 'vertxEventBusService', '$routeParams', 'ChartService',
+        function ($scope, vertxEventBusService, $routeParams, ChartService) {
 
-            var packageName;
-
+            var CHART_KEY = "cpu";
             var deviceId = $routeParams['deviceId'];
 
-            function resetSeries() {
-                _.each(ChartService.CpuChartConfig.series, function (serie, i) {
-                    serie.setData([], true);
-                });
-            }
-
-
-            vertxEventBusService.on("vertx.monitoring.start", function (data) {
-                if (data.deviceId == deviceId) {
-                    packageName = data.packageName;
-                    resetSeries();
-                }
-            });
 
             vertxEventBusService.on(deviceId + '/android.monitoring.progress/monitoring', function (response) {
                 var sysdump = response.data;
 
                 if (!angular.isUndefined(sysdump.cpuInfo)) {
-                    _.each(ChartService.CpuChartConfig.series, function (serie, i) {
+                    _.each(ChartService.charts[CHART_KEY].series, function (serie, i) {
                         var point = {
                             x: sysdump.time,
                             y: sysdump.cpuInfo[serie.name],
@@ -47,11 +33,11 @@ angular.module('samanthaApp')
                         zoomType: 'x',
                         events: {
                             load: function () {
-                                ChartService.CpuChartConfig = this;
+                                ChartService.addChart(CHART_KEY, this);
                             },
 
-                            selection: function(event) {
-                                ChartService.zoomAllChartsIn(event.xAxis[0].min, event.xAxis[0].max);
+                            selection: function (event) {
+                                ChartService.zoom(event.xAxis[0].min, event.xAxis[0].max);
                             }
                         },
 
