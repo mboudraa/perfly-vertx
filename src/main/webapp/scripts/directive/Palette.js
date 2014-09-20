@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('samanthaApp').directive('palette', ['$timeout', function ($timeout) {
+angular.module('perfly').directive('palette', ['$timeout', function ($timeout) {
     var colorThief = new ColorThief();
 
     return {

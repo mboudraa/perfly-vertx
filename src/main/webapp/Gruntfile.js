@@ -39,7 +39,7 @@ module.exports = function (grunt) {
             },
             scripts: {
                 files: ['<%= yeoman.app %>/styles/**/*.{scss,sass}'],
-                tasks: ['sass:server', 'autoprefixer']
+                tasks: ['predev']
             },
             gruntfile: {
                 files: ['Gruntfile.js'],
@@ -190,7 +190,7 @@ module.exports = function (grunt) {
                         dest: '<%= yeoman.dist %>',
                         src: [
                             '*.{ico,png,txt}',
-                            'images/**/*.{webp}',
+                            'images/**',
                             'fonts/**/*',
                             '*.html',
                             'partials/**/*.html'
@@ -204,6 +204,7 @@ module.exports = function (grunt) {
                         expand: true,
                         cwd: '<%= yeoman.app %>',
                         src: [
+                            '*.{ico,png,txt}',
                             'partials/**',
                             'images/**',
                             '*.html',

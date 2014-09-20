@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('samanthaApp')
-    .controller('DevicesCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$location', '$http', '$materialDialog',
-        function ($scope, $rootScope, vertxEventBusService, $location, $http, $materialDialog) {
+angular.module('perfly')
+    .controller('DevicesCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$location', '$http', '$materialDialog', '$route',
+        function ($scope, $rootScope, vertxEventBusService, $location, $http, $materialDialog, $route) {
 
             var ids = [];
             $scope.settingsDialogOpened = false;
@@ -38,17 +38,18 @@ angular.module('samanthaApp')
             };
 
             $scope.openSettingsDialog = function ($event) {
+                var devicesLength = $scope.devices.length;
                 $materialDialog({
-                    clickOutsideToClose: $scope.devices.length > 0,
-                    escapeToClose: $scope.devices.length > 0,
+                    clickOutsideToClose: devicesLength > 0,
+                    escapeToClose: devicesLength > 0,
                     targetEvent: $event,
                     locals: {
-                        devices: $scope.devices
+                        devicesLength: devicesLength
                     },
                     templateUrl: '../../partials/template/settingsDialog.html',
-                    controller: ['$scope', '$hideDialog', '$http', 'vertxEventBusService', 'devices',
-                        function ($scope, $hideDialog, $http, vertxEventBusService, devices) {
-                            $scope.devices = devices;
+                    controller: ['$scope', '$hideDialog', '$http', 'vertxEventBusService', 'devicesLength',
+                        function ($scope, $hideDialog, $http, vertxEventBusService, devicesLength) {
+                            $scope.devicesLength = devicesLength;
                             $http.get('/config').success(function (data) {
                                 $scope.baseUrl = data.ip;
                             });
@@ -66,7 +67,7 @@ angular.module('samanthaApp')
 
 
             function showDialogIfNoDevice() {
-                if ($scope.devices.length == 0) {
+                if ($scope.devices.length == 0 && $location.path() == '/') {
                     $scope.openSettingsDialog();
                 }
             }

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('samanthaApp').directive('flyProgressbar', [function () {
+angular.module('perfly').directive('flyProgressbar', [function () {
     return {
         restrict: 'E',
         scope: {

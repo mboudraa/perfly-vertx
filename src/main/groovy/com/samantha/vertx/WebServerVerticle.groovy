@@ -5,13 +5,16 @@ import org.vertx.groovy.core.http.HttpServer
 import org.vertx.groovy.core.http.HttpServerRequest
 import org.vertx.groovy.core.http.RouteMatcher
 import org.vertx.groovy.platform.Verticle
+import org.vertx.java.core.impl.VertxInternal
 import org.vertx.java.core.json.impl.Json
+import org.vertx.java.core.file.impl.PathAdjuster
+
 
 class WebServerVerticle extends Verticle {
 
-    static final int DEFAULT_PORT = 80;
-    static final String DEFAULT_ADDRESS = "0.0.0.0";
-    static final String DEFAULT_WEB_ROOT = "web";
+    static final int DEFAULT_PORT = 8080;
+    static final String DEFAULT_ADDRESS = "localhost";
+    static final String DEFAULT_WEB_ROOT = "public";
     static final String DEFAULT_INDEX_PAGE = "index.html"
     static final String DEFAULT_ERROR_PAGE = "404.html"
     static final String DEFAULT_AUTH_ADDRESS = "vertx.basicauthmanager.authorise"
@@ -77,14 +80,14 @@ class WebServerVerticle extends Verticle {
         RouteMatcher matcher = new RouteMatcher()
         def webRoot = config.get("webRoot", DEFAULT_WEB_ROOT)
         if (!webRoot.startsWith("/")) {
-            webRoot = System.getProperty("user.dir") + "/" + webRoot
+            webRoot = findOnDisk(webRoot)
         }
 
         matcher.get("/") { HttpServerRequest req ->
             req.response.sendFile("${webRoot}/${config.get("index_page", DEFAULT_INDEX_PAGE)}")
         }
 
-        matcher.getWithRegEx("^\\/(polymer|images|partials|scripts|styles|fonts)\\/.*") { HttpServerRequest req ->
+        matcher.getWithRegEx("^\\/(images|partials|scripts|styles|fonts)\\/.*") { HttpServerRequest req ->
             req.response.sendFile("${webRoot}/${req.path.substring(1)}")
         }
 
@@ -136,6 +139,13 @@ class WebServerVerticle extends Verticle {
                 req.response.end(Json.encode(["application": message.body()]))
             }
         }
+    }
+
+
+    private def findOnDisk(String resourceRelativePath) {
+        VertxInternal core = vertx.toJavaVertx() as VertxInternal
+        String pathToDisk = PathAdjuster.adjust(core, resourceRelativePath)
+        pathToDisk
     }
 
 }

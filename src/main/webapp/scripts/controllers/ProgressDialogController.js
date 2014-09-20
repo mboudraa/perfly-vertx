@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('samanthaApp')
+angular.module('perfly')
     .controller('ProgressDialogCtrl', ['$scope', 'vertxEventBusService', '$routeParams',
         function ($scope, vertxEventBusService, $routeParams) {
 

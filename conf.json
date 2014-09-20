@@ -1,12 +1,12 @@
 {
-    "webServerConfig": {
+    "web": {
         "port": 8080,
         "host": "0.0.0.0",
-        "webRoot": "src/main/resources/public"
+        "webRoot": "/Users/mounirboudraa/Xebia/Projets/Perfly/perfly-vertx/src/main/resources/public"
     },
 
-    "mqttConfig": {
-        "hostname": "localhost",
+    "mqtt": {
+        "host": "localhost",
         "port": 1883
     }
 }

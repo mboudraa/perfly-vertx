@@ -147,6 +147,11 @@ material-ink-bar {
 
   .tile-content {
     background: #ffffff;
+    .application-detail {
+      .important {
+        font-weight: 400;
+      }
+    }
   }
 }
 

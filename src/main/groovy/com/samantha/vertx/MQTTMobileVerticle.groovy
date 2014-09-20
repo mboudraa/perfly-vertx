@@ -12,7 +12,8 @@ class MQTTMobileVerticle extends Verticle implements MqttCallback {
     public static final int QOS_DELIVERY_ONCE_NO_CONFIRMATION = 0
     public static final int QOS_DELIVERY_AT_LEAST_ONCE_WITH_CONFIRMATION = 1
     public static final int QOS_DELIVERY_ONLY_ONCE_WITH_CONFIRMATION = 2
-    public static final int PORT_DEFAULT = 1883
+    public static final int DEFAULT_PORT = 1883
+    static final String DEFAULT_HOST = "localhost";
 
     private static final int KEEP_ALIVE_INTERVAL = 5
     private static final String CHARSET = "UTF-8"
@@ -82,7 +83,7 @@ class MQTTMobileVerticle extends Verticle implements MqttCallback {
     }
 
     def configure(config) {
-        def hostname = config.hostname
+        def hostname = config.host ? config.host: DEFAULT_HOST
         def port = config.port ? config.port : DEFAULT_PORT
         def persistence = new MemoryPersistence()
 

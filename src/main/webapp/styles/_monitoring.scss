@@ -69,25 +69,32 @@
 
 .chart-area {
   margin-left: 240px;
+  margin-right: 15px;
 
   .chart-wrapper {
-    margin-top: 20px;
-    height: 200px;
+    margin-bottom: 20px;
+//    height: 200px;
 
     .chart {
       height: 200px;
 
-      .tall {
-        height: 420px
+
+      &.chart-master {
+        height: 100px;
+      }
+
+      &.chart-systemevent {
+        height: 100px;
       }
     }
 
-    #chart-master {
-      height: 100px;
-    }
+
+
   }
-  padding-right: 15px;
+
+
 }
+
 
 .reset-zoom {
   position: absolute;
@@ -96,4 +103,9 @@
   z-index: 1;
   background: grey;
   color: white;
+}
+
+.transparent {
+  @include transition(opacity 200ms ease);
+  opacity: 0;
 }

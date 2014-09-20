@@ -1,10 +1,7 @@
 <material-dialog>
     <section class="dialog-title">
-        <span class="fa-stack fa-lg ">
-          <i class="fa fa-mobile fa-stack-1x fa-2x dialog-icon"></i>
-          <img class="fa fa-stack-2x" src="../../images/ban.svg"></img>
-        </span>
-        No Connected Devices
+          <span class="fa fa-wifi fa-2x dialog-icon"></span>
+        Settings
     </section>
     <section class="dialog-content">
         <p>
@@ -19,7 +16,7 @@
             <qrcode data="{{baseUrl}}" size="180"></qrcode>
         </div>
     </section>
-    <div class="dialog-actions" layout="horizontal" layout-align="end" ng-show="devices.length > 0">
+    <div class="dialog-actions" layout="horizontal" layout-align="end" ng-show="devicesLength > 0">
         <material-button ng-click="close()">CLOSE</material-button>
     </div>
 </material-dialog>

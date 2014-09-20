@@ -2,14 +2,14 @@
     <div class="material-toolbar-tools">
         <img src="../images/logo-perfly.svg" width="122" height="51"></img>
         <span flex></span>
-        <material-button class="toolbar-action" ng-click="openSettingsDialog($event)">
+        <material-button class="toolbar-action" ng-click="openSettingsDialog($event, devices.length)">
             <i class="fa fa-ellipsis-h fa-2x fa-rotate-90"></i>
         </material-button>
     </div>
 </material-toolbar>
 
 <div class="container">
-    <section class="devices-section">
+    <section id="devices-section" class="devices-section">
         <article class="tile device-tile" ng-repeat="device in devices"
                  ng-click="showApps(device)">
 

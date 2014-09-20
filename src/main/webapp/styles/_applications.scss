@@ -7,52 +7,31 @@
 
 .applications-grid {
   list-style: none;
-  padding: 20px 0;
+  padding: 0;
   margin: 0 auto;
   text-align: center;
   width: 100%;
 
   > li {
     display: inline-block;
-    margin: 10px 5px 0 5px;
+    margin: 10px;
     vertical-align: top;
   }
 }
-
-.application-article {
-  text-align: center;
-  width: 7em;
-  height: 7em;
-  padding: 5px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  cursor: pointer;
-  position: relative;
-
-  .application-logo {
-    width: 4em;
-    height: 4em;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 5px;
-  }
-
-  .application-label {
-    font-size: 0.875em;
-    white-space: nowrap;
-  }
-}
-
-
 
 .application-tile {
   margin: 0;
   padding: 0;
   position: relative;
+  width: 14em;
+  height: auto;
 
+  .tile-header {
+    padding: 5px;
+    position: relative;
+  }
   .title {
-    font-size: 2em;
+    font-size: 1.6em;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -60,25 +39,25 @@
 
   .application-logo-container {
     text-align: center;
+    width: 5.5em;
+    height: 5.5em;
   }
 
+  .application-logo-background {
+    font-size: 5.5em;
+  }
   .application-logo {
-    width: 1em;
-    height: 1em;
-    margin-bottom: 5px;
+    width: 2.7em;
+    height: 2.7em;
+    position: relative;
+    top: 28px;
 
-  }
-
-  application-label {
-    font-size: 0.875em;
-    white-space: nowrap;
   }
 
   .tile-content {
-    font-size: 0.9em;
+    font-size: 0.75em;
     text-align: left;
-    padding-left: 5px;
-    padding-top: 10px;
+    padding: 10px;
 
     ul {
       list-style-type: none;

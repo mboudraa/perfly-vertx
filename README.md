@@ -1,4 +1,4 @@
-# Samantha server application
+# Perfly server application
 
 ## Getting started
 ### Requirements

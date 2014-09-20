@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('samanthaApp')
+angular.module('perfly')
     .controller('BodyCtrl', ['$scope', function ($scope) {
         $scope.body = {
             scrollable: true,
@@ -9,5 +9,6 @@ angular.module('samanthaApp')
                 this.scrollable = scrollable;
             }
         };
+
 
     }]);

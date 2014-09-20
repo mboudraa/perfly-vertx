@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('samanthaApp')
+angular.module('perfly')
     .controller('ChartSystemEventCtrl', ['$scope', 'vertxEventBusService', '$routeParams', 'ChartService',
         function ($scope, vertxEventBusService, $routeParams, ChartService) {
 
@@ -14,13 +14,26 @@ angular.module('samanthaApp')
 
                 if (!angular.isUndefined(sysdump.orientation)) {
                     var orientationName = sysdump.orientation == 2 ? "landscape" : "portrait";
-                    ChartService.charts[CHART_KEY].xAxis[0].addPlotLine({
-                        value: sysdump.time,
-                        color: 'blue',
-                        width: 1,
-                        label: {
-                            text: 'Orientation: ' + orientationName,
-                            rotation: 90
+                    ChartService.charts[CHART_KEY].series[0].addPoint({
+                        x: sysdump.time,
+                        y: 2,
+                        marker: {
+                            enabled: true,
+                            fillColor: 'blue',
+                            lineWidth: 1,
+                            lineColor: 'transparent',
+                            symbol: 'text:\uf01e', // fa-rotate-right
+                            states: {
+                                hover: {
+                                    fillColor: '#FFFFFF',
+                                    lineWidth: 2,
+                                    lineColor: 'blue'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            key: 'Orientation',
+                            value: orientationName
                         }
                     });
                 }
@@ -30,13 +43,26 @@ angular.module('samanthaApp')
             vertxEventBusService.on(deviceId + '/android.monitoring.progress/status', function (response) {
                 var sysdump = response.data;
                 if (!angular.isUndefined(sysdump.applicationStatus)) {
-                    ChartService.charts[CHART_KEY].xAxis[0].addPlotLine({
-                        value: sysdump.time,
-                        color: 'green',
-                        width: 1,
-                        label: {
-                            text: 'State: ' + sysdump.applicationStatus.state,
-                            rotation: 90
+                    ChartService.charts[CHART_KEY].series[1].addPoint({
+                        x: sysdump.time,
+                        y: 1,
+                        marker: {
+                            enabled: true,
+                            lineWidth: 1,
+                            lineColor: 'transparent',
+                            fillColor: 'green',
+                            symbol: 'text:\uf079', // fa-retweet
+                            states: {
+                                hover: {
+                                    lineWidth: 2,
+                                    fillColor: '#FFFFFF',
+                                    lineColor: 'green'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            key: 'State',
+                            value: sysdump.applicationStatus.state
                         }
                     });
                 }
@@ -46,14 +72,26 @@ angular.module('samanthaApp')
             vertxEventBusService.on(deviceId + '/android.monitoring.progress/dalvik', function (response) {
                 var sysdump = response.data;
                 if (!angular.isUndefined(sysdump.type)) {
-                    ChartService.charts[CHART_KEY].xAxis[0].addPlotLine({
-                        value: sysdump.time,
-                        color: 'red',
-                        width: 1,
-                        dashStyle: 'longdashdot',
-                        label: {
-                            text: sysdump.type,
-                            rotation: 90
+                    ChartService.charts[CHART_KEY].series[2].addPoint({
+                        x: sysdump.time,
+                        y: 0,
+                        marker: {
+                            enabled: true,
+                            fillColor: 'red',
+                            lineWidth: 1,
+                            lineColor: 'transparent',
+                            symbol: 'text:\uf014', // fa-trash
+                            states: {
+                                hover: {
+                                    fillColor: '#FFFFFF',
+                                    lineWidth: 2,
+                                    lineColor: 'red'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            key: sysdump.type,
+                            value: sysdump.value
                         }
                     });
                 }
@@ -83,6 +121,11 @@ angular.module('samanthaApp')
                         },
                     },
 
+                    plotOptions: {
+                        series: {
+                            color: 'transparent',
+                        }
+                    },
                     xAxis: {
                         type: 'datetime',
                         tickPixelInterval: 150,
@@ -90,53 +133,69 @@ angular.module('samanthaApp')
                         options: {}
                     },
 
+
                     yAxis: [{
                         labels: {
-                            align: 'left',
-                            x: 3
+                            enabled: false,
                         },
                         title: {
-                            text: 'System events'
+                            text: 'Events'
                         },
                     }],
 
                     title: null,
 
-                    // tooltip: {
-                    //     shared: true,
-                    //     crosshairs: true,
-                    //     pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y} KB</b><br/>',
-                    //     shadow: false,
-                    //     hideDelay: 0
-                    // },
+                    tooltip: {
+                        enabled: true,
+                        crosshairs: true,
+                        pointFormat: '<span>{point.tooltip.key}</span>: <b>{point.tooltip.value}</b><br/>',
+                        shadow: false,
+                        hideDelay: 0
+                    },
 
                     legend: {
                         enabled: true,
                         layout: 'vertical',
                         align: 'right',
                         verticalAlign: 'top',
-                        y: 50,
-                        padding: 0,
-                        itemMarginTop: 5,
-                        itemMarginBottom: 5
+                        itemMarginTop: 3,
+                        itemMarginBottom: 3
                     }
                 },
 
                 series: [
                     {
                         name: 'Orientation',
-                        color: 'blue',
-                        pointInterval: 1000,
+                        data: [],
+                        marker: {
+                            symbol: 'text:\uf01e', // fa-rotate-right
+                            fillColor: 'blue',
+                            lineWidth: 1,
+                            lineColor: 'transparent',
+                        },
+                        pointInterval: 1000
+                    },
+
+                    {
+                        name: 'State',
+                        data: [],
+                        marker: {
+                            symbol: 'text:\uf079', // fa-retweet
+                            fillColor: 'green',
+                            lineWidth: 1,
+                            lineColor: 'transparent',
+                        },
+                        pointInterval: 1000
                     },
                     {
                         name: 'GC',
-                        color: 'red',
-                        pointInterval: 1000,
-                    },
-                    {
-                        name: 'State',
-                        color: 'green',
                         data: [],
+                        marker: {
+                            symbol: 'text:\uf014', // fa-trash
+                            fillColor: 'red',
+                            lineWidth: 1,
+                            lineColor: 'transparent',
+                        },
                         pointInterval: 1000,
                     }
                 ],

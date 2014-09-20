@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('samanthaApp').directive('flyClip', ['$window', '$timeout', function ($window, $timeout) {
+angular.module('perfly').directive('flyClip', ['$window', '$timeout', function ($window, $timeout) {
     return {
         restrict: 'A',
         scope: {
@@ -8,7 +8,7 @@ angular.module('samanthaApp').directive('flyClip', ['$window', '$timeout', funct
             offset: '@',
             open: '=',
             onOpen: '&',
-            onClose:'&'
+            onClose: '&'
         },
         link: function ($scope, $elem) {
             var clipPropFirst = 'auto';
@@ -29,18 +29,34 @@ angular.module('samanthaApp').directive('flyClip', ['$window', '$timeout', funct
             $scope.$watch('open', function (value) {
                 if (value === true) {
                     $scope.$eval($scope.onOpen);
-                    $elem.addClass('open');
+                    //$elem.addClass('open');
+
                     $elem.css({
                         'clip': clipPropFirst,
-                        'pointer-events': 'none'
+                        'pointer-events': 'none',
                     });
+
+                    $timeout(function () {$elem.css({
+                        'clip': clipPropFirst,
+                        'pointer-events': 'none',
+                        opacity: 1,
+                        'z-index': 5
+                    });
+                    }, 300);
+
+                    //$timeout(function () {
+                    //    $elem.css({
+                    //        opacity: 1,
+                    //        'z-index': 5
+                    //    });
+                    //},300);
 
                     $timeout(function () {
                         $elem.css({
                             'clip': clipPropLast,
                             'pointer-events': 'auto'
                         });
-                    }, 150);
+                    },500);
                 } else {
                     $elem.css({
                         'clip': clipPropFirst,
@@ -49,12 +65,16 @@ angular.module('samanthaApp').directive('flyClip', ['$window', '$timeout', funct
 
                     $timeout(function () {
                         $elem.css({
-                            'clip': 'auto',
-                            'pointere-events': 'none'
+                            'pointere-events': 'none',
+                            opacity: 0,
+                            'z-index': -1
+
                         });
-                        $elem.removeClass('open');
+                        //$elem.removeClass('open');
                         $scope.$eval($scope.onClose);
                     }, 450);
+
+
                 }
             });
 
@@ -77,7 +97,7 @@ angular.module('samanthaApp').directive('flyClip', ['$window', '$timeout', funct
         controller: ['$scope', function ($scope) {
             $scope.getItemLayoutProp = function (item, offset) {
 
-                if(!offset){
+                if (!offset) {
                     offset = 0;
                 }
                 var window = angular.element($window);

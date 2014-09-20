@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('samanthaApp')
+angular.module('perfly')
     .controller('ApplicationsCtrl', ['$scope', '$rootScope', 'vertxEventBusService', '$routeParams', '$location', '$http', 'ChartService', '$materialDialog', '$timeout',
         function ($scope, $rootScope, vertxEventBusService, $routeParams, $location, $http, ChartService, $materialDialog, $timeout) {
 
@@ -8,12 +8,14 @@ angular.module('samanthaApp')
                 monitoredApplication: undefined,
                 monitoring: false,
                 monitoringOpened: false,
+                showGraph: false,
                 selectedApplicationIndex: -1,
             };
 
 
             $scope.applications = [];
             $scope.search = '';
+            $scope.openSearch = false;
 
             var deviceId = $routeParams['deviceId'];
             var progressDialogOpened = false;
@@ -32,7 +34,7 @@ angular.module('samanthaApp')
                         deviceId: deviceId,
                     },
                     templateUrl: '../../partials/template/connectionDialog.html',
-                    controller: ['$scope', '$hideDialog', 'vertxEventBusService', 'deviceId',
+                    controller: ['$scope', '$hideDialog', 'vertxEventBusService', 'deviceId', '$route',
                         function ($scope, $hideDialog, vertxEventBusService, deviceId) {
 
                             $scope.$broadcast('timer-start');
@@ -58,6 +60,12 @@ angular.module('samanthaApp')
                         }]
                 });
             };
+
+            vertxEventBusService.on('device.disconnect', function (device) {
+                if (deviceId == device.id) {
+                    $scope.openConnectionDialog();
+                }
+            });
 
             $scope.openProgressDialog = function () {
                 progressDialogOpened = true;
@@ -108,11 +116,15 @@ angular.module('samanthaApp')
                 });
             };
 
-            vertxEventBusService.on('device.disconnect', function (device) {
-                if (deviceId == device.id) {
-                    $scope.openConnectionDialog();
+
+            $scope.toggleSearch = function () {
+                if ($scope.openSearch == false) {
+                    $scope.openSearch = true;
+                } else if (_.isEmpty($scope.search)) {
+                    $scope.openSearch = false;
                 }
-            });
+            }
+
 
             vertxEventBusService.on(deviceId + '/android.apps.progress', function (response) {
                 $scope.applications.push(response.data.application);
@@ -130,6 +142,7 @@ angular.module('samanthaApp')
                 $scope.ctrl.monitoredApplication = application;
                 $scope.ctrl.monitoringOpened = true;
                 $timeout(function () {
+                    $scope.ctrl.showGraph = true;
                     $scope.startApplication(application)
                 }, 400)
             }
@@ -137,6 +150,7 @@ angular.module('samanthaApp')
             $scope.endMonitoring = function () {
                 $scope.stopApplication()
                 $scope.ctrl.monitoringOpened = false;
+                $scope.ctrl.showGraph = false;
                 $timeout(function () {
                     $scope.ctrl.selectedApplicationIndex = -1;
                     $scope.ctrl.monitoredApplication = undefined;

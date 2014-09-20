@@ -1,4 +1,4 @@
-angular.module('samanthaApp').factory('ChartService', ['$interval', '$rootScope',
+angular.module('perfly').factory('ChartService', ['$interval', '$rootScope',
     function ($interval, $rootScope) {
 
         var startingDate;

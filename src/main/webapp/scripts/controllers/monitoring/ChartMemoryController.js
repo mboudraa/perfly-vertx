@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('samanthaApp')
+angular.module('perfly')
     .controller('ChartMemoryCtrl', ['$scope', 'vertxEventBusService', '$routeParams', 'ChartService',
         function ($scope, vertxEventBusService, $routeParams, ChartService) {
 
