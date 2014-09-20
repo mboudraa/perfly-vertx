@@ -3,21 +3,20 @@
 ## Getting started
 ### Requirements
 
-
-In case you need to install Mosquitto, visit  [ http://mosquitto.org/download](http://mosquitto.org/download) to know how to install mosquitto:
+In case you need to install 
+	* Mosquitto -> visit  [ http://mosquitto.org/download](http://mosquitto.org/download) to know how to install mosquitto:
+	* npm -> visit [ http://nodejs.org/download/](http://nodejs.org/download/) to know how to install nodeJS
 
 	
 ### Configuration
 
-1. Launch an ```npm install``` and a ```bower install``` in the ```src/main/webapp``` folder:
+1. Move to root project folder and execute the ```install.sh``` script:
 
-		cd src/main/webapp
-		sudo npm install	
-		bower install	
+	./install.sh	
 	
 2. When Bower requests angular version, please select 1.3.0-rc.1.
 
-3. Execute ```grunt```:
+3. Move to ```src/main/webapp``` and execute :
 		
 		grunt dev
 
