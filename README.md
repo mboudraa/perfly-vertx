@@ -4,8 +4,8 @@
 ### Requirements
 
 In case you need to install 
-	* Mosquitto -> visit  [ http://mosquitto.org/download](http://mosquitto.org/download) to know how to install mosquitto:
-	* npm -> visit [ http://nodejs.org/download/](http://nodejs.org/download/) to know how to install nodeJS
+	- Mosquitto: visit  [ http://mosquitto.org/download](http://mosquitto.org/download) to know how to install mosquitto:
+	- npm: visit [ http://nodejs.org/download/](http://nodejs.org/download/) to know how to install nodeJS
 
 	
 ### Configuration
