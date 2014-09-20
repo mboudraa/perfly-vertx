@@ -3,14 +3,9 @@
 ## Getting started
 ### Requirements
 
-* npm
-* mosquitto
-* bourbon
 
-In case you need to install Mosquitto, the recommended way is via Homebrew:
+In case you need to install Mosquitto, visit  [ http://mosquitto.org/download](http://mosquitto.org/download) to know how to install mosquitto:
 
-	brew update
-	brew install mosquitto
 	
 ### Configuration
 
@@ -32,15 +27,12 @@ In case you need to install Mosquitto, the recommended way is via Homebrew:
 
 1. In order to launch the server, first launch Mosquitto:
 
-		/usr/local/Cellar/mosquitto/<V>/sbin/mosquitto -c /usr/local/etc/mosquitto/mosquitto.conf
-where \<V> is your version number
-
 2. Move to the project root folder and execute the ```run.sh``` script:
 
 	./run.sh
 	
 3. Connect your browser to the following address:
 	
-		http://127.0.0.1:8080
+		http://localhost:8080
 	
 4. Launch the client application on your Android device and connect to your server address 
