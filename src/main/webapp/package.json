@@ -1,6 +1,6 @@
 {
-  "name": "samantha",
-  "version": "0.0.0",
+  "name": "perfly",
+  "version": "0.1.0",
   "dependencies": {
     "express": "~4.0.0",
     "morgan": "~1.0.0",

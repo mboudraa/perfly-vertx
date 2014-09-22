@@ -110,7 +110,7 @@ module.exports = function (grunt) {
                     "bower_components/angular-ui-utils/ui-utils.js",
                     "bower_components/sockjs/sockjs.js",
                     "bower_components/vertxbus.js/index.js",
-                    "bower_components/angular-vertxbus/dist/angular-vertxbus-0.7.0.min.js",
+                    "bower_components/angular-vertxbus/dist/angular-vertxbus.min.js",
                     "bower_components/angular-truncate/src/truncate.js",
                     "bower_components/angular-local-storage/angular-local-storage.js",
                     "bower_components/qrcode-generator/js/qrcode.js",

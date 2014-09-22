@@ -46,8 +46,8 @@ var perfly = angular.module('perfly', [
             });
 
         vertxEventBusProvider
-            .useReconnect()
-            .useUrlServer('http://localhost:8080');
+            .enable()
+            .useReconnect();
 
         Highcharts.setOptions({
             global: {

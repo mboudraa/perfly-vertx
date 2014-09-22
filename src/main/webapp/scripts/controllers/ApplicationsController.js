@@ -19,8 +19,7 @@ angular.module('perfly')
 
             var deviceId = $routeParams['deviceId'];
             var progressDialogOpened = false;
-            var COUNTDOWN = 5 * 60;
-            $scope.timer = {countdown: COUNTDOWN};
+
 
             $scope.getPaletteTarget = function (index) {
                 return [{target: 'tile-header-' + index, alpha: 0.05}];
@@ -34,10 +33,13 @@ angular.module('perfly')
                         deviceId: deviceId,
                     },
                     templateUrl: '../../partials/template/connectionDialog.html',
-                    controller: ['$scope', '$hideDialog', 'vertxEventBusService', 'deviceId', '$route',
-                        function ($scope, $hideDialog, vertxEventBusService, deviceId) {
+                    controller: ['$scope', '$rootScope', '$hideDialog', 'vertxEventBusService', 'deviceId',
+                        function ($scope, $rootScope, $hideDialog, vertxEventBusService, deviceId) {
+                            var COUNTDOWN = 5 * 60;
 
-                            $scope.$broadcast('timer-start');
+                            $scope.timer = {countdown: COUNTDOWN};
+                            $rootScope.$broadcast('timer-start');
+
 
                             $scope.close = function () {
                                 $hideDialog();
@@ -51,8 +53,8 @@ angular.module('perfly')
                             vertxEventBusService.on('device.connect', function (device) {
                                 if (deviceId == device.id) {
                                     $hideDialog();
-                                    $scope.$broadcast('timer-stop');
-                                    $scope.$broadcast('timer-set-countdown', COUNTDOWN);
+                                    $rootScope.$broadcast('timer-stop');
+                                    $rootScope.$broadcast('timer-set-countdown', COUNTDOWN);
                                 }
                             });
 
