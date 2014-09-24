@@ -20,6 +20,9 @@ angular.module('perfly')
             var deviceId = $routeParams['deviceId'];
             var progressDialogOpened = false;
 
+            $scope.goHome = function () {
+                $location.path('/');
+            }
 
             $scope.getPaletteTarget = function (index) {
                 return [{target: 'tile-header-' + index, alpha: 0.05}];
