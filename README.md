@@ -1,18 +1,20 @@
-# Perfly server application
+
+
+# ![](http://perf.ly/images/perfly/perfly.png) Perfly
+
+![](http://perf.ly/images/perfly/server-2.png)
 
 ## Getting started
 ### Requirements
 
-In case you need to install:
-- Mosquitto: visit  [ http://mosquitto.org/download](http://mosquitto.org/download)
-- npm: visit [ http://nodejs.org/download/](http://nodejs.org/download/)
+- Mosquitto: visit [http://mosquitto.org/download](http://mosquitto.org/download)
+- npm: visit [http://nodejs.org/download/](http://nodejs.org/download/)
 
-	
 ### Configuration
 
 1. Move to root project folder and execute the ```install.sh``` script:
 
-	./install.sh	
+    	./install.sh	
 	
 2. When Bower requests angular version, please select 1.3.0-rc.1.
 
@@ -20,7 +22,7 @@ In case you need to install:
 		
 		grunt dev
 
-4. Then configure conf.json so that web_root points to your ```src/main/resources/public``` folder. Modify the other settings as you wish.
+4. Then configure conf.json so that web_root points to your ```src/main/resources/public``` folder as absolute path. Modify the other settings as you wish.
 
 ### Launching
 
